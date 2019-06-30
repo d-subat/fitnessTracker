@@ -1,0 +1,604 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Exo:300,700i');
+        body{            
+            background: linear-gradient(45deg, rgba(97, 161, 239, 1) 0%, rgba(135, 92, 207, 1) 29%, rgba(188, 53, 169, 1) 65%, rgba(251, 8, 129, 1) 100%);
+            min-height:100vh;
+            
+            margin:0;
+            color:white;
+            font-family: "Exo";   
+            
+        }
+        * {
+            font-family: "Exo";   
+            font-weight:300;
+        }
+        .mobileNav {
+            
+                display:flex;                
+                width:100%;
+                height:2em;
+                justify-content:space-between;
+                align-items: center;
+                position:fixed;     
+                z-index:2;          
+            }
+        
+        .mobileNav div {
+            margin-left:0.5em;          
+        }
+
+        .container {
+            display:flex;
+            flex:1;
+            width:100%;
+            height:100%;
+        }
+        nav{          
+            display:flex;                      
+            height:calc(100% - 2em);
+            
+            padding-top:2em;
+            width:15em;
+            position:fixed;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+            text-align:center;
+            z-index:1;
+            margin-left: -15em;                                  
+            transition: all .33s cubic-bezier(.68,-.1,.265,1);
+            
+        }
+       
+        nav div {
+            width:100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;            
+            flex:1;
+            font-variant:small-caps;
+            font-weight:700;         
+            font-style: italic;
+            letter-spacing: 1px;
+            background:rgba(0,0,0, 0.35);
+            position:relative;
+            
+        }
+        nav div:after {
+            position:absolute;
+            content:"";
+            width:0px;
+            transition: width 0.25s;
+        }
+        nav div:hover:after {
+              
+            left:calc(50%-10px);
+            top:60%;            
+            content:"";
+            width:15%;
+            box-shadow: 0 0 0 3px blue;            
+            height:1em;
+        }
+
+        #navToggle {
+                position: absolute;
+                top: 0;
+                left: -9999px;
+            }
+
+        .profile {
+            display:flex;
+            min-height:25vmin;
+            flex-direction: column;
+        }
+        .profile svg {
+            fill:white;
+            padding-left:5px;
+            border-radius:50%;
+            height: 15vmin;
+            width: 15vmin;
+            box-shadow: 0 0 0 3px white;
+        }
+        main {
+            margin-top:2em;
+            background:rgba(0,0,0,0.1);
+            padding:0 3vmin 3vmin 3vmin;
+           flex:10 0 0;
+           margin-left: 0em;
+           transition: margin-left 0.5s cubic-bezier(0.175, 0.885, 0.32, 1);
+        }
+  
+        #navToggle:checked~.container nav{
+                margin-left:0;
+                
+                
+            }
+            #navToggle:checked~.container main{
+                margin-left:15em;
+            }
+            @media(max-width: 768px) {
+                main {
+                    margin-left:0em;    
+                }
+                #navToggle:checked~.container main{
+                margin-left:0em;
+            }
+            }
+
+        #icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;  
+  width: 20px;
+  height: 1em;
+  margin-right:0.5em;
+  cursor:pointer;
+}
+#icon span {
+  width: 100%;
+  height: 2px;
+  background-color: #fff;
+  transition: all .2s ease-in-out;
+  
+}
+#navToggle:checked~.mobileNav label span {
+  transform: translateX(12px);
+}
+#navToggle:checked~.mobileNav label span:nth-child(1) {
+  transform-origin: left;
+  transform: rotate(45deg) translateY(0px);
+}
+#navToggle:checked~.mobileNav label span:nth-child(2) {
+  transform-origin: center;
+  transform: scaleX(0);
+}
+#navToggle:checked~.mobileNav label span:nth-child(3) {
+  transform-origin: left;
+  transform: rotate(-45deg) translateY(0);
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+}
+
+form {    
+    background: rgba(0,0,0, 0.31);
+    flex:1;
+    box-shadow: 0 1px 3px 0 black ;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+
+    padding: 2em;
+    box-sizing: border-box;
+    border-radius: 0.5em;
+  }
+
+  .field {
+    width: 100%;
+    margin-top:1em;
+    position: relative;
+  }
+
+  .fieldrow {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .fieldrow .field {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    margin-right: 1em;
+  }
+
+  .fieldrow .field:last-child {
+    margin: 0;
+  }
+
+  .field>input {
+    width: 100%;
+    font-size: 1em;
+    display: inline-block;
+    margin: 0 0 0.5em 0;
+    line-height: 2em;
+    padding: 2px 2px;
+    border: none;
+    border-bottom: 1px solid white;
+    outline: none;
+    background: transparent;
+    color: #fff;
+    text-align: center;
+  }
+form  button {
+    border:none;
+    background: none;
+    align-self: center;
+    
+}
+  .plus svg {
+    width: 2em;
+    fill:white;
+  }
+datalist {
+    display:block;
+}
+.selectActivity:checked {
+    background:  red;
+}
+h1 {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin:1em;
+    letter-spacing:3px;
+    font-size:5vmin;
+    font-variant:small-caps;
+            font-weight:700;         
+            font-style: italic;
+}
+img {
+    margin-right: 1em;
+}
+
+ 
+    </style>
+</head>
+
+<body>
+    <input type="checkbox" id="navToggle" />
+    <div class="mobileNav">
+        <div>
+            FitnessTracker v1.0
+        </div>
+        <label for="navToggle" id="icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </label>
+    </div>
+    <div class="container">
+        <nav>
+            <div class="profile">
+                <img src="../public/icons/profile.svg" height="128" />
+                username</div>
+            <div class="active">
+                <img src="../public/icons/stats.svg" height="48" />
+                Dashboard</div>
+            <div>
+                <img src="../public/icons/exercise.svg" height="48" />
+                Exercises</div>
+            <div>
+                <img src="../public/icons/activity.svg" height="48" />
+                Activities</div>
+            <div>
+                <img src="../public/icons/log.svg" height="48" />
+                Exercise Log</div>
+                <div>
+                        <img src="../public/icons/developer.svg" height="48" />
+                        API</div>
+                        
+        </nav>
+
+        <main class="content">
+            <h1><img src="../public/icons/exercise.svg" height="128" />Add Exercise</h1>
+            <form action="/api/exercise/add" id="usrfrm2" method="post">
+                <div class="fieldrow">
+                    <div class="field">
+                        <label for="selectUser">Create / Select Activity
+
+
+                            <input list="selectUser" name="browser"><a href="#selectUser">asd</a>
+                            <datalist id="selectUser" name="selectUser">
+                                <option>order by used</option>
+                                <option><img src="../public/icons/sleeping-in-bed-svgrepo-com.svg" height="32" />Sleep</option>
+                                <option><img src="../public/icons/bike-svgrepo-com.svg" height="32" />Bike</option>
+                                <option><img src="../public/icons/swimming-svgrepo-com.svg" height="32" />Swim</option>
+                            </datalist>
+                            <input type="radio" class="selectActivity" name="activity" value="1">
+                            <input type="radio" class="selectActivity" name="activity" value="2">
+                        </label>
+                    </div>
+                    <div class="field">
+                        <a href="#addUser" class="plus" id="plus">
+
+                            addactivity
+                        </a>
+
+
+                    </div>
+
+                </div>
+                <div class="field">
+                    <label for="desc">Description *</label>
+                    <input id="desc" type="text" name="description" required>
+                </div>
+                <div class="fieldrow">
+                    <div class="field">
+                        <label for="dur">Duration *(mins.)</label>
+                        <input id="dur" type="number" min="0" name="duration" required>
+                    </div>
+                    <div class="field">
+                        <label for="dat">Date </label>
+                        <input id="dat" type="date" name="date">
+                    </div>
+                </div>
+                <button type="submit"><img src="../public/icons/save.svg" height="128" /></button>
+                <div class="field">
+                    <h2>Successfully created a new user 'test', User ID = 'a7fd89e'</h2>
+                    <h2>Successfully added a new exercise on '09-27-2018' for User ID 'a7fd89e'
+                        (user 'test'), description is 'my exercise description', duration set to '10' mins. </h2>
+                    <h2>Successfully created a new user 'test', User ID = 'a7fd89e'</h2>
+                    <h2>Successfully added a new exercise on '09-27-2018' for User ID 'a7fd89e'
+                        (user 'test'), description is 'my exercise description', duration set to '10' mins. </h2>
+                    <h2>Successfully created a new user 'test', User ID = 'a7fd89e'</h2>
+                    <h2>Successfully added a new exercise on '09-27-2018' for User ID 'a7fd89e'
+                        (user 'test'), description is 'my exercise description', duration set to '10' mins. </h2>
+                    <h2>Successfully created a new user 'test', User ID = 'a7fd89e'</h2>
+                    <h2>Successfully added a new exercise on '09-27-2018' for User ID 'a7fd89e'
+                        (user 'test'), description is 'my exercise description', duration set to '10' mins. </h2>
+
+                </div>
+            </form>
+
+
+        </main>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="content" id="contentTwo">
+        <h1>Add Activity</h1>
+        <form action="/api/exercise/add" id="usrfrm2" method="post">
+            <div class="fieldrow">
+                <div class="field">
+                <label for="selectUser">Create / Select Activity
+                    
+
+                    <input list="selectUser" name="browser" ><a href="#selectUser">asd</a>
+                    <datalist id="selectUser" name="selectUser">
+
+                    </datalist>
+                </label>
+                </div>
+                <div class="field">
+                <a href="#addUser" class="plus" id="plus">
+                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                        x="0px" y="0px" viewBox="0 0 328 328" style="fill:white;">
+                        <title>add new activity</title>
+                        <path id="XMLID_458_" d="M15,286.75h125.596c19.246,24.348,49.031,40,82.404,40c57.897,0,105-47.103,105-105s-47.103-105-105-105
+c-34.488,0-65.145,16.716-84.298,42.47c-7.763-1.628-15.694-2.47-23.702-2.47c-63.411,0-115,51.589-115,115
+C0,280.034,6.716,286.75,15,286.75z M223,146.75c41.355,0,75,33.645,75,75s-33.645,75-75,75s-75-33.645-75-75
+S181.645,146.75,223,146.75z" />
+                        <path id="XMLID_461_" d="M115,1.25c-34.602,0-62.751,28.15-62.751,62.751S80.398,126.75,115,126.75
+c34.601,0,62.75-28.148,62.75-62.749S149.601,1.25,115,1.25z" />
+                        <path id="XMLID_462_" d="M193,236.75h15v15c0,8.284,6.716,15,15,15s15-6.716,15-15v-15h15c8.284,0,15-6.716,15-15s-6.716-15-15-15
+h-15v-15c0-8.284-6.716-15-15-15s-15,6.716-15,15v15h-15c-8.284,0-15,6.716-15,15S184.716,236.75,193,236.75z" />
+                    </svg>
+
+                </a>
+
+            
+        </div>
+                
+            </div>
+            <div class="field">
+                <label for="desc">Description *</label>
+                <input id="desc" type="text" name="description" required>
+            </div>
+            <div class="fieldrow">
+                <div class="field">
+                    <label for="dur">Duration *(mins.)</label>
+                    <input id="dur" type="number" min="0" name="duration" required>
+                </div>
+                <div class="field">
+                    <label for="dat">Date </label>
+                    <input id="dat" type="date" name="date">
+                </div>
+            </div>
+            <button type="submit">Save</button>
+            <div class="field">
+                <h2>Successfully created a new user 'test', User ID = 'a7fd89e'</h2>
+                <h2>Successfully added a new exercise on '09-27-2018' for User ID 'a7fd89e'
+                    (user 'test'), description is 'my exercise description', duration set to '10' mins. </h2>
+
+            </div>
+        </form>
+
+    </div>
+    <div class="content" id="contentThree">
+
+        <h1>Activity log</h1>
+        <form action="/api/exercise/log" method="get" id="usrfrm3">
+            <div class="field">
+                <label for="selectUser2">Show log for *
+                    <select id="selectUser2">
+                        <option>User</option>
+                        <option>User</option>
+                        <option>User</option>
+                    </select>
+                </label>
+            </div>
+            <div class="fieldrow    ">
+                <div class="field">
+                    <label for="from">From (Date)</label>
+                    <input id="from" type="date" name="from">
+                </div>
+                <div class="field">
+                    <label for="to">To (Date)</label>
+                    <input id="to" min="" onfocus="document.getElementById('to').min = document.getElementById('from').value "
+                        type="date" name="to">
+                </div>
+                <div class="field">
+                    <label for="limit">Limit Count </label>
+                    <input id="limit" type="number" min="1" name="limit">
+                </div>
+            </div>
+            <button type="submit">Search</button>
+            <h2>Successfully searched for exercises for User ID 'a7fd89e' (user 'test') from
+                '08-11-2017' to '09-27-2018':</h2>
+            <div id="result3">
+
+                <h3>View as List Grid</h3>
+                <div class="log">
+                    <div class="exercise">
+                        <div class="date"> 01-06-2018</div>
+                        <div class="description"> useful description</div>
+                        <div class="duration"> 2 mins</div>
+                    </div>
+                    <div class="exercise">
+                        <div class="date"> 02-07-2018</div>
+                        <div class="description"> useful description</div>
+                        <div class="duration"> 20 mins</div>
+                    </div>
+                    <div class="exercise">
+                        <div class="date"> 03-06-2018</div>
+                        <div class="description"> useful description</div>
+                        <div class="duration"> 2 mins</div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <div class="content" id="contentFour">
+        <h1>API Documentation</h1>
+        <b>{ } = required, [ ] = optional</b>
+        <p></p>
+        <b>New User </b>
+        <span>POST /api/exercise/new-user</span>
+        <span>{username}</span>
+        <button class="plus" style="width:50%;border-radius:20px;">Get Sample JSON Data</button>
+        <p></p>
+        <b>All Users </b>
+        <span>GET /api/exercise/users</span>
+        <button>Get Sample JSON Data</button>
+        <p></p>
+        <b>Add exercise</b>
+        <span>POST /api/exercise/add</span>
+        <span> {userId} {description} {duration} [date]</span>
+        <button>Get Sample JSON Data</button>
+        <p></p>
+        <b>Exercise log</b>
+        <span>GET /api/exercise/log?{userId}[&from][&to][&limit]</span>
+        <span>from, to = dates (yyyy-mm-dd); limit = number</span>
+        <button>Get Sample JSON Data</button>
+    </div>
+
+</div>
+</div>
+
+
+    <script>
+        const main = document.querySelector("main");
+
+        main.addEventListener("click", () => {
+            console.log(main);
+            document.getElementById("navToggle").checked ?
+                document.getElementById("navToggle").checked = false :
+                null;
+        })
+
+
+
+
+
+ 
+ 
+
+ const request = async (url, post) => {
+     let method;
+     post ?
+         method = {
+             method: "POST"
+         } :
+         method = {
+             method: "GET"
+         }
+
+     const response = await fetch(url, method);
+     const json = await response.json();
+     return json;
+ }
+
+ const buildUserList = async () => {
+     //build select form
+     const dataList = document.querySelector("#selectUser");
+     const userList = await request("/api/exercise/users", false);
+     const select = document.createElement("select");
+     select.setAttribute("size",8)
+     userList.map((item, index) => {
+         const option = document.createElement("option");
+         option.setAttribute("data-value",item._id)
+         option.text = item.username;
+         select.appendChild( option );    
+     })
+     dataList.appendChild( select );    
+ }
+
+ buildUserList();
+</script>
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>

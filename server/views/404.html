@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>404 - Fitness Tracker</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimal-ui">
+  <meta name="description" content="404 page not found - Fitness Tracker">
+  <meta property="og:title" content="&#128205; 404 - Fitness Tracker" />
+  <meta property="og:description" content="404 page not found - Fitness Tracker" />
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #000;
+      overflow: hidden;
+    }
+
+    svg {
+      height: 100vh;
+      width: 100%;
+    }
+
+    text {
+      text-anchor: middle;
+      fill: black;
+      opacity: 0;
+      transform-origin: 50% 50%;
+      font-size: 8vmin;
+      font-weight: bold;
+      font-family: sans;
+      animation: wobble 12s cubic-bezier(0.455, 0.030, 0.1, 1.05) infinite;
+      filter: drop-shadow(1px 1px 0px black);
+    }
+
+    text:nth-child(1) {
+      animation-delay: 0s;
+    }
+
+    text:nth-child(2) {
+      animation-delay: 6s;
+    }
+
+    @keyframes wobble {
+      0% {
+        transform: scale(0);
+      }
+
+      30% {
+        opacity: 1;
+        transform: scale(1);
+        fill: white;
+      }
+
+      60% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      100% {
+        transform: scale(0);
+      }
+    }
+
+    button {
+      position: absolute;
+      top: 80%;
+      left: 50%;
+      transform:translate(-50%,-50%);
+      font-size: 5vmin;
+      border-radius: 5%;
+      z-index: 1;
+      background: black;
+      color: white;
+      border: none;
+      cursor:pointer;
+    }
+    button:hover:before {
+      left: -0.5em;
+      content:"\u20D4";
+      position: absolute;
+    }
+  </style>
+
+</head>
+
+<body>
+
+
+  <svg viewbox="0 0 200 300">
+    <defs>
+      <filter id="goo">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="1" result="blur" />
+        <feColorMatrix in="blur" mode="matrix" result="goo" values="1 0 0 0 1  
+                             0 1 0 0 1  
+                             0 0 1 0 1
+                             -6 0 -1 20 0" />
+        <feConvolveMatrix in="goo" result="outline" order="3" kernelMatrix="-1  -1  -1
+                                           -1   8  -1
+                                           -1  -1  -1" />
+        <feComposite in="SourceGraphic" in2="outline" operator="atop" />
+      </filter>
+    </defs>
+    <g filter="url(#goo)">
+      <text id="aa" x="50%" y="50%">404 error</text>
+      <text id="ab" x="50%" y="50%">not found</text>
+    </g>
+  </svg>
+  <button onclick="javascript:history.back();">back to previous page</button>
+
+</body>
+
+</html>
