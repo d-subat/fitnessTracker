@@ -7,12 +7,25 @@
 body{            
   background: linear-gradient(45deg, rgb(104, 172, 255) 0%, rgba(135, 92, 207, 1) 29%, rgba(188, 53, 169, 1) 65%, rgba(251, 8, 129, 1) 100%);
   background-image: radial-gradient( circle farthest-corner at 12.3% 19.3%,  rgba(85,88,218,1) 0%, rgba(95,209,249,1) 100.2% );
-  background-image: linear-gradient( -45deg,   #ffffff, #f2f9ff 91.1%  );
+  background: linear-gradient( to bottom,   #fff 80%, #eee    );
   
   min-height:100vh;    
   margin:0;
   color:black;
   font-family: "Exo 2";       
+}
+h1 {
+  font-Weight: 800;
+  letter-spacing: 1px;
+  margin-top:0em;
+  line-height: 1;
+}
+h4 {
+  margin-bottom:0em;
+  font-variant: small-caps;
+  letter-spacing: 2px;
+  color:grey;
+  font-size:1em;
 }
 header {
   display:flex;                
@@ -173,7 +186,7 @@ main section nav a:hover {
 
 main {
   margin-top:3.5em;
-  background:rgba(0,0,0,0.1);
+  background:rgba(60,60,60,0.1);
 
   padding:0 3vmin 3vmin 3vmin;
  flex:1;
@@ -188,6 +201,7 @@ main.active {
 .stats,.activity,.box {
   flex:1;
   margin:1em;
+  column-gap: 1em;
   min-height:5em;
   box-shadow: 0 2px 0 rgba(90,97,105,.21),0 4px 8px rgba(90,97,105,.22),0 10px 10px rgba(90,97,105,.16),0 7px 70px rgba(90,97,105,.2);
   background:white;
@@ -197,4 +211,9 @@ main.active {
   align-items: center;
   justify-content: center;
 }
- 
+
+.box {
+  flex-direction: column;
+  margin:1em 0 1em 0;
+  padding:1em;
+}

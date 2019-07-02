@@ -4,8 +4,11 @@ import FetchData from "./FetchData";
 const Activities = () => {
   const data = FetchData("http://localhost:4000/api/exercise/users");
   return (
+    <>
+    <h4>Overview</h4>
+    <h1>Select / Add Activity</h1>
   <section>
-     <h1>Add Activitys</h1>
+     
         <form action="/api/exercise/add" id="usrfrm2" method="post" class="box">
             <div className="fieldrow">
                 <div className="field">
@@ -27,6 +30,7 @@ const Activities = () => {
         ))}
 </div>
   </section>
+  </>
 )}
 
 export default Activities;

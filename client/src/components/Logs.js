@@ -2,7 +2,8 @@ import React from 'react';
 
 const Logs = () => (
   <>
-  <h1>Activity log</h1>
+  <h4>Overview</h4>
+  <h1>Recent Exercises</h1>
   <section>
   <form action="/api/exercise/log" method="get" id="usrfrm3" class="box">
       <div class="field">
@@ -30,6 +31,9 @@ const Logs = () => (
           </div>
       </div>
       <button type="submit">Search</button>
+      </form>
+            
+            <div class="box">
       <h2>Successfully searched for exercises for User ID 'a7fd89e' (user 'test') from
           '08-11-2017' to '09-27-2018':</h2>
       <div id="result3">
@@ -53,7 +57,7 @@ const Logs = () => (
               </div>
           </div>
       </div>
-  </form>
+      </div>
   </section>
 </>
 )

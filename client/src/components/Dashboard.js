@@ -1,25 +1,21 @@
-import React from 'react';
+import React from "react";
 import { NavLink } from "react-router-dom";
 import SvgIcon from "./SvgIcon";
 import Stats from "./Stats";
 
-const Dashboard = (props) => (
+const Dashboard = props => (
   <>
-  <h1 style={{fontWeight:800}}>Dashboard</h1>
-  <section>
-  
-<nav>
-  {props.routes.map(route => (
-    <NavLink activeClassName='active' key={route.name}   to={route.path}>
-      <SvgIcon name={route.name} />{route.name}
-    </NavLink>
-  ))}
-  </nav>
-  <div className="container">
-  <Stats sum="2390"/> <Stats sum="9"/> <Stats sum="162"/> <Stats sum="72"/>
-  </div>
-</section>
-</>
-)
+  <h4>Overview</h4>
+    <h1 >Statistics Panel</h1>
+    <section>
+      <div className="container">
+        <Stats sum="2390" name="Exercises"/> <Stats sum="9" name="Activities"/> <Stats sum="162" name="Days"/>{" "}
+        <Stats sum="72" name="Kalories"/>
+      </div>
+    </section>
+
+    
+  </>
+);
 
 export default Dashboard;

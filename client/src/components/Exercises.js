@@ -3,7 +3,8 @@ import SvgIcon from "./SvgIcon";
 
 const Exercises = () => (
   <>
-        <h1>Add Activity</h1>
+        <h4>Exercises</h4>
+        <h1>Add new exercise</h1>
         <section>
         <form action="/api/exercise/add" id="usrfrm2" class="box" method="post">
             <div class="fieldrow">
@@ -26,6 +27,7 @@ const Exercises = () => (
         </div>
                 
             </div>
+        
             <div class="field">
                 <label for="desc">Description *</label>
                 <input id="desc" type="text" name="description" required/>
@@ -41,13 +43,16 @@ const Exercises = () => (
                 </div>
             </div>
             <button type="submit">Save</button>
+            </form>
+            
+            <div class="box">
             <div class="field">
                 <h2>Successfully created a new user 'test', User ID = 'a7fd89e'</h2>
                 <h2>Successfully added a new exercise on '09-27-2018' for User ID 'a7fd89e'
                     (user 'test'), description is 'my exercise description', duration set to '10' mins. </h2>
 
             </div>
-        </form>
+            </div>
         </section>
     </>
 )
