@@ -5,23 +5,30 @@
   font-weight:300;
 }
 body{            
-  background: linear-gradient(45deg, rgba(97, 161, 239, 1) 0%, rgba(135, 92, 207, 1) 29%, rgba(188, 53, 169, 1) 65%, rgba(251, 8, 129, 1) 100%);
+  background: linear-gradient(45deg, rgb(104, 172, 255) 0%, rgba(135, 92, 207, 1) 29%, rgba(188, 53, 169, 1) 65%, rgba(251, 8, 129, 1) 100%);
+  background-image: radial-gradient( circle farthest-corner at 12.3% 19.3%,  rgba(85,88,218,1) 0%, rgba(95,209,249,1) 100.2% );
+  background-image: linear-gradient( -45deg,   #ffffff, #f2f9ff 91.1%  );
+  
   min-height:100vh;    
   margin:0;
-  color:white;
+  color:black;
   font-family: "Exo 2";       
 }
 header {
   display:flex;                
   width:100%;
-  height:2em;
+  height:3.5em;
   justify-content:space-between;
   align-items: center;
   position:fixed;     
   z-index:2;  
+  background:white;
+  border-bottom:1px solid rgba(0,0,0,0.15);
 }
 header label {
-  margin-left:0.5em;          
+  margin-left:0.5em;    
+  color:dodgerblue;
+  font-weight:800;      
 }
 
 .menuToggle {
@@ -55,7 +62,7 @@ header label {
 .menuToggle span:before {
   width: 100%;
   height: 5px;
-  background-color: #fff;
+  background-color: #000;
   transition: all 0.3s;
   backface-visibility: hidden;
   border-radius: 2px;
@@ -81,13 +88,14 @@ header label {
 }
 nav {
   display:flex;                      
-  height:calc(100% - 2em);
+  height:calc(100% - 3.5em);
   
-  padding-top:2em;
+  
+  margin-top:3.5em;
   width:15em;
   position:fixed;
   flex-direction: column;
-  justify-content: space-evenly;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.15);
   align-items: center;
   text-align:center;
   z-index:1;
@@ -102,15 +110,26 @@ nav a,section nav a {
   width:100%;
   display: flex;
   align-items: center;            
-  flex:1;
+  
   font-variant:small-caps;
   font-weight:700;         
   font-style: italic;
   letter-spacing: 1px;
-  background:rgba(0,0,0, 0.35);
+  
   position:relative;
   text-decoration: none;
-  color:rgb(204, 204, 204);
+  color:black;
+  padding: 0.75em 0  0.75em 0;
+  overflow: 8px;
+  outline: none;
+  background:white;
+  transition: all 0.35s ease-out ;
+}
+nav a:before,section nav a:before {
+  content:"";
+  position: absolute;
+  width:0;
+  transition: all 0.35s ease-out ;
 }
 
 main section nav{
@@ -123,24 +142,29 @@ main section nav{
   justify-content: space-around;
 }
 
-nav .icon-svg, section nav .icon-svg {
-  height:2em;
+nav .icon-svg, section nav .icon-svg,section svg {
+  height:1.5em;
   fill: rgb(204, 204, 204);
   margin: 0 0.75em 0 1.5em ;
+  transition: all 0.35s ease-out ;
 }
 
-nav a.active,nav a:hover,section nav a:hover {
-  color:white;
-  background:rgba(0,0,0,0.1);
+nav a.active:before,nav a:hover:before,section nav a:hover:before {
+  content:"";
+  position:absolute;
+  width:0.25em;
+  height:100%;
+  background: dodgerblue;
 }
-nav a.active .icon-svg, nav a:hover .icon-svg, section nava:hover .icon-svg{
-  fill:white; 
+nav a.active,nav a:hover,section nav a:hover,nav a.active .icon-svg, nav a:hover .icon-svg, section nav a:hover .icon-svg{
+  fill:dodgerblue; 
+  color:dodgerblue;
 }
 
 main section nav a {
   display:inline;
-
   background:none;
+  
 } 
 main section nav a:hover {
   color:white;
@@ -148,25 +172,29 @@ main section nav a:hover {
 }
 
 main {
-  margin-top:2em;
+  margin-top:3.5em;
   background:rgba(0,0,0,0.1);
+
   padding:0 3vmin 3vmin 3vmin;
  flex:1;
  margin-left: 0em;
  transition: all 0.35s ease-out ;
+ min-height:calc(100vh - 4em);
 }
 main.active {
   margin-left: 15em;                                  
 }
 
-.stats {
+.stats,.activity,.box {
   flex:1;
   margin:1em;
   min-height:5em;
   box-shadow: 0 2px 0 rgba(90,97,105,.21),0 4px 8px rgba(90,97,105,.22),0 10px 10px rgba(90,97,105,.16),0 7px 70px rgba(90,97,105,.2);
-  background:rgba(250,250,250,.5);
+  background:white;
+  border-radius: 0.5em;
   color:black;
   display:fleX;
   align-items: center;
   justify-content: center;
 }
+ 

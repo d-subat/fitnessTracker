@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import Profile from "./components/Profile";
+import Home from "./components/Home";
 import Dashboard from "./components/Dashboard";
 import Exercises from "./components/Exercises";
 import Activities from "./components/Activities";
@@ -26,11 +27,12 @@ function App() {
 
   return (
     <Router>
-      <Route path="/" exact={true} render={() => <div>Home</div>}/>
+      
       <Header sideBar={sideBar} toggleSideBar={toggleSideBar} />
       <div className="container">
         <Sidebar routes={routes} sideBar={sideBar} />
         <main className={sideBar && "active" }>
+        <Route path="/" exact={true} render={() => <Home />}/>
           <Route path="/dashboard" render={() => <Dashboard routes={routes} />}/>
           {routes.map(route => (
             <Route

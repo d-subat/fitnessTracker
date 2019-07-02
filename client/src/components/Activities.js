@@ -6,22 +6,26 @@ const Activities = () => {
   return (
   <section>
      <h1>Add Activitys</h1>
-        <form action="/api/exercise/add" id="usrfrm2" method="post">
+        <form action="/api/exercise/add" id="usrfrm2" method="post" class="box">
             <div className="fieldrow">
                 <div className="field">
-                <label htmlFor="selectUser">Create / Select Activity
+                <label htmlFor="selectUser">New Activity
                     <input list="selectUser" name="browser" />
-                    <datalist id="selectUser" name="selectUser">
+                    <button>Create</button>
                     
-        {data.map(el => (
-          <option key={el.id}>{el.username}</option>
-        ))}
-
-                    </datalist>
+                    
                 </label>
                 </div>
         </div>
        </form>
+       <div class="container">          
+        {data.map(el => (
+          <div class="activity">
+          <img src=""/>
+          {el.username}
+          </div>
+        ))}
+</div>
   </section>
 )}
 

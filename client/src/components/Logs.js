@@ -3,7 +3,8 @@ import React from 'react';
 const Logs = () => (
   <>
   <h1>Activity log</h1>
-  <form action="/api/exercise/log" method="get" id="usrfrm3">
+  <section>
+  <form action="/api/exercise/log" method="get" id="usrfrm3" class="box">
       <div class="field">
           <label for="selectUser2">Show log for *
               <select id="selectUser2">
@@ -53,7 +54,7 @@ const Logs = () => (
           </div>
       </div>
   </form>
-
+  </section>
 </>
 )
 
