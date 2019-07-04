@@ -39,7 +39,7 @@ header {
   border-bottom:1px solid rgba(0,0,0,0.15);
 }
 header label {
-  margin-left:0.5em;    
+  margin-left:1.5em;    
   color:dodgerblue;
   font-weight:800;      
 }
@@ -125,7 +125,7 @@ nav a,section nav a {
   align-items: center;            
   
   font-variant:small-caps;
-  font-weight:700;         
+  font-weight:600;         
   font-style: italic;
   letter-spacing: 1px;
   
@@ -167,11 +167,13 @@ nav a.active:before,nav a:hover:before,section nav a:hover:before {
   position:absolute;
   width:0.25em;
   height:100%;
+  
   background: dodgerblue;
 }
 nav a.active,nav a:hover,section nav a:hover,nav a.active .icon-svg, nav a:hover .icon-svg, section nav a:hover .icon-svg{
   fill:dodgerblue; 
   color:dodgerblue;
+  font-weight:800; 
 }
 
 main section nav a {
@@ -182,26 +184,89 @@ main section nav a {
 main section nav a:hover {
   color:white;
   background:none;
+  
 }
 
 main {
   margin-top:3.5em;
   background:rgba(60,60,60,0.1);
 
-  padding:0 3vmin 3vmin 3vmin;
+  
  flex:1;
  margin-left: 0em;
  transition: all 0.35s ease-out ;
  min-height:calc(100vh - 4em);
+ 
 }
 main.active {
   margin-left: 15em;                                  
 }
+section .container {
+  width: calc(100vw - 20em);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+main section .container {
+  width:100%;
+}
+section {
+  padding:0 3vmin 3vmin 3vmin;
+}
+.field {
+  width: 100%;
+  margin-top:1em;
+  position: relative;
+  
+}
 
-.stats,.activity,.box {
+.fieldrow {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width:100%;
+}
+
+.fieldrow .field {
+  flex:1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  margin-right: 1em;
+}
+
+.fieldrow .field:last-child {
+  margin: 0;
+}
+
+.field>input,.box>input {
+  width: 100%;
+  font-size: 1em;
+  display: inline-block;
+  margin: 0 0 0.5em 0;
+  line-height: 2em;
+  padding: 2px 2px;
+  border: none;
+  border-bottom: 1px solid black;
+  outline: none;
+  background: transparent;
+  color: black;
+  text-align: center;
+}
+
+.box button {
+  margin-top:1em;
+  background:dodgerblue;
+  color:white;
+  border:none;
+  border-radius:0.5em;
+  height:3em;
+  font-size:1em;
+}
+
+.stats,.activity,.box,.activities {
   flex:1;
   margin:1em;
-  column-gap: 1em;
+  
   min-height:5em;
   box-shadow: 0 2px 0 rgba(90,97,105,.21),0 4px 8px rgba(90,97,105,.22),0 10px 10px rgba(90,97,105,.16),0 7px 70px rgba(90,97,105,.2);
   background:white;
@@ -210,10 +275,70 @@ main.active {
   display:fleX;
   align-items: center;
   justify-content: center;
+  transition: all 0.25s ease-out ;
 }
-
+.box .container {
+ flex-direction: row;
+ 
+}
+ .activities:hover {
+  background:dodgerblue;
+  color:white;
+}
+.statusMessage {
+  padding: 0 0 0 2em  ; 
+  margin-left:-3vmin;
+  color:white;
+  line-height:0;
+  
+  background:orange;
+  animation: slideIn 1s ease-in-out forwards;
+}
+@keyframes slideIn {
+  to {
+    padding: 1em 0 1em 2em  ; 
+    line-height:1;
+    opacity:1;
+  }
+}
+.stats,.activities {
+  padding:1em;
+}
+.stats,canvas,.activities {
+  min-width:17em;
+  max-width:10em;
+  flex-direction: column;
+  position: relative;
+}
+canvas {}
 .box {
   flex-direction: column;
-  margin:1em 0 1em 0;
+  margin:2em 0 1em 0;
   padding:1em;
+}
+.activities.select {
+  display:inline-block;
+  box-shadow: 0 0 6px  rgba(90,97,105,.41);
+  text-align: center;
+  width:120px;
+  margin:0.5em;
+  white-space: nowrap; 
+  min-height:25px;
+  max-height:25px;
+  min-width:100px;
+  max-width:100px;
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  border: 1px solid #000000;
+    text-overflow: clip ellipsis;
+  
+}
+
+.activities .delete {
+  
+  position:absolute;
+  right: 1em;
+  top: 0.5em;
+  font-weight:800;
+  cursor: pointer;
 }

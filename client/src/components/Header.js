@@ -4,6 +4,7 @@ const Header = (props) =>
 (
     <header>
     <label>
+	<div style={{display:'flex',alignItems:'center'}}>
         <div style={{width:"2em"}}>
         <svg version="1.1" id="Capa_1" style={{fill:"dodgerblue"}} xmlns="http://www.w3.org/2000/svg"  x="0px" y="0px"
 	  viewBox="0 0 433.5 433.501" >
@@ -70,7 +71,8 @@ const Header = (props) =>
 			c-2.968,0-5.375,2.397-5.375,5.374C174.954,431.099,177.356,433.501,180.33,433.501z"/>
 </svg>
 </div>
- FitnessTracker v1.0
+FitnessTracker v1.0
+</div>
     </label>
     <button className={props.sideBar? "menuToggle active" : "menuToggle" } onClick={() => props.toggleSideBar (!props.sideBar)}>
         <span></span>

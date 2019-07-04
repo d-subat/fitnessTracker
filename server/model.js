@@ -31,10 +31,10 @@ module.exports = {
 
                         res.send(`created User: ${JSON.stringify(response)}`);
                     })
-                    .catch(err => this._errorHandler(err));
+                    .catch(err => console.log(err));
                 }
             })
-            .catch(err => this._errorHandler(err));
+            .catch(err => console.log(err));
 
     },
 
