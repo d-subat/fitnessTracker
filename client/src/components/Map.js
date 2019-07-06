@@ -142,7 +142,9 @@ const WaitForMap = ({ googleMap, map, children }) => {
 
 
 export const Map = () => {
-  const API_KEY = "";
+  
+  const API_KEY = process.env.REACT_APP_MAP_API_KEY;
+  console.log(API_KEY);
   const googleMap = useGoogleMap(API_KEY);
   const mapContainerRef = useRef(null);
   const map = useMap({
