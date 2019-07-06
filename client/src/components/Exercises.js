@@ -1,16 +1,19 @@
 import React, { Component } from "react";
 import axios from "axios";
+import StopWatch from "./StopWatch";
+
 
 const HOST = "http://localhost:4000";
 const acticityGetUrl = "/api/exercise/users";
-const acticityPostUrl = "/api/exercise/new-user";
+//const acticityPostUrl = "/api/exercise/new-user";
 const myUrl = HOST + acticityGetUrl;
 
 class Exercises extends Component {
   state = {
     users: [],
     newuser: "",
-    status: ""
+    status: "",
+    time: ""
   };
   async componentDidMount() {
     this.getUsers();
@@ -24,8 +27,13 @@ class Exercises extends Component {
         return null;
       });
   };
-  selectActivity = (e) => {
-    this.setState({ newuser: e.target.value ,status: ""});   
+  selectActivity = (id) => {
+      
+    this.setState({ newuser: id});   
+    console.log(this.state.newuser);
+  }
+  saveTimer = (time) => {
+    this.setState({ time: time});  
   }
   render() {
     return (
@@ -37,17 +45,17 @@ class Exercises extends Component {
           <div
             action="/api/exercise/add"
             id="usrfrm2"
-            class="box"
+            className="box"
             method="post"
           >
             <label for="selectUser">Select Activity </label>
-            <div className="container">
+            <div className="container grid">
               {this.state.users.length === 0 ? (
                 <div>Loading...</div>
               ) : (
                 this.state.users.map((e, i) => {
                   return (
-                    <div key={i} onClick={this.selectActivity} className={this.state.newuser? "activities select" :"activities select"}>
+                    <div key={i} onClick={() => this.selectActivity(e.username)} className={this.state.newuser===e.username? "activities select active" :"activities select"}>
                       {e.username}
                     </div>
                   );
@@ -55,22 +63,18 @@ class Exercises extends Component {
               )}
             </div>
 
-            <div class="field">
+            <div className="field">
               <label for="desc">Description *</label>
               <input id="desc" type="text" name="description" required />
             </div>
-            <div class="fieldrow">
-              <div class="field">
-                <label for="dur">Duration *(mins.)</label>
-                <input
-                  id="dur"
-                  type="number"
-                  min="0"
-                  name="duration"
-                  required
-                />
-              </div>
-              <div class="field">
+            <div className="fieldrow">
+            
+              <StopWatch saveTimer={this.saveTimer} time={this.state.time}/>           
+            
+              
+              
+              
+              <div className="field">
                 <label for="dat">Date </label>
                 <input
                   id="dat"
@@ -79,12 +83,18 @@ class Exercises extends Component {
                   value={new Date().toISOString().substring(0, 10)}
                 />
               </div>
+            
             </div>
-            <button type="submit">Save Exercise</button>
+             <button className="btn" type="submit">Save Exercise</button>
+             or
+             <div className="field"></div>
+            <div className="container">                   
+                <button className="activities select" style={{maxHeight:"auto"}}>Track on Map</button>
+              </div>
           </div>
 
-          <div class="box">
-            <div class="field">
+          <div className="box">
+            <div className="field">
               <h2>
                 Successfully created a new user 'test', User ID = 'a7fd89e'
               </h2>

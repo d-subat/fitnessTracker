@@ -5,7 +5,7 @@ const Stats = (props) => (
 <div className="stats">
     <h2>{props.name}</h2>
     <h2>{props.sum}</h2>
-    <CanvasStats data={""} chart={"PIE"}  />
+    <CanvasStats data={props.data} chart={props.type}  />
 </div>
 )
 

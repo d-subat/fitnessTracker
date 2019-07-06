@@ -6,9 +6,9 @@ const Profile = () => (
   <h4>Overview</h4>
   <h1>Personal Information</h1>
   
-  <div action="/api/exercise/log" method="get" id="usrfrm3" class="box">
+  <div action="/api/exercise/log" method="get" id="usrfrm3" className="box">
           
-          <div class="field">
+          <div className="field">
                     <label for="feFirstName">First Name</label>
                     <input
                       id="feFirstName"
@@ -17,7 +17,7 @@ const Profile = () => (
                       value="Sierra"
                     />
                   </div>
-                  <div class="field">
+                  <div className="field">
                     <label for="feLastName">Last Name</label>
                     <input
                       id="feLastName"
@@ -28,7 +28,7 @@ const Profile = () => (
                   </div>
 
 
-                  <div class="field">
+                  <div className="field">
                     <label for="feEmail">Email</label>
                     <input
                       type="email"
@@ -39,7 +39,7 @@ const Profile = () => (
                       value="sierra@example.com"
                     />
                   </div>
-                  <div class="field">
+                  <div className="field">
                     <label for="fePassword">Password</label>
                     <input
                       type="password"
@@ -51,7 +51,7 @@ const Profile = () => (
                     />
                   </div>
                 
-                <div class="field">
+                <div className="field">
                   <label for="feAddress">Address</label>
                   <input
                     id="feAddress"
@@ -60,8 +60,8 @@ const Profile = () => (
                     value="1234 Main St."
                   />
                 </div>
-                <div class="fieldrow">
-                  <div class="field">
+                <div className="fieldrow">
+                  <div className="field">
                     <label for="feCity">City</label>
                     <input
                       id="feCity"
@@ -69,7 +69,7 @@ const Profile = () => (
                       
                     />
                   </div>
-                  <div class="field">
+                  <div className="field">
                     <label for="feZipCode">Zip</label>
                     <input
                       id="feZipCode"
@@ -81,7 +81,7 @@ const Profile = () => (
                 
  
                 
-                <button class="btn btn-accent">Update Account</button>
+                <button className="btn btn-accent">Update Account</button>
                 
     </div>
   </section>

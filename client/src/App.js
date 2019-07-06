@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route,Switch } from "react-router-dom";
 
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
@@ -10,16 +10,22 @@ import Dashboard from "./components/Dashboard";
 import Exercises from "./components/Exercises";
 import Activities from "./components/Activities";
 import Logs from "./components/Logs";
+import Map from "./components/Map";
+import NotFound from "./components/NotFound";
 
 
 import "./App.css";
 
+
+
 const routes = [  
-  
+  { path: "/profile", name: "Profile", component: Profile },
+  { path: "/dashboard", name: "Stats Panel", component: Dashboard },
   { path: "/exercises", name: "Exercises", component: Exercises },
   { path: "/activities", name: "Activities", component: Activities },
+  { path: "/map", name: "Map", component: Map },
   { path: "/logs", name: "Exercise Logs", component: Logs },
-  { path: "/profile", name: "Profile", component: Profile },
+  
 ];
 
 function App() {
@@ -32,6 +38,7 @@ function App() {
       <div className="container">
         <Sidebar routes={routes} sideBar={sideBar} />
         <main className={sideBar && "active" }>
+          <Switch>
         <Route path="/" exact={true} render={() => <Home />}/>
           <Route path="/dashboard" render={() => <Dashboard routes={routes} />}/>
           {routes.map(route => (
@@ -42,8 +49,11 @@ function App() {
               component={route.component}             
             />
           ))}
+           <Route component={NotFound} />
+          </Switch>
         </main>
       </div>
+      
     </Router>
   );
 }

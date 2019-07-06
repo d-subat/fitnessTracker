@@ -1,11 +1,13 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import SvgIcon from "./SvgIcon";
 
 const Header = (props) => 
 (
     <header>
     <label>
-	<div style={{display:'flex',alignItems:'center'}}>
-        <div style={{width:"2em"}}>
+	<div >
+	<Link to="/"><div style={{width:"2em"}}>
         <svg version="1.1" id="Capa_1" style={{fill:"dodgerblue"}} xmlns="http://www.w3.org/2000/svg"  x="0px" y="0px"
 	  viewBox="0 0 433.5 433.501" >
 		<path d="M105.998,409.968c-21.809-0.072-43.384-3.358-64.208-9.788c3.422-58.116,26.764-111.351,64.729-147.982
@@ -71,9 +73,18 @@ const Header = (props) =>
 			c-2.968,0-5.375,2.397-5.375,5.374C174.954,431.099,177.356,433.501,180.33,433.501z"/>
 </svg>
 </div>
-FitnessTracker v1.0
+FitnessTracker v1.0</Link>
 </div>
     </label>
+	
+	<div className="wrapper">
+  <label><SvgIcon name="Settings" /></label>
+  <ul>
+    <li>Help</li>
+    <li>Profile</li>
+    <li>Logout</li>
+  </ul>
+</div>
     <button className={props.sideBar? "menuToggle active" : "menuToggle" } onClick={() => props.toggleSideBar (!props.sideBar)}>
         <span></span>
     </button>

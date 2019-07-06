@@ -1,5 +1,6 @@
 import  React ,{Component,useState,useEffect} from 'react';
 import axios from 'axios';
+import SvgIcon from "./SvgIcon";
 
 
 const HOST = "http://localhost:4000";  
@@ -74,35 +75,36 @@ handleMessageInput = (e) => {
 
   return (
     <>
-   {this.state.status && <div class="statusMessage"> {this.state.status}</div>}
+   {this.state.status && <div className="statusMessage"> {this.state.status}</div>}
    <section>  
      <h4>Overview</h4>
 
     <h1>Edit Activities</h1>
   
      
-        <div class="box">
+        <div className="box">
              
-                <label htmlFor="selectUser">Name</label>
+                <label htmlFor="selectUser">Activity Name</label>
                 <input onChange={this.handleMessageInput}  name="username"   />
-                    <button  onClick={() => this.newUser()}>Create Activity</button>
+                    <button  className="btn" onClick={() => this.newUser()}>Create New Activity</button>
                 
-                </div>
        
-       <div class="container">          
-        
+
+                    <label for="selectUser">Activity List</label>
+       <div className="container grid">          
+       
        {this.state.users.length === 0 ? (
                    <div>Loading...</div>
                ) : (
                    this.state.users.map((e, i) => {
-                       return <div key={i} className="activities">
-                       <div className="delete" onClick={() => this.deleteUser(e._id)}>x</div>
+                       return <div key={i} className="activities select">
+                       <div className="delete" onClick={() => this.deleteUser(e._id)}><SvgIcon name="Reset" /></div>
                        {e.username}
                        
                        </div>;
                     })
 )}  
-        
+           </div>      
 </div>
   </section>
   </>
