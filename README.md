@@ -1,5 +1,5 @@
 
-#FitnessTracker
+# FitnessTracker
 
 NOTE: Early alpha version!
 
