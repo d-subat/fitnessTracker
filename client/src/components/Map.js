@@ -142,7 +142,7 @@ const WaitForMap = ({ googleMap, map, children }) => {
 
 
 export const Map = () => {
-  const API_KEY = "AIzaSyDC0vwAUFfHDFj-mGY3xMdOsyQdz3yMW3I";
+  const API_KEY = "";
   const googleMap = useGoogleMap(API_KEY);
   const mapContainerRef = useRef(null);
   const map = useMap({
