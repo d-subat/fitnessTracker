@@ -1,7 +1,9 @@
 import React, { Component,useState,useEffect,useRef } from 'react';
-import GoogleMapsApiLoader from "google-maps-api-loader";
+//import GoogleMapsApiLoader from "google-maps-api-loader";
+import {Map as GMap, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 
 
+/*
 // Google Mapのオブジェクトを呼び出すだけのhooks
 export const useGoogleMap = apiKey => {
   
@@ -140,19 +142,18 @@ const WaitForMap = ({ googleMap, map, children }) => {
   return children;
 };
 
+*/
+
+
+export default GoogleApiWrapper({
+  apiKey: (process.env.REACT_APP_MAP_API_KEY)
+})(MapContainer)
 
 export const Map = () => {
   
-  const API_KEY = process.env.REACT_APP_MAP_API_KEY;
-  console.log(API_KEY);
-  const googleMap = useGoogleMap(API_KEY);
-  const mapContainerRef = useRef(null);
-  const map = useMap({
-    googleMap,
-    mapContainerRef,
-    initialConfig
-  });
+
   const [currentGeo, setCurrentGeo] = useState({});
+
   useEffect(() => {
     if (navigator && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((pos) => {
@@ -171,13 +172,18 @@ export const Map = () => {
   )
  
   return (
-    <>
-      <div className="gmap" ref={mapContainerRef} ></div>
-      <WaitForMap googleMap={googleMap} map={map}>
-        <MapMarkers googleMap={googleMap} map={map} />
-      </WaitForMap>
-    </>
+    <GMap google={this.props.google} zoom={14}>
+
+      <Marker onClick={this.onMarkerClick}
+              name={'Current location'} />
+
+      <InfoWindow onClose={this.onInfoWindowClose}>
+          <div>
+            <h1>{this.state.selectedPlace.name}</h1>
+          </div>
+      </InfoWindow>
+    </GMap>
   );
 };
 
-export default Map
+ 

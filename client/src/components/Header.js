@@ -4,6 +4,7 @@ import SvgIcon from "./SvgIcon";
 
 const Header = (props) => 
 (
+	<>
     <header>
     <label>
 	<div >
@@ -77,18 +78,20 @@ FitnessTracker v1.0</Link>
 </div>
     </label>
 	
-	<div className="wrapper">
-  <label><SvgIcon name="Settings" /></label>
-  <ul>
-    <li>Help</li>
-    <li>Profile</li>
-    <li>Logout</li>
-  </ul>
-</div>
+
     <button className={props.sideBar? "menuToggle active" : "menuToggle" } onClick={() => props.toggleSideBar (!props.sideBar)}>
         <span></span>
     </button>
 </header>
+	<div className="wrapper">
+	<label><SvgIcon name="Settings" /></label>
+	<ul>
+	  <li>Help</li>
+	  <li>Profile</li>
+	  <li>Logout</li>
+	</ul>
+  </div>
+  </>
 )
 
 

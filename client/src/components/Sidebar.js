@@ -15,7 +15,7 @@ const Sidebar = props => (
           alt="User-Profile"
         />
       </div>
-      <h4>Alessa Robert</h4>
+      <h4>Arthur Dent</h4>
       
       <h5>Activity Level: 87%</h5>
       <ul className="activity-lvl">

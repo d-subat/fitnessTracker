@@ -11,6 +11,7 @@ import Exercises from "./components/Exercises";
 import Activities from "./components/Activities";
 import Logs from "./components/Logs";
 import Map from "./components/Map";
+import Login from "./components/Login";
 import NotFound from "./components/NotFound";
 
 
@@ -33,13 +34,12 @@ function App() {
 
   return (
     <Router>
-      
       <Header sideBar={sideBar} toggleSideBar={toggleSideBar} />
       <div className="container">
         <Sidebar routes={routes} sideBar={sideBar} />
         <main className={sideBar && "active" }>
           <Switch>
-        <Route path="/" exact={true} render={() => <Home />}/>
+        <Route path="/" exact={true} render={() => <Login />}/>
           <Route path="/dashboard" render={() => <Dashboard routes={routes} />}/>
           {routes.map(route => (
             <Route
@@ -49,6 +49,7 @@ function App() {
               component={route.component}             
             />
           ))}
+           <Route path="/home" exact={true} render={() => <Home />}/>
            <Route component={NotFound} />
           </Switch>
         </main>

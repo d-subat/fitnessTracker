@@ -451,7 +451,7 @@ li.active {
   display: block;
 }
 
-.profile a.active::before {
+.profile a:hover::before, .profile a.active::before {
   background: none;
 }
 
@@ -659,10 +659,8 @@ main .gmap {
   flex: 1;
   display: flex;
   align-items: flex-end;
-  -webkit-transform-origin: 0 100%;
   transform-origin: 0 100%;
-  -webkit-animation: slideUp 0.6s;
-  animation: slideUp 0.6s;
+  animation: slideUp 0.6s ease-in-out 1;
   position: relative;
   border-bottom: 1px solid #c2c2c2;
 }
@@ -749,26 +747,11 @@ main .gmap {
   margin: 0 0 0 5px;
 }
 
-@-webkit-keyframes slideUp {
-  from {
-    -webkit-transform: scaleY(0);
-    transform: scaleY(0);
-  }
-
-  to {
-    -webkit-transform: scaleY(1);
-    transform: scaleY(1);
-  }
-}
-
 @keyframes slideUp {
   from {
-    -webkit-transform: scaleY(0);
     transform: scaleY(0);
   }
-
   to {
-    -webkit-transform: scaleY(1);
     transform: scaleY(1);
   }
 }
@@ -777,14 +760,22 @@ main .gmap {
 /* DROPDOWN*/
 
 .wrapper {
-  position: relative;
+  display: flex;
+  justify-content: center;
+align-items: center;
+height:4em;
 }
 
 .wrapper ul {
-  opacity: 0;
-  height: 0;
+  opacity: 1;
+  ;
+  position: absolute;
+  
   width: auto;
-  visibility: hidden;
+  top: -90px;
+  left: 50%;
+   transform: translate(-50%,-50%);
+   z-index:1;
   text-align: left;
   transition: all 900ms;
 }
@@ -792,20 +783,27 @@ main .gmap {
 .wrapper:hover ul {
   opacity: 1;
   padding: 4px 0;
-  height: 90px;
+  
+  top: 90px;
   visibility: visible;
 }
 
 .wrapper label {
+  border-bottom: 1px dotted #cccccc;
+  z-index:2;
+  
+}
+.wrapper label .icon-svg{
+  width:2em;
   border-bottom: 1px dotted #cccccc;
 }
 
 .wrapper ul {
   position: absolute;
 
-  top: 28px;
-  right: 0;
 
+  right: 0;
+  width: 90px;
   background-color: white;
   border: 1px solid #cccccc;
   border-radius: 4px;
