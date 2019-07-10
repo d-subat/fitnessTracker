@@ -1,4 +1,4 @@
-import  React ,{Component,useState,useEffect} from 'react';
+import  React ,{Component} from 'react';
 import axios from 'axios';
 import SvgIcon from "./SvgIcon";
 
@@ -84,13 +84,13 @@ handleMessageInput = (e) => {
      
         <div className="box">
              
-                <label htmlFor="selectUser">Activity Name</label>
+                <legend htmlFor="selectUser">Activity Name</legend>
                 <input onChange={this.handleMessageInput}  name="username"   />
                     <button  className="btn" onClick={() => this.newUser()}>Create New Activity</button>
                 
        
 
-                    <label for="selectUser">Activity List</label>
+                    <legend for="selectUser">Activity List</legend>
        <div className="container grid">          
        
        {this.state.users.length === 0 ? (

@@ -9,7 +9,6 @@ body {
   background: linear-gradient(45deg, rgb(104, 172, 255) 0%, rgba(135, 92, 207, 1) 29%, rgba(188, 53, 169, 1) 65%, rgba(251, 8, 129, 1) 100%);
   background-image: radial-gradient(circle farthest-corner at 12.3% 19.3%, rgba(85, 88, 218, 1) 0%, rgba(95, 209, 249, 1) 100.2%);
   background: linear-gradient(to bottom, #fff 80%, #eee);
-
   min-height: 100vh;
   margin: 0;
   color: black;
@@ -37,29 +36,73 @@ header {
   height: 3.5em;
   justify-content: space-between;
   align-items: center;
-  position: fixed;
-  z-index: 2;
+  position: sticky;
+  z-index: 9999;
+  top:0;
   background: white;
   border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 }
 
-header label {
-  margin-left: 1.5em;
-  color: dodgerblue;
-  font-weight: 800;
-}
-
-header label div a {
+header a,header div {
+  margin-left: 1em;
+  height:100%;
   display: flex;
   align-Items: center;
   text-decoration: none;
-  color: dodgerblue;
+  font-weight: 800;
+  color: dodgerblue;  
 }
 
-header .icon-svg {
+header .settings  {
+  height:100%;
+  width:4.5em;
+  display: grid;
+  place-content: center;
+  justify-content: center;
+  border:none;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  background:none;
+  
+}
+
+header .settings .icon-svg {
   margin: 0;
-  height: 2em;
-  fill: black;
+  height: 1.5em;  
+}
+
+.dropdownwrap {
+  overflow:hidden
+}
+.dropdown {
+  z-index:1;
+  display:flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding:0.55em;
+  min-width:6.5em;
+  right: 3em;
+  top:3.5em;
+  position:absolute;
+  margin-top:-25%;
+  background:white;
+  border:1px solid #ccc;
+  box-shadow: 0 .5rem 2rem rgba(0,0,0,.11),0 3px 10px rgba(0,0,0,.05),0 2px 3px rgba(0,0,0,.06);
+  transition:margin-top 250ms ease-in-out;
+}
+.dropdown.active {
+  margin-top:0px;
+}
+.dropdownmenu {
+  color:black;
+  font-size:0.75em;
+  line-height: 1.75;
+  font-weight:normal;
+  text-decoration: none;
+ cursor: pointer;
+}
+.dropdownmenu:hover{
+  color:dodgerblue;
 }
 
 .menuToggle {
@@ -69,7 +112,7 @@ header .icon-svg {
   margin: 30px auto 10px;
   border: none;
   background: none;
-  margin: 0 0.5em 0 0;
+  margin: 0 0.5em 0 0.5em;
   cursor: pointer;
 }
 
@@ -113,8 +156,6 @@ header .icon-svg {
   transform: rotate(-45deg) translate(7px, -8px);
 }
 
-
-
 .container {
   display: flex;
   flex: 1;
@@ -124,15 +165,12 @@ header .icon-svg {
 
 nav {
   display: flex;
-  height: calc(100% - 3.5em);
-
-
-  margin-top: 3.5em;
+  min-height: calc(100% - 3.5em);
   width: 15em;
   position: fixed;
   flex-direction: column;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.15);
-  align-items: center;
+  align-items: stretch;
   text-align: center;
   z-index: 1;
   margin-left: -15em;
@@ -143,12 +181,10 @@ nav.active {
   margin-left: 0em;
 }
 
-nav a,
-section nav a {
+nav a {
   width: 100%;
   display: flex;
   align-items: center;
-
   font-variant: small-caps;
   font-weight: 600;
   font-style: italic;
@@ -164,8 +200,7 @@ section nav a {
   transition: all 0.35s ease-out;
 }
 
-nav a:before,
-section nav a:before {
+nav a:before{
   content: "";
   position: absolute;
   width: 0;
@@ -183,7 +218,6 @@ main section nav {
 }
 
 nav .icon-svg,
-section nav .icon-svg,
 section svg {
   height: 1.5em;
   fill: rgb(204, 204, 204);
@@ -192,44 +226,26 @@ section svg {
 }
 
 nav a.active:before,
-nav a:hover:before,
-section nav a:hover:before {
+nav a:hover:before {
   content: "";
   position: absolute;
   width: 0.25em;
   height: 100%;
-
   background: dodgerblue;
 }
 
 nav a.active,
 nav a:hover,
-section nav a:hover,
+
 nav a.active .icon-svg,
-nav a:hover .icon-svg,
-section nav a:hover .icon-svg {
+nav a:hover .icon-svg {
   fill: dodgerblue;
   color: dodgerblue;
   font-weight: 800;
 }
 
-main section nav a {
-  display: inline;
-  background: none;
-
-}
-
-main section nav a:hover {
-  color: white;
-  background: none;
-
-}
-
 main {
-  margin-top: 3.5em;
   background: rgba(60, 60, 60, 0.1);
-
-
   flex: 1;
   margin-left: 0em;
   transition: all 0.35s ease-out;
@@ -256,19 +272,27 @@ section {
 }
 
 label {
-  font-weight: 800;
+  font-variant: small-caps;
+  font-size: 0.85em;
+  letter-spacing: 1px;
 }
 
+fieldset {
+  width:calc(100% - 2em);
+  margin-bottom:2em;
+}
+ legend{
+  font-weight:800;
+}
 .field {
-  width: 100%;
-  margin-top: 2em;
+  width: 100%;  
   position: relative;
 
 }
 
 .fieldrow {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   flex-wrap: wrap;
   width: 100%;
 }
@@ -278,33 +302,45 @@ label {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  margin-right: 1em;
+  margin: 0.5em;
 }
-
+/*
 .fieldrow .field:last-child {
   margin: 0;
 }
-
+*/
 .fieldrow a {
   flex: 1;
 }
 
 .field>input,
+.field>select,
 .box>input {
   width: 100%;
   font-size: 1em;
   display: inline-block;
   margin: 0 0 0.5em 0;
   line-height: 2em;
+  min-width:10em;
   padding: 2px 2px;
   border: none;
-  border-bottom: 1px solid black;
+  
+  
   outline: none;
-  background: transparent;
+  background: #ebebff;
   color: black;
   text-align: center;
 }
-
+.field>select {
+  min-height:2.2em;
+}
+.field>select:first-of-type {
+  color:grey;
+}
+input:focus {
+  background: none;
+  box-shadow: 0 2px  0  dodgerblue;
+}
 .btn {
   margin: 1em;
   max-height: max-content;
@@ -355,14 +391,19 @@ label {
   background: #293e69
 }
 
-.box button {
+.box button,.box a {
   margin-top: 1em;
   background: dodgerblue;
   color: white;
   border: none;
   border-radius: 0.5em;
   height: 3em;
+  min-width: max-content;
   font-size: 1em;
+  text-decoration:none;
+}
+.box a {
+  padding: 0 1em 0 1em ;
 }
 
 .stats,
@@ -401,7 +442,7 @@ label {
 
 .statusMessage {
   padding: 0 0 0 2em;
-  margin-left: -3vmin;
+  
   color: white;
   line-height: 0;
 
@@ -430,8 +471,6 @@ canvas,
   flex-direction: column;
   position: relative;
 }
-
-canvas {}
 
 .box {
   flex-direction: column;
@@ -520,7 +559,7 @@ li.active {
 .field.duration {
   display: flex;
   flex-direction: row;
-
+ margin:0 0 0.5em 0;
   align-items: flex-end;
 }
 
@@ -530,25 +569,33 @@ li.active {
 
 .field.duration button {
   background: none;
-
+  outline:0;
   cursor: pointer;
 }
+.field.duration button:focus,.field.duration button::-moz-focus-inner,.field.duration button::-moz-focus-outer {
+  border: 0;
+outline:none !important;
+  box-shadow: none;
+border:none;}
+
 
 .field.duration button .icon-svg {
   width: 2em;
   height: 2em;
   margin: 0;
   fill: dodgerblue;
+  
 }
 
 .field.duration .reset {
   position: absolute;
-  right: 1em;
+  right: 2em;
+  outline:0;
   background: white;
 }
 
 .field.time {
-  margin-right: 2em !important;
+  margin-right: 0em !important;
 }
 
 .activities .delete {
@@ -625,233 +672,42 @@ main .gmap {
 
 /* BARCHART */
 
-.Charts {
-  margin: 0 auto;
-  background-color: #f9f9f9;
+.chart{
   display: flex;
-  align-items: flex-end;
-  padding: 50px;
+  justify-content: space-evenly;
+  width: 100%;  
+  min-width: min-content;
+  height: 15em;
+  background: linear-gradient(to bottom, #efefef 0%, #efefef 24%,#666 1px,#efefef 25%, #efefef 49%,#666 1px,#efefef 50%,#efefef 74%,#666 1px,#efefef 75%);
 }
 
-.Charts.horizontal {
-  display: block;
-}
-
-.Charts.horizontal .Charts--serie {
-  display: block;
-  margin: 0 0 30px 0;
-  border: 0;
-}
-
-.Charts.horizontal .Charts--serie label {
-  position: relative;
-  top: auto;
-  right: auto;
-  left: 0;
-  bottom: auto;
-  padding: 0 0 10px 0;
-}
-
-.Charts--serie {
+.bar {
+  display: flex;
+  padding:0;
+  flex-direction: column;
+  justify-content: flex-end;
+  transform-origin: 0% 0%;
+  align-items: center;
   height: 100%;
-  margin: 0 30px 0 0;
-  display: inline-block;
-  flex: 1;
-  display: flex;
-  align-items: flex-end;
-  transform-origin: 0 100%;
-  animation: slideUp 0.6s ease-in-out 1;
-  position: relative;
-  border-bottom: 1px solid #c2c2c2;
+  width: 2em;
+  overflow:hidden;
+  animation: slideUp 1s 1;
+}
+.colorbox {
+  width:1em;
+  height:1em;
 }
 
-.Charts--serie.stacked {
-  display: block;
+.stats svg {
+height: 15em;
 }
-
-.Charts--serie label {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -20px;
-  font-family: Helvetica, sans-serif;
-  font-size: 10px;
-  text-align: center;
-  color: #808080;
-}
-
-.Charts.horizontal .Charts--item {
-  display: block;
-  border-radius: 0 2px 2px 0;
-  margin: 0 0 5px 0;
-  height: 1em;
-}
-
-.Charts.horizontal .Charts--item b {
-  position: absolute;
-  right: -20px;
-  top: 0.3em;
-}
-
-.Charts--item {
-  background-color: #43A19E;
-  display: inline-block;
-  margin: 0 5px 0 0;
-  flex: 1;
-  transition: height 1s ease-out, width 1s ease-out;
-  position: relative;
-  text-align: center;
-  border-radius: 2px 2px 0 0;
-}
-
-.Charts--item.layered {
-  position: absolute;
-  left: 5%;
-  right: 5%;
-  bottom: 0;
-  margin: 0;
-}
-
-.Charts--item.layered b {
-  position: absolute;
-  right: 0;
-}
-
-.Charts--item.stacked {
-  position: relative;
-  display: block;
-  border-radius: 0;
-}
-
-.Charts--item b {
-  position: relative;
-  font-family: Helvetica, sans-serif;
-  font-size: 10px;
-  top: -20px;
-  color: #43A19E;
-}
-
-.Legend--color {
-  display: inline-block;
-  vertical-align: middle;
-  border-radius: 2px;
-  width: 16px;
-  height: 16px;
-}
-
-.Legend--label {
-  display: inline-block;
-  vertical-align: middle;
-  font-family: Helvetica, sans-serif;
-  font-size: 12px;
-  margin: 0 0 0 5px;
-}
-
 @keyframes slideUp {
   from {
-    transform: scaleY(0);
+     transform: translateY(100%) scaleY(0);
   }
   to {
-    transform: scaleY(1);
+     transform: translateY(0%) scaleY(1);
   }
 }
 
-
-/* DROPDOWN*/
-
-.wrapper {
-  display: flex;
-  justify-content: center;
-align-items: center;
-height:4em;
-}
-
-.wrapper ul {
-  opacity: 1;
-  ;
-  position: absolute;
-  
-  width: auto;
-  top: -90px;
-  left: 50%;
-   transform: translate(-50%,-50%);
-   z-index:1;
-  text-align: left;
-  transition: all 900ms;
-}
-
-.wrapper:hover ul {
-  opacity: 1;
-  padding: 4px 0;
-  
-  top: 90px;
-  visibility: visible;
-}
-
-.wrapper label {
-  border-bottom: 1px dotted #cccccc;
-  z-index:2;
-  
-}
-.wrapper label .icon-svg{
-  width:2em;
-  border-bottom: 1px dotted #cccccc;
-}
-
-.wrapper ul {
-  position: absolute;
-
-
-  right: 0;
-  width: 90px;
-  background-color: white;
-  border: 1px solid #cccccc;
-  border-radius: 4px;
-  box-shadow: 0 3px rgba(0, 0, 0, 0.05);
-  list-style-type: none;
-}
-
-/*
-.wrapper ul:before {
-  content: '';
-  position: absolute;
-  top: -12px;
-  height: 12px;
-  width: 100%;
-  background-color: transparent;
-}
-.wrapper ul:after {
-  content: '';
-  position: absolute;
-  right: 6px;
-  top: -16px;
-  height: 0;
-  width: 0;
-  border: 8px solid transparent;
-  border-bottom-color: #cccccc;
-}
-*/
-.wrapper li {
-  padding: 5px 10px;
-  color: #999999;
-  cursor: pointer;
-  transition: all 100ms;
-}
-
-.wrapper li:hover {
-  background-color: #e6e6e6;
-  color: black;
-}
-
-li:first-of-type:after {
-  content: '';
-  position: absolute;
-  right: 6px;
-  top: -15px;
-  height: 0;
-  width: 0;
-  z-index: 1;
-  border: 8px solid transparent;
-  border-bottom-color: white;
-  pointer-events: none;
-}
+ 

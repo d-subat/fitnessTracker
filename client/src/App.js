@@ -13,7 +13,7 @@ import Logs from "./components/Logs";
 import Map from "./components/Map";
 import Login from "./components/Login";
 import NotFound from "./components/NotFound";
-
+import { withAuthentication } from './components/Session';
 
 import "./App.css";
 
@@ -60,4 +60,5 @@ function App() {
 }
 
 
-export default App;
+
+export default withAuthentication(App);

@@ -3,7 +3,7 @@ import axios from "axios";
 
 const HOST = "http://localhost:4000";
 const acticityGetUrl = "/api/exercise/users";
-const acticityPostUrl = "/api/exercise/new-user";
+//const acticityPostUrl = "/api/exercise/new-user";
 const myUrl = HOST + acticityGetUrl;
 
 class Logs extends Component {

@@ -1,6 +1,7 @@
 import React, { Component,useState,useEffect,useRef } from 'react';
+import ReactDOM from 'react-dom';
 //import GoogleMapsApiLoader from "google-maps-api-loader";
-import {Map as GMap, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
+import {Map as Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 
 
 /*
@@ -145,45 +146,30 @@ const WaitForMap = ({ googleMap, map, children }) => {
 */
 
 
-export default GoogleApiWrapper({
-  apiKey: (process.env.REACT_APP_MAP_API_KEY)
-})(MapContainer)
+const Container = props => {
+  if (!props.loaded) return <div>Loading...</div>;
 
-export const Map = () => {
-  
-
-  const [currentGeo, setCurrentGeo] = useState({});
-
-  useEffect(() => {
-    if (navigator && navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((pos) => {
-          const coords = pos.coords;
-          setCurrentGeo({
-              currentLocation: {
-                  lat: coords.latitude,
-                  lng: coords.longitude
-              }
-          })
-      })
-  }
-    
-  },[]
-  
-  )
- 
   return (
-    <GMap google={this.props.google} zoom={14}>
-
-      <Marker onClick={this.onMarkerClick}
-              name={'Current location'} />
-
-      <InfoWindow onClose={this.onInfoWindowClose}>
-          <div>
-            <h1>{this.state.selectedPlace.name}</h1>
-          </div>
-      </InfoWindow>
-    </GMap>
+    <Map
+      centerAroundCurrentLocation
+      className="map"
+      google={props.google}
+      style={{ height: '100%', position: 'relative', width: '100%' }}
+      zoom={14}
+    >
+        <Marker
+        name="SOMA"
+        position={{ lat: 37.778519, lng: -122.40564 }}
+        title="The marker`s title will appear as a tooltip."
+/>
+</Map>
   );
 };
 
+
+
+
  
+export default GoogleApiWrapper({
+  apiKey: (process.env.REACT_APP_MAP_API_KEY)
+})(Container)

@@ -2,20 +2,26 @@ import React from "react";
 
 import { NavLink } from "react-router-dom";
 import SvgIcon from "./SvgIcon";
+import { AuthUserContext, withAuthorization}  from './Session';
 
 const Sidebar = props => (
   <nav className={props.sideBar && "active"}>
-           
+            
     <div className="profile">
-    <NavLink key="profile" to="/profile">       
+    <NavLink key="profile" to="/profile">  
+    <AuthUserContext.Consumer>
+      {authUser =>
+        authUser ? 
+ 
+     <>    
       <div className="user-image">
         <img
-          src="https://bootdey.com/img/Content/avatar/avatar7.png"
+          src={authUser.providerData[0].photoURL}
           className="img-radius"
           alt="User-Profile"
         />
       </div>
-      <h4>Arthur Dent</h4>
+      <h4>{authUser.providerData[0].displayName}</h4>
       
       <h5>Activity Level: 87%</h5>
       <ul className="activity-lvl">
@@ -25,7 +31,10 @@ const Sidebar = props => (
         <li />
         <li />
       </ul>
-    
+      </>
+      : "NonAuth"
+    }
+      </AuthUserContext.Consumer>
     </NavLink>
     </div>
     {props.routes.map(route => (
@@ -37,4 +46,6 @@ const Sidebar = props => (
   </nav>
 );
 
-export default Sidebar;
+const condition = authUser => !!authUser;
+
+export default withAuthorization(condition)(Sidebar);

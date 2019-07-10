@@ -48,9 +48,10 @@ class Firebase {
     this.auth.signInWithPopup(this.facebookProvider);
 
   doSignInWithTwitter = () =>
-    this.auth.signInWithPopup(this.twitterProvider);
+    this.auth.signInWithPopup(this.twitterProvider)
+    
 
-  doSignInWithTwitter = () =>
+  doSignInWithGithub = () =>
     this.auth.signInWithPopup(this.githubProvider);
 
   doSignOut = () => this.auth.signOut();

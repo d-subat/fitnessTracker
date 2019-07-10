@@ -48,7 +48,7 @@ class Exercises extends Component {
             className="box"
             method="post"
           >
-            <label for="selectUser">Select Activity </label>
+            <label htmlFor="selectUser">Select Activity </label>
             <div className="container grid">
               {this.state.users.length === 0 ? (
                 <div>Loading...</div>
@@ -64,7 +64,7 @@ class Exercises extends Component {
             </div>
 
             <div className="field">
-              <label for="desc">Description *</label>
+              <label htmlFor="desc">Description *</label>
               <input id="desc" type="text" name="description" required />
             </div>
             <div className="fieldrow">
@@ -75,12 +75,12 @@ class Exercises extends Component {
               
               
               <div className="field">
-                <label for="dat">Date </label>
+                <label htmlFor="dat">Date </label>
                 <input
                   id="dat"
                   type="date"
                   name="date"
-                  value={new Date().toISOString().substring(0, 10)}
+                  defaultValue={new Date().toISOString().substring(0, 10)}
                 />
               </div>
             

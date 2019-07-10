@@ -1,4 +1,4 @@
-import React, { Component,useEffect,useState } from "react";
+import React, { Component } from "react";
 import SvgIcon from "./SvgIcon";
 
 
@@ -9,6 +9,7 @@ class Stopwatch extends Component {
     time: "",
   };
   handleTimer = () => {
+    console.log(this.state.time)
     this.setState(state => {
       if (state.status) {
         clearInterval(this.timer);
@@ -29,8 +30,8 @@ class Stopwatch extends Component {
   };
   handleReset = () => {
     clearInterval(this.timer); 
-    this.props.saveTimer( ""+":"+":"+"");
-    this.setState({ time:""+":"+":"+"", runningTime: 0, status: false });
+    this.props.saveTimer( "::");
+    this.setState({ time:"", runningTime: 0, status: false });
   };
   componentWillUnmount() {
     clearInterval(this.timer);
@@ -40,10 +41,9 @@ class Stopwatch extends Component {
     return (
       <div className="field duration">     
               
-            <button onClick={this.handleTimer}>{!status? <SvgIcon name="Record" />: <SvgIcon name="Stop" />}</button>
 
             <div className="field time">
-            <label for="dur">Duration *(mins.)</label>
+            <label htmlFor="dur">Duration *(mins.)</label>
             <input
               id="dur"
               type="time"
@@ -51,13 +51,14 @@ class Stopwatch extends Component {
               step="1"
               onChange={(ev) => {this.setState({time:ev.target.value})}}
               name="duration"
-              value={this.state.time}
+              defaultValue={this.state.time}
               required
             />
             
           </div>
+          <button onClick={this.handleTimer} title="Record exercise duration">{!status? <SvgIcon name="Record" />: <SvgIcon name="Stop" />}</button>
 
-            {this.state.status === true && runningTime > 0 && (
+            {    this.state.time && (
               <button className="reset" onClick={this.handleReset}><SvgIcon name="Reset" /></button>
             )}
             </div>
