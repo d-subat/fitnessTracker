@@ -24,6 +24,7 @@ const Header = props => {
       window.localStorage.setItem("fitnesstracker-theme", "light");
     }
     toggleDarkMode(!darkMode);
+    toggleSettings(!showDropDown)
   };
 
   return (

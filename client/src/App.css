@@ -13,7 +13,7 @@
 
 	--theme-bg-color: #fff;
   --theme-color: black;
-  --theme-highlight-color: #1e90ff;
+  --theme-highlight-color: #1b7fe4;
 }
 
 [data-theme="dark"] {
@@ -348,23 +348,112 @@ fieldset {
   min-width:10em;
   padding: 2px 2px;
   border: none;
-  
-  
+
   outline: none;
-  background: #ebebff;
-  color: var(--theme-color);;
+  background: #eeeeff;
+  color: var(--theme-highlight-color);
   text-align: center;
 }
 .field>select {
-  min-height:2.2em;
+  min-height:2.2em;  
+  color: var(--theme-highlight-color);
+background:red;
 }
+
 .field>select:first-of-type {
   color:grey;
 }
+option{
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+color: var(--theme-highlight-color);
+background:red;
+}
+  select {
+    width:353px;
+    padding:12px;
+    margin-top:8px;
+    font-family:Cursive;
+    line-height:1;
+    border-radius:5px;
+    background-color:#A2AB58;
+    color:#ff0;
+    font-size:20px;
+    -webkit-appearance:none;
+    box-shadow:inset 0 0 10px 0 rgba(0,0,0,0.6);
+    outline:none
+  }
+  select:hover {
+    color:#00ff7f
+    }
+
 input:focus {
   background: none;
+  color: var(--theme-color);
   box-shadow: 0 2px  0  var(--theme-highlight-color);
 }
+
+.field {
+  position: relative;
+}
+.field:before {
+  width: 24px;
+  height:24px;
+  content: url(./logo.svg);
+  color:red;
+ bottom:14px;
+ left:2px;
+ position:absolute;
+ display: inline-block;
+
+}
+
+.customselect {
+  display:flex;
+  padding-bottom:0.5em;
+  
+}
+
+.switch {
+  flex:1;
+  color: #6f839a;
+  cursor: pointer;
+  font-weight: 600;
+  line-height: 2.4em;
+  text-align: center;
+  height: 2.4em;
+  border-radius: 3px;
+  padding: .125em .5em;
+  display: block;
+  background-color: #3e4956;
+  transition: .15s ease;
+}
+
+input[type="radio"]  {
+ display:none;
+}
+input[type="radio"]:checked + .switch {
+  color:  var(--theme-color);
+  
+}
+
+input[type="radio"]:checked + .switch--on ,input[type="radio"]:checked + .switch--off {
+  background-color:  var(--theme-highlight-color);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 .btn {
   margin: 1em;
   max-height: max-content;

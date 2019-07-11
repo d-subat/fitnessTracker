@@ -1,46 +1,45 @@
 import React, { useState } from "react";
-import SvgIcon from "./SvgIcon";
 
 import { withAuthorization } from './Session';
 
 
 const bmiTable = {
-  age: [{
+  age: {
     "16": {
-      female: [ 18,19, 24,  28,29 ],
-      male: [{ u: "19", n: "24", l: "28" }]
+      Female: [ 18,19, 24,  28,29 ],
+     Male:  [ 18,19, 24,  28,29 ],
     },
     "25": {
-      female: [{ u: "20", n: "25", l: "29" }],
-      male: [{ u: "19", n: "24", l: "28" }]
+      Female: [{ u: "20", n: "25", l: "29" }],
+     Male: [{ u: "19", n: "24", l: "28" }]
     },
     "35": {
-      female: [{ u: "21", n: "26", l: "30" }],
-      male: [{ u: "20", n: "25", l: "29" }]
+      Female: [{ u: "21", n: "26", l: "30" }],
+     Male: [{ u: "20", n: "25", l: "29" }]
     },
     "45": {
-      female: [{ u: "22", n: "27", l: "31" }],
-      male: [{ u: "21", n: "26", l: "30" }]
+      Female: [{ u: "22", n: "27", l: "31" }],
+     Male: [{ u: "21", n: "26", l: "30" }]
     },
     "55": {
-      female: [{ u: "23", n: "28", l: "32" }],
-      male: [{ u: "22", n: "27", l: "31" }]
+      Female: [{ u: "23", n: "28", l: "32" }],
+     Male: [{ u: "22", n: "27", l: "31" }]
     },
     "65": {
-      female: [{ u: "24", n: "29", l: "33" }],
-      male: [{ u: "23", n: "28", l: "32" }]
+      Female: [{ u: "24", n: "29", l: "33" }],
+     Male: [{ u: "23", n: "28", l: "32" }]
     },
     "90": {
-      female: [{ u: "25", n: "30", l: "34" }],
-      male: [{ u: "24", n: "29", l: "33" }]
+      Female: [{ u: "25", n: "30", l: "34" }],
+     Male: [{ u: "24", n: "29", l: "33" }]
     }
-  }]
+  }
 };
 const Mass = {
   0: "untergewicht",
         1: "normal",
         2: "leicht ü",
-        3: "übergewicht",
+        3: "leicht ü",
         4: "übergewicht"
 }
 /*
@@ -52,7 +51,7 @@ const Mass = {
 55-64 Jahre	<23	23–28	29–32	>32
 65-90 Jahre	<24	24–29	30–33	>33
 
-female: {
+Female: {
 16 Jahre  	<19	19–24	25–28	>28
 17-24 Jahre	<20	20–25	26–29	>29
 25-34 Jahre	<21	21–26	27–30	>30
@@ -66,14 +65,17 @@ function Profile() {
   const [form, setValues] = useState({
     feWeight: "",
     feHeight: "",
-    feAge: ""
+    feAge: "",
+    feGender: "",
   });
   const [bmi, setBMI] = useState();
+  const [status, setStatus] = useState();
 
   const calcBMI = e => {
     e.preventDefault();
-
+    setStatus("");
     //Gewicht / (Körpergröße in Metern * Körpergröße in Metern)
+    try {
     const bmi =
     parseInt(      parseInt(form.feWeight) /
       (parseFloat(form.feHeight / 100) * parseFloat(form.feHeight / 100)) );
@@ -82,26 +84,32 @@ function Profile() {
       parseFloat(form.feHeight / 100) * parseFloat(form.feHeight / 100)
     );
     const age = parseInt(form.feAge);
-
+    
+    const feGender = form.feGender;
         
         
-    var closestAge = bmiTable.age.reduce(function(prev, curr) {
+    var closestAge = Object.keys(bmiTable.age).reduce(function(prev, curr) {
       return (Math.abs(curr - age) < Math.abs(prev - age) ? curr : prev);
     });
-console.log(closestAge)
-/*
-        var closestBMI = bmiTable.age[closestAge].female.reduce(function(prev, curr) {
+
+
+        var closestBMI = bmiTable.age[closestAge].Female.reduce(function(prev, curr) {
           return (Math.abs(curr - bmi) < Math.abs(prev - bmi) ? curr : prev);
         });
-  
-        console.log(Mass[bmiTable.age[bmiTable.age.indexOf(closestAge)].female.indexOf(closestBMI)],bmiTable.age[16].female.indexOf(closestBMI));
-setBMI(bmi +" : " +Mass[bmiTable.age[bmiTable.age.indexOf(closestAge)].female.indexOf(closestBMI)],bmiTable.age[16].female.indexOf(closestBMI));
+       
+        setBMI( Mass[Object.values(bmiTable.age)[Object.keys(bmiTable.age).indexOf(closestAge)][feGender].indexOf(closestBMI)] );
+        } 
+        catch(err) {
+            setStatus("Please fill out mandatory fields (marked with *).");
+        }
+      //  console.log(Mass[bmiTable.age[bmiTable.age.indexOf(closestAge)].Female.indexOf(closestBMI)],bmiTable.age[16].Female.indexOf(closestBMI));
+//setBMI(bmi +" : " +Mass[bmiTable.age[bmiTable.age.indexOf(closestAge)].Female.indexOf(closestBMI)],bmiTable.age[16].Female.indexOf(closestBMI));
         //0 untergewicht
         //1 normal
         //2 leicht ü
         //3 übergewicht
-*/
 
+console.log (form.feGender)
   
   };
 
@@ -112,15 +120,19 @@ setBMI(bmi +" : " +Mass[bmiTable.age[bmiTable.age.indexOf(closestAge)].female.in
     });
     
   };
-
+const updateAccount = (e) => {
+  e.preventDefault();
+}
   return (
     <>
+    {status && <div className="statusMessage"> {status}</div>}
       <section>
         <h4>Overview</h4>
         <h1>Profile</h1>
 
-        <div
+        <form
           action="/api/exercise/log"
+          onSubmit={updateAccount}
           method="get"
           id="usrfrm3"
           className="box"
@@ -131,44 +143,49 @@ setBMI(bmi +" : " +Mass[bmiTable.age[bmiTable.age.indexOf(closestAge)].female.in
           <legend>Account Settings</legend>
           <div className="fieldrow">
           <div className="field">
-              <label htmlFor="feEmail">Username</label>
+              <label htmlFor="feEmail">Username *</label>
               <input
                 type="username"
                 id="feUsername"
                 placeholder="Username"
                 autoComplete="username"
-                value=""
+                required
+                onChange={handleChange}
+                
               />
             </div>
             <div className="field">
-              <label htmlFor="feEmail">Email</label>
-              <SvgIcon name="Profile" /> <input
+              <label htmlFor="feEmail">Email *</label>
+                <input
                 type="email"
                 id="feEmail"
                 placeholder="Email Address"
                 autoComplete="email"
-                value=""
+                onChange={handleChange}
+                required 
               />
             </div>
             </div>
             <div className="fieldrow">
             <div className="field">
-              <label htmlFor="fePassword">Password</label>
+              <label htmlFor="fePassword">Password *</label>
               <input
                 type="password"
                 id="fePassword"
                 placeholder="Password"
                 autoComplete="current-password"
-                value=""
+                onChange={handleChange}
+                required 
               />
             </div>
             <div className="field">
-              <label htmlFor="fePasswordCheck">Password Check</label>
+              <label htmlFor="fePasswordCheck">Password Check *</label>
               <input
                 type="password"
                 id="fePasswordCheck"
                 placeholder="Password"
-                value=""
+                onChange={handleChange}
+                required 
               />
             </div>
           </div>
@@ -213,30 +230,30 @@ setBMI(bmi +" : " +Mass[bmiTable.age[bmiTable.age.indexOf(closestAge)].female.in
           <legend>Health Details </legend>
           <div className="fieldrow">
             <div className="field">
-              <label htmlFor="feWeight">Weight</label>
+              <label htmlFor="feWeight">Weight *</label>
               <input
                 onChange={handleChange}
                 type="number"
                 min="25"
                 max="250"
                 id="feWeight"
-                placeholder="kg"
+                placeholder="kg" required 
               />
             </div>
             <div className="field">
-              <label htmlFor="feHeight">Height</label>
+              <label htmlFor="feHeight">Height *</label>
               <input
                 onChange={handleChange}
                 type="number"
                 min="100"
                 max="250"
                 id="feHeight"
-                placeholder="cm"
+                placeholder="cm" required 
               />
             </div>
             
             <div className="field">
-              <label htmlFor="Age">Age</label>
+              <label htmlFor="Age">Age *</label>
               <input
                 onChange={handleChange}
                 type="number"
@@ -246,16 +263,20 @@ setBMI(bmi +" : " +Mass[bmiTable.age[bmiTable.age.indexOf(closestAge)].female.in
                 placeholder="years"
               />
             </div>
+            
             <div className="field">
-              <label>Gender</label>
+              <label>Gender *</label>
+              <div className="customselect">
+              
+              <input type="radio" name="s1"    id="feGenderFemale" defaultValue="Female" hidden   />
+    <label for="feGenderFemale" class="switch switch--on">Female</label>
+    
+    <input type="radio" name="s1" id="feGenderMale" defaultValue="Male" hidden />
+    <label for="feGenderMale" class="switch switch--off">Male</label>
+    </div>
 
-              <select>
-                <option>Please select</option>
-                <option>Female</option>
-                <option>Male</option>
-                <option>Other</option>
-              </select>
-            </div>
+    </div>
+           
           </div>
           <div className="field">
             <legend>Calculated BMI:</legend> {bmi}
@@ -270,8 +291,8 @@ setBMI(bmi +" : " +Mass[bmiTable.age[bmiTable.age.indexOf(closestAge)].female.in
           </button>
           </fieldset>
         
-          <button className="btn btn-accent">Update Account</button>
-        </div>
+          <button type="submit"  className="btn btn-accent">Update Account</button>
+        </form>
       </section>
     </>
   );
