@@ -32,9 +32,10 @@ const routes = [
 function App() {
   const [sideBar, toggleSideBar] = useState(true);
 
+
   return (
     <Router>
-      <Header sideBar={sideBar} toggleSideBar={toggleSideBar} />
+      <Header sideBar={sideBar} toggleSideBar={toggleSideBar}  />
       <div className="container">
         <Sidebar routes={routes} sideBar={sideBar} />
         <main className={sideBar && "active" }>

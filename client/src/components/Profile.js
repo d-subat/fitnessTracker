@@ -86,20 +86,21 @@ function Profile() {
         
         
     var closestAge = bmiTable.age.reduce(function(prev, curr) {
-      return (Math.abs(curr - bmi) < Math.abs(prev - bmi) ? curr : prev);
+      return (Math.abs(curr - age) < Math.abs(prev - age) ? curr : prev);
     });
-console.log()
+console.log(closestAge)
+/*
         var closestBMI = bmiTable.age[closestAge].female.reduce(function(prev, curr) {
           return (Math.abs(curr - bmi) < Math.abs(prev - bmi) ? curr : prev);
         });
-        
+  
         console.log(Mass[bmiTable.age[bmiTable.age.indexOf(closestAge)].female.indexOf(closestBMI)],bmiTable.age[16].female.indexOf(closestBMI));
 setBMI(bmi +" : " +Mass[bmiTable.age[bmiTable.age.indexOf(closestAge)].female.indexOf(closestBMI)],bmiTable.age[16].female.indexOf(closestBMI));
         //0 untergewicht
         //1 normal
         //2 leicht ü
         //3 übergewicht
-
+*/
 
   
   };

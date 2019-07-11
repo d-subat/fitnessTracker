@@ -5,14 +5,36 @@
   font-weight: 300;
 }
 
+:root {
+  /*
+  hsl to adjust borders and variations
+
+  */
+
+	--theme-bg-color: #fff;
+  --theme-color: black;
+  --theme-highlight-color: #1e90ff;
+}
+
+[data-theme="dark"] {
+  /*Dark Mode*/
+  --theme-bg-color: #000;
+	--theme-color: white;
+
+  --theme-highlight-color: #1e90ff;
+
+}
+
 body {
   background: linear-gradient(45deg, rgb(104, 172, 255) 0%, rgba(135, 92, 207, 1) 29%, rgba(188, 53, 169, 1) 65%, rgba(251, 8, 129, 1) 100%);
   background-image: radial-gradient(circle farthest-corner at 12.3% 19.3%, rgba(85, 88, 218, 1) 0%, rgba(95, 209, 249, 1) 100.2%);
-  background: linear-gradient(to bottom, #fff 80%, #eee);
+  background: linear-gradient(to bottom, var(--theme-bg-color) 80%, #eee);
   min-height: 100vh;
   margin: 0;
-  color: black;
+  color: var(--theme-color);
   font-family: "Exo 2";
+  transition:
+  color 0.5s ease background-color 0.5s ease; 
 }
 
 h1 {
@@ -39,7 +61,7 @@ header {
   position: sticky;
   z-index: 9999;
   top:0;
-  background: white;
+  background: var(--theme-bg-color);
   border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 }
 
@@ -50,7 +72,7 @@ header a,header div {
   align-Items: center;
   text-decoration: none;
   font-weight: 800;
-  color: dodgerblue;  
+  color: var(--theme-highlight-color);  
 }
 
 header .settings  {
@@ -69,6 +91,7 @@ header .settings  {
 header .settings .icon-svg {
   margin: 0;
   height: 1.5em;  
+  fill:var(--theme-color);
 }
 
 .dropdownwrap {
@@ -85,7 +108,7 @@ header .settings .icon-svg {
   top:3.5em;
   position:absolute;
   margin-top:-25%;
-  background:white;
+  background:var(--theme-bg-color);
   border:1px solid #ccc;
   box-shadow: 0 .5rem 2rem rgba(0,0,0,.11),0 3px 10px rgba(0,0,0,.05),0 2px 3px rgba(0,0,0,.06);
   transition:margin-top 250ms ease-in-out;
@@ -94,7 +117,8 @@ header .settings .icon-svg {
   margin-top:0px;
 }
 .dropdownmenu {
-  color:black;
+  color:var(--theme-color);
+  
   font-size:0.75em;
   line-height: 1.75;
   font-weight:normal;
@@ -102,7 +126,7 @@ header .settings .icon-svg {
  cursor: pointer;
 }
 .dropdownmenu:hover{
-  color:dodgerblue;
+  color:var(--theme-highlight-color);
 }
 
 .menuToggle {
@@ -138,7 +162,7 @@ header .settings .icon-svg {
 .menuToggle span:before {
   width: 100%;
   height: 5px;
-  background-color: #000;
+  background-color: var(--theme-color);
   transition: all 0.3s;
   backface-visibility: hidden;
   border-radius: 2px;
@@ -192,11 +216,11 @@ nav a {
   cursor: pointer;
   position: relative;
   text-decoration: none;
-  color: black;
+  color: var(--theme-color);;
   padding: 0.75em 0 0.75em 0;
   overflow: 8px;
   outline: none;
-  background: white;
+  background: var(--theme-bg-color);
   transition: all 0.35s ease-out;
 }
 
@@ -231,7 +255,7 @@ nav a:hover:before {
   position: absolute;
   width: 0.25em;
   height: 100%;
-  background: dodgerblue;
+  background: var(--theme-highlight-color);
 }
 
 nav a.active,
@@ -239,8 +263,8 @@ nav a:hover,
 
 nav a.active .icon-svg,
 nav a:hover .icon-svg {
-  fill: dodgerblue;
-  color: dodgerblue;
+  fill: var(--theme-highlight-color);
+  color: var(--theme-highlight-color);
   font-weight: 800;
 }
 
@@ -328,7 +352,7 @@ fieldset {
   
   outline: none;
   background: #ebebff;
-  color: black;
+  color: var(--theme-color);;
   text-align: center;
 }
 .field>select {
@@ -339,7 +363,7 @@ fieldset {
 }
 input:focus {
   background: none;
-  box-shadow: 0 2px  0  dodgerblue;
+  box-shadow: 0 2px  0  var(--theme-highlight-color);
 }
 .btn {
   margin: 1em;
@@ -393,8 +417,8 @@ input:focus {
 
 .box button,.box a {
   margin-top: 1em;
-  background: dodgerblue;
-  color: white;
+  background: var(--theme-highlight-color);
+  color: var(--theme-bg-color);
   border: none;
   border-radius: 0.5em;
   height: 3em;
@@ -415,9 +439,9 @@ input:focus {
 
   min-height: 5em;
   box-shadow: 0 2px 0 rgba(90, 97, 105, .21), 0 4px 8px rgba(90, 97, 105, .22), 0 10px 10px rgba(90, 97, 105, .16), 0 7px 70px rgba(90, 97, 105, .2);
-  background: white;
+  background: var(--theme-bg-color);
   border-radius: 0.5em;
-  color: black;
+  color: var(--theme-color);;
   display: fleX;
   align-items: center;
   justify-content: center;
@@ -436,14 +460,14 @@ input:focus {
 
 .activities:hover,
 .activities.select.active {
-  background: dodgerblue;
-  color: white;
+  background: var(--theme-highlight-color);
+  color: var(--theme-bg-color);
 }
 
 .statusMessage {
   padding: 0 0 0 2em;
   
-  color: white;
+  color: var(--theme-bg-color);
   line-height: 0;
 
   background: orange;
@@ -508,7 +532,7 @@ li.active {
   height: 7em;
   border-radius: 50%;
   border: 6px solid #eee;
-  box-shadow: 0 0 5px dodgerblue;
+  box-shadow: 0 0 5px var(--theme-highlight-color);
 }
 
 .activity-lvl {
@@ -536,6 +560,7 @@ li.active {
   text-align: center;
   width: 120px;
   margin: 0.5em;
+  
   white-space: nowrap;
   min-height: 25px;
   min-width: 100px;
@@ -544,7 +569,7 @@ li.active {
   max-width: max-content;
   overflow: hidden;
   text-overflow: ellipsis;
-  border: 1px solid #000000;
+  border: 1px solid var(--theme-color);
   text-overflow: clip ellipsis;
   transition: all 0.35s ease-out;
 }
@@ -583,7 +608,7 @@ border:none;}
   width: 2em;
   height: 2em;
   margin: 0;
-  fill: dodgerblue;
+  fill: var(--theme-highlight-color);
   
 }
 
@@ -591,7 +616,7 @@ border:none;}
   position: absolute;
   right: 2em;
   outline:0;
-  background: white;
+  background: var(--theme-bg-color);
 }
 
 .field.time {
@@ -604,7 +629,7 @@ border:none;}
   right: 0;
   top: 0.1em;
 
-  color: black;
+  color: var(--theme-color);
   font-weight: 800;
   cursor: pointer;
 }
@@ -612,13 +637,13 @@ border:none;}
 .activities .delete .icon-svg {
   margin: 0;
   height: 1em;
-  fill: black;
+  fill: var(--theme-color);;
 }
 
 .activities:hover .delete .icon-svg {
   margin: 0;
   height: 1em;
-  fill: white;
+  fill: var(--theme-bg-color);
 }
 
 main.active .gmap {
