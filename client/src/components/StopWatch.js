@@ -58,7 +58,7 @@ class Stopwatch extends Component {
           </div>
           <button onClick={this.handleTimer} title="Record exercise duration">{!status? <SvgIcon name="Record" />: <SvgIcon name="Stop" />}</button>
 
-            {    this.state.time && (
+            {    runningTime && (
               <button className="reset" onClick={this.handleReset}><SvgIcon name="Reset" /></button>
             )}
             </div>
