@@ -27,7 +27,7 @@ class SignInGoogleBase extends Component {
       .then(socialAuthUser => {
         this.setState({ error: null });
         
-        this.props.history.push(ROUTES.HOME);
+        this.props.history.push(ROUTES.DASHBOARD);
       })
       .catch(error => {
         this.setState({ error });
@@ -70,7 +70,7 @@ class SignInFacebookBase extends Component {
       })
       .then(socialAuthUser => {
         this.setState({ error: null });
-        this.props.history.push(ROUTES.HOME);
+        this.props.history.push(ROUTES.DASHBOARD);
       })
       .catch(error => {
         this.setState({ error });
@@ -115,7 +115,7 @@ class SignInTwitterBase extends Component {
       .then(socialAuthUser => {
 
         this.setState({ error: null });
-        this.props.history.push(ROUTES.HOME);
+        this.props.history.push(ROUTES.DASHBOARD);
       })
       .catch(error => {
         this.setState({ error });
@@ -160,7 +160,7 @@ class SignInGithubBase extends Component {
       })
       .then(socialAuthUser => {
         this.setState({ error: null });
-        this.props.history.push(ROUTES.HOME);
+        this.props.history.push(ROUTES.DASHBOARD);
       })
       .catch(error => {
         this.setState({ error });
