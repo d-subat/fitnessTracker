@@ -36,8 +36,7 @@ class Logs extends Component {
   <h4>Overview</h4>
   <h1>Recent Exercises</h1>
   
-  <div action="/api/exercise/log" method="get" id="usrfrm3" className="box">
-      
+
   <label for="selectUser">Select Activity </label>
             <div className="container grid">
               {this.state.users.length === 0 ? (
@@ -52,6 +51,9 @@ class Logs extends Component {
                 })
               )}
             </div>
+  <div action="/api/exercise/log" method="get" id="usrfrm3" className="box">
+      
+
       
       <div className="fieldrow    ">
           <div className="field">
