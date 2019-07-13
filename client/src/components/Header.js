@@ -16,6 +16,7 @@ const Header = props => {
   }, []);
 
   const toggleTheme = () => {
+    toggleDarkMode(!darkMode);
     if (darkMode) {
       document.documentElement.setAttribute("data-theme", "dark");
       window.localStorage.setItem("fitnesstracker-theme", "dark");
@@ -23,7 +24,7 @@ const Header = props => {
       document.documentElement.setAttribute("data-theme", "light");
       window.localStorage.setItem("fitnesstracker-theme", "light");
     }
-    toggleDarkMode(!darkMode);
+
     toggleSettings(!showDropDown)
   };
 
