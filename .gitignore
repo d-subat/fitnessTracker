@@ -8,7 +8,8 @@
 /build
 
 /client_old
-
+/ideas
+/client/public/icons
 # misc
 .env
 
@@ -36,6 +37,6 @@ yarn-error.log*
 /client/.env.test.local
 /client/.env.production.local
 
-/clientnpm-debug.log*
+/client/npm-debug.log*
 /client/yarn-debug.log*
 /client/yarn-error.log*
