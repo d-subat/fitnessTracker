@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import StopWatch from "./StopWatch";
-
+import MetTable from "./MetTable"
 
 const HOST = "http://localhost:4000";
 const acticityGetUrl = "/api/exercise/users";
@@ -13,7 +13,8 @@ class Exercises extends Component {
     users: [],
     newuser: "",
     status: "",
-    time: ""
+    time: "",
+    kal: ""
   };
   async componentDidMount() {
     this.getUsers();
@@ -84,6 +85,15 @@ class Exercises extends Component {
                 />
               </div>
             
+              <div className="field">
+                <label htmlFor="kal">Kalories</label>
+                <input
+                  className="readonlyInput"
+                  id="kal"
+                  name="kal"
+                  value={this.state.kal}
+                />
+              </div>
             </div>
              <button className="btn" type="submit">Save Exercise</button>
              or
