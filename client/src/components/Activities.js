@@ -75,7 +75,7 @@ handleMessageInput = (e) => {
 
   return (
     <>
-   {this.state.status && <div className="statusMessage"> {this.state.status}</div>}
+   {this.state.status && <div className="statusMessage"><SvgIcon name="bulb" /> {this.state.status}</div>}
    <section>  
      <h4>Overview</h4>
 
