@@ -13,10 +13,9 @@ import Logs from "./components/Logs";
 import Map from "./components/Map";
 import Login from "./components/Login";
 import NotFound from "./components/NotFound";
-import { withAuthentication } from './components/Session';
-
+import { withAuthentication,AuthUserContext } from './components/Session';
+ 
 import "./App.css";
-
 
 
 const routes = [  
@@ -31,14 +30,22 @@ const routes = [
 
 function App() {
   const [sideBar, toggleSideBar] = useState(true);
-
-
+  const [auth, setAuth] = useState(false);
   return (
     <Router>
+     <AuthUserContext.Consumer>
+      {authUser => {
+      if (authUser)
+       if  (authUser.uid !== "" )
+         setAuth(true)
+        }}
+  </AuthUserContext.Consumer>
+  
       <Header sideBar={sideBar} toggleSideBar={toggleSideBar}  />
       <div className="container">
         <Sidebar routes={routes} sideBar={sideBar} />
-        <main className={sideBar && "active" }>
+        
+        <main className={sideBar && auth? "bounceInDown active": "bounceInDown " }>
           <Switch>
         <Route path="/" exact={true} render={() => <Login />}/>
           <Route path="/dashboard" render={() => <Dashboard routes={routes} />}/>
@@ -50,7 +57,9 @@ function App() {
               component={route.component}             
             />
           ))}
-           <Route path="/home" exact={true} render={() => <Home />}/>
+        <Route path="/home" exact={true} render={() => <Home  />}/>
+  
+           
            <Route component={NotFound} />
           </Switch>
         </main>
