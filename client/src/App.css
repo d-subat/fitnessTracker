@@ -14,21 +14,21 @@
 	--theme-bg-color: #fff;
   --theme-color: black;
   --theme-highlight-color: #1b7fe4;
+  --theme-side-color: #eee;
 }
 
 [data-theme="dark"] {
   /*Dark Mode*/
-  --theme-bg-color: #000;
+  --theme-bg-color: #444;
 	--theme-color: white;
-
-  --theme-highlight-color: #1e90ff;
-
+  --theme-highlight-color: #0768fb;
+  --theme-side-color: #666;
 }
 
 body {
   background: linear-gradient(45deg, rgb(104, 172, 255) 0%, rgba(135, 92, 207, 1) 29%, rgba(188, 53, 169, 1) 65%, rgba(251, 8, 129, 1) 100%);
   background-image: radial-gradient(circle farthest-corner at 12.3% 19.3%, rgba(85, 88, 218, 1) 0%, rgba(95, 209, 249, 1) 100.2%);
-  background: linear-gradient(to bottom, var(--theme-bg-color) 80%, #eee);
+  background: linear-gradient(to bottom, var(--theme-bg-color) 50%, var(--theme-side-color)) fixed;
   min-height: 100vh;
   margin: 0;
   color: var(--theme-color);
@@ -48,7 +48,7 @@ h4 {
   margin-bottom: 0em;
   font-variant: small-caps;
   letter-spacing: 2px;
-  color: grey;
+  color: var(--theme-color);
   font-size: 1em;
 }
 
@@ -62,7 +62,7 @@ header {
   z-index: 9999;
   top:0;
   background: var(--theme-bg-color);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  border-bottom: 1px solid var(--theme-side-color);
 }
 
 header a,header div {
@@ -82,8 +82,8 @@ header .settings  {
   place-content: center;
   justify-content: center;
   border:none;
-  border-left: 1px solid #ccc;
-  border-right: 1px solid #ccc;
+  border-left: 1px solid var(--theme-side-color);
+  border-right: 1px solid var(--theme-side-color);
   background:none;
   
 }
@@ -106,10 +106,10 @@ header .settings .icon-svg {
   min-width:6.5em;
   right: 3em;
   top:3.5em;
-  position:absolute;
+  position:fixed;
   margin-top:-25%;
   background:var(--theme-bg-color);
-  border:1px solid #ccc;
+  border:1px solid var(--theme-side-color);;
   box-shadow: 0 .5rem 2rem rgba(0,0,0,.11),0 3px 10px rgba(0,0,0,.05),0 2px 3px rgba(0,0,0,.06);
   transition:margin-top 250ms ease-in-out;
 }
@@ -138,6 +138,12 @@ header .settings .icon-svg {
   background: none;
   margin: 0 0.5em 0 0.5em;
   cursor: pointer;
+  transition: all 0.5s cubic-bezier(0.1, 2.5, 0.32, 2);
+  
+}
+
+.menuToggle:active  {
+  transform: rotate(-1deg) ;
 }
 
 .menuToggle span:after,
@@ -146,6 +152,7 @@ header .settings .icon-svg {
   position: absolute;
   left: 0;
   top: -9px;
+  
 }
 
 .menuToggle span:after {
@@ -155,6 +162,7 @@ header .settings .icon-svg {
 .menuToggle span {
   position: relative;
   display: block;
+  ;
 }
 
 .menuToggle span,
@@ -163,9 +171,10 @@ header .settings .icon-svg {
   width: 100%;
   height: 5px;
   background-color: var(--theme-color);
-  transition: all 0.3s;
-  backface-visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.1, -1, 0.32, -.5);
+
   border-radius: 2px;
+  
 }
 
 .menuToggle.active span {
@@ -173,7 +182,7 @@ header .settings .icon-svg {
 }
 
 .menuToggle.active span:before {
-  transform: rotate(45deg) translate(5px, 5px);
+  transform: rotate(45deg) translate(4px, 6px)  ;
 }
 
 .menuToggle.active span:after {
@@ -185,6 +194,7 @@ header .settings .icon-svg {
   flex: 1;
   width: 100%;
   height: 100%;
+  background: rgba(60, 60, 60, 0.1);
 }
 
 nav {
@@ -198,11 +208,16 @@ nav {
   text-align: center;
   z-index: 1;
   margin-left: -15em;
-  transition: all .33s ease-out;
+  background: var(--theme-bg-color);;
+  transition: all 100ms ease 110ms ;
 }
 
+
+ 
 nav.active {
   margin-left: 0em;
+  border-radius: 0% 1% 1% 0%;
+ color:#ff4500
 }
 
 nav a {
@@ -220,7 +235,7 @@ nav a {
   padding: 0.75em 0 0.75em 0;
   overflow: 8px;
   outline: none;
-  background: var(--theme-bg-color);
+  
   transition: all 0.35s ease-out;
 }
 
@@ -269,10 +284,10 @@ nav a:hover .icon-svg {
 }
 
 main {
-  background: rgba(60, 60, 60, 0.1);
+  
   flex: 1;
   margin-left: 0em;
-  transition: all 0.35s ease-out;
+  transition: all 0.25s ease-out 100ms;
   min-height: calc(100vh - 4em);
 
 }
@@ -338,7 +353,7 @@ fieldset {
 }
 
 .field>input,
-.field>select,
+ 
 .box>input {
   width: 100%;
   font-size: 1em;
@@ -351,49 +366,16 @@ fieldset {
 
   outline: none;
   background: #eeeeff;
-  color: var(--theme-highlight-color);
+  color: var(--theme-color);
   text-align: center;
 }
-.field>select {
-  min-height:2.2em;  
-  color: var(--theme-highlight-color);
-background:red;
-}
-
-.field>select:first-of-type {
-  color:grey;
-}
-option{
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  appearance: none;
-color: var(--theme-highlight-color);
-background:red;
-}
-  select {
-    width:353px;
-    padding:12px;
-    margin-top:8px;
-    font-family:Cursive;
-    line-height:1;
-    border-radius:5px;
-    background-color:#A2AB58;
-    color:#ff0;
-    font-size:20px;
-    -webkit-appearance:none;
-    box-shadow:inset 0 0 10px 0 rgba(0,0,0,0.6);
-    outline:none
-  }
-  select:hover {
-    color:#00ff7f
-    }
-
+ 
 input:focus {
   background: none;
   color: var(--theme-color);
   box-shadow: 0 2px  0  var(--theme-highlight-color);
 }
-
+/*
 .field {
   position: relative;
 }
@@ -406,9 +388,8 @@ input:focus {
  left:2px;
  position:absolute;
  display: inline-block;
-
 }
-
+*/
 .customselect {
   display:flex;
   padding-bottom:0.5em;
@@ -417,39 +398,34 @@ input:focus {
 
 .switch {
   flex:1;
-  color: #6f839a;
+  color: var(--theme-color);
   cursor: pointer;
-  font-weight: 600;
+  
   line-height: 2.4em;
   text-align: center;
   height: 2.4em;
-  border-radius: 3px;
+  
   padding: .125em .5em;
   display: block;
-  background-color: #3e4956;
+  background-color:  var(--theme-bg-color);
   transition: .15s ease;
 }
-
+.switch.switch--on,.switch.switch--off {
+  font-variant:unset;
+}
 input[type="radio"]  {
  display:none;
 }
 input[type="radio"]:checked + .switch {
-  color:  var(--theme-color);
-  
+  color:  var(--theme-bg-color); 
+}
+.switch--on {
+  border-right: 1px solid grey;
 }
 
 input[type="radio"]:checked + .switch--on ,input[type="radio"]:checked + .switch--off {
   background-color:  var(--theme-highlight-color);
 }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -479,7 +455,6 @@ input[type="radio"]:checked + .switch--on ,input[type="radio"]:checked + .switch
 .box .btn-github {
   flex: 1;
   background: #555555;
-  
 }
 
 .btn-github:hover {
@@ -525,9 +500,8 @@ input[type="radio"]:checked + .switch--on ,input[type="radio"]:checked + .switch
 .activities {
   flex: 1;
   margin: 1em;
-
   min-height: 5em;
-  box-shadow: 0 2px 0 rgba(90, 97, 105, .21), 0 4px 8px rgba(90, 97, 105, .22), 0 10px 10px rgba(90, 97, 105, .16), 0 7px 70px rgba(90, 97, 105, .2);
+  box-shadow: 0 2px 0 rgba(90, 97, 105, .21), 0 4px 8px rgba(90, 97, 105, .22), 0 10px 10px rgba(90, 97, 105, .16), 0 7px 70px rgba(90, 97, 105, .2); 
   background: var(--theme-bg-color);
   border-radius: 0.5em;
   color: var(--theme-color);;
@@ -547,19 +521,15 @@ input[type="radio"]:checked + .switch--on ,input[type="radio"]:checked + .switch
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
 }
 
-.activities:hover,
-.activities.select.active {
-  background: var(--theme-highlight-color);
-  color: var(--theme-bg-color);
-}
+
 
 .statusMessage {
   padding: 0 0 0 2em;
-  
   color: var(--theme-bg-color);
   line-height: 0;
-
   background: orange;
+  display:flex;
+  align-items: center;
   animation: slideIn 1s ease-in-out forwards;
 }
 
@@ -663,6 +633,15 @@ li.active {
   transition: all 0.35s ease-out;
 }
 
+ 
+  .activities:hover,
+  .activities.select.active {
+    background: var(--theme-highlight-color);
+    color: var(--theme-color);
+    border:none;
+    box-shadow: -10px 8px 25px -5px#2c80ff,10px 3px 25px -5px#6f8afd;
+  }
+
 .btn.activities.select {
   max-height: max-content;
   max-width: max-content;
@@ -693,13 +672,24 @@ outline:none !important;
 border:none;}
 
 
-.field.duration button .icon-svg {
+.statusMessage .icon-svg, .field.duration button .icon-svg {
   width: 2em;
   height: 2em;
   margin: 0;
   fill: var(--theme-highlight-color);
-  
 }
+.statusMessage .icon-svg {
+  width: 2em;
+  height: 2em;
+  border-radius:50%;
+  background: orangered;
+  margin: 0;
+  fill: var(--theme-bg-color);  
+  margin-right:1em;
+  padding:0.25em;
+}
+
+
 
 .field.duration .reset {
   position: absolute;
