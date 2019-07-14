@@ -24,7 +24,7 @@ router.get('/', (req, res) => {
 router.use((req, res, next) => {
   return next({status: 404, message: 'not found'})
 })
-
+/*
 // Error Handling middleware
 router.use((err, req, res, next) => {
   let errCode, errMessage
@@ -42,6 +42,6 @@ router.use((err, req, res, next) => {
   }
   res.status(errCode).render('404', {message: errMessage } )
 })
-
+*/
 
 module.exports = router;

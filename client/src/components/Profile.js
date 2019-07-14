@@ -1,7 +1,7 @@
 import React, { useState } from "react";
+import SvgIcon from "./SvgIcon";
 
 import { withAuthorization } from "./Session";
-
 
 /*
   male: 
@@ -22,31 +22,31 @@ const bmiTable = {
   age: {
     "16": {
       Female: [18, 19, 24, 28, 29],
-      Male:   [18, 19, 24, 28, 29]
+      Male: [18, 19, 24, 28, 29]
     },
     "25": {
-      Female: [19,20, 25, 29,30],
-      Male:   [19,20, 25, 29,30]
+      Female: [19, 20, 25, 29, 30],
+      Male: [19, 20, 25, 29, 30]
     },
     "35": {
-      Female: [20,21, 26, 30, 31],
-      Male:   [20,21, 26, 30, 31],
+      Female: [20, 21, 26, 30, 31],
+      Male: [20, 21, 26, 30, 31]
     },
     "45": {
-      Female:  [22,23,28,32,33],
-      Male:   [21,22,27,31,32]
+      Female: [22, 23, 28, 32, 33],
+      Male: [21, 22, 27, 31, 32]
     },
     "55": {
-      Female: [23,24,29,33,34],
-      Male:   [22,23,28,32,33]
+      Female: [23, 24, 29, 33, 34],
+      Male: [22, 23, 28, 32, 33]
     },
     "65": {
-      Female: [24,25,30,34,35],
-      Male:   [23,24,29,33,34]
+      Female: [24, 25, 30, 34, 35],
+      Male: [23, 24, 29, 33, 34]
     },
     "90": {
-      Female: [24,25,30,34,35],
-      Male:   [23,24,29,33,34]
+      Female: [24, 25, 30, 34, 35],
+      Male: [23, 24, 29, 33, 34]
     }
   }
 };
@@ -58,6 +58,31 @@ const Mass = {
   4: "Overweight"
 };
 
+function FormInput(props) {
+  const { fieldName, type, required, handler } = props;
+  const formPrefix = "fe";
+  console.log(formPrefix + fieldName);
+  return (
+    <div className="field">
+      <label htmlFor={formPrefix + fieldName}>
+        {fieldName} {required && "*"}
+      </label>
+      <div className="input">
+        <span>
+          <SvgIcon name={formPrefix + fieldName} />
+        </span>
+        <input
+          type={type}
+          id={formPrefix + fieldName}
+          placeholder={fieldName}
+          autoComplete={fieldName}
+          required={required && "true"}
+          onChange={handler}
+        />
+      </div>
+    </div>
+  );
+}
 
 function Profile() {
   const [form, setValues] = useState({
@@ -143,52 +168,13 @@ function Profile() {
           <fieldset>
             <legend>Account Settings</legend>
             <div className="fieldrow">
-              <div className="field">
-                <label htmlFor="feEmail">Username *</label>
-                <input
-                  type="username"
-                  id="feUsername"
-                  placeholder="Username"
-                  autoComplete="username"
-                  required
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="field">
-                <label htmlFor="feEmail">Email *</label>
-                <input
-                  type="email"
-                  id="feEmail"
-                  placeholder="Email Address"
-                  autoComplete="email"
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+              <FormInput fieldName={"UserName"} type={"text"} required={true} handler={e => handleChange(e)} />
+              <FormInput fieldName={"UserMail"} type={"email"} required={true} handler={e => handleChange(e)} />
             </div>
             <div className="fieldrow">
-              <div className="field">
-                <label htmlFor="fePassword">Password *</label>
-                <input
-                  type="password"
-                  id="fePassword"
-                  placeholder="Password"
-                  autoComplete="current-password"
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="field">
-                <label htmlFor="fePasswordCheck">Password Check *</label>
-                <input
-                  type="password"
-                  id="fePasswordCheck"
-                  placeholder="Password"
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-            </div>
+            <FormInput fieldName={"Password"} type={"password"} required={true} handler={e => handleChange(e)} />
+            <FormInput fieldName={"PasswordCheck"} type={"password"} required={true} handler={e => handleChange(e)} />
+             </div>
           </fieldset>
           <fieldset>
             <legend>Adress Information</legend>
@@ -203,43 +189,21 @@ function Profile() {
               </div>
             </div>
             <div className="fieldrow">
-              <div className="field">
-                <label htmlFor="feAddress">Address</label>
-                <input id="feAddress" placeholder="Address" value="" />
-              </div>
-
-              <div className="field">
-                <label htmlFor="feCity">City</label>
-                <input id="feCity" placeholder="City" />
-              </div>
+              <FormInput fieldName={"Address"} type={"text"} required={true} handler={e => handleChange(e)} />
+              <FormInput fieldName={"City"} type={"text"} required={true} handler={e => handleChange(e)} />
             </div>
             <div className="fieldrow">
-              <div className="field">
-                <label htmlFor="feZipCode">Zip</label>
-                <input id="feZipCode" placeholder="Zip" />
-              </div>
+            <FormInput fieldName={"Zip"} type={"number"} required={true} handler={e => handleChange(e)} />
 
-              <div className="field">
-                <label htmlFor="feZipCountry">Country</label>
-                <input id="feZipCountry" placeholder="Country" />
-              </div>
+              <FormInput fieldName={"Country"} type={"text"} required={true} handler={e => handleChange(e)} />
+
             </div>
           </fieldset>
           <fieldset>
             <legend>Health Details </legend>
             <div className="fieldrow">
-              <div className="field">
-                <label htmlFor="feWeight">Weight *</label>
-                <input
-                  onChange={handleChange}
-                  type="number"
-                  min="25"
-                  max="250"
-                  id="feWeight"
-                  placeholder="kg"
-                  required
-                />
-              </div>
+            <FormInput fieldName={"Weight"} type={"number"} required={true} handler={e => handleChange(e)} />
+ 
               <div className="field">
                 <label htmlFor="feHeight">Height *</label>
                 <input
@@ -252,18 +216,8 @@ function Profile() {
                   required
                 />
               </div>
-
-              <div className="field">
-                <label htmlFor="Age">Age *</label>
-                <input
-                  onChange={handleChange}
-                  type="number"
-                  min="6"
-                  max="120"
-                  id="feAge"
-                  placeholder="years"
-                />
-              </div>
+              <FormInput fieldName={"Age"} type={"number"} required={true} handler={e => handleChange(e)} />
+ 
 
               <div className="field">
                 <label>Gender *</label>
@@ -295,13 +249,10 @@ function Profile() {
             <div className="fieldrow">
               <div className="field">
                 <label htmlFor="feWeight">Calculated BMI:</label>
-                <input
-                value={bmi}
-                className="readonlyInput"
-                />
+                <input value={bmi} className="readonlyInput" />
                 <button onClick={calcBMI} className="btn btn-accent">
-              ReCalc BMI
-            </button>
+                  ReCalc BMI
+                </button>
               </div>
               <div id="BMI" />
               NOTE: At best, the BMI can provide a first indication of weight
@@ -309,7 +260,6 @@ function Profile() {
               suitable if it is used alone and not supplemented by further body
               fat measurements.
             </div>
-            
           </fieldset>
 
           <button type="submit" className="btn btn-accent">

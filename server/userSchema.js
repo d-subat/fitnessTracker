@@ -31,7 +31,37 @@ const userSchema = new Schema({
     }] */
 });
 
+const exercisesSchema = new Schema({
+    
+        
+        
+            username: {
+                type: String,
+                required: true,
+                min: 3,
+                max: 40
+            },        
+        description: {
+            type: String,
+            required: true,
+            min: 1,
+            max: 40
+        },
+        duration: {
+            type: Number,
+            required: true,
+            min: 1,
+            max: 100000
+        },
+        date: {
+            type: Number,
+            default: Date.now()
+        }
+    
+});
+
 const User = mongoose.model('User', userSchema);
-module.exports = User;
+module.exports= User;
+
 
  

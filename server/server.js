@@ -9,12 +9,20 @@ const router = require('../server/router')
 
 const app = express();
 
-console.log(config.DB_URI );
-mongoose.connect(config.DB_URI, { useNewUrlParser: true } )
 
 app.use(cors())
 app.options('*', cors())
+
+app.use(function(req, res, next) {  
+  res.header('Access-Control-Allow-Origin', req.headers.origin);
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});  
 // define template engine aka App 
+console.log(config.DB_URI );
+mongoose.connect(config.DB_URI, { useNewUrlParser: true } )
+
+
 
 app.engine('html', function (filePath, options, callback) { 
   fs.readFile(filePath, function (err, content) {

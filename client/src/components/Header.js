@@ -35,7 +35,9 @@ const Header = props => {
           <img src={Logo} alt="FitnessTracker Logo" />
           FitnessTracker v1.0
         </Link>
+        <div><button className="breadcrumb" ><SvgIcon name="Back" /> Current Location</button></div>
         <div>
+          <input value="Search" />
           <button
             onClick={() => toggleSettings(!showDropDown)}
             className="settings">

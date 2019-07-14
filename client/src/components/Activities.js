@@ -43,7 +43,7 @@ newUser = () => {
       });
     }
     else {
-      this.setState({ status: "größer 3" });
+      this.setState({ status: "Please fill out mandatory fields (marked with *)." });
     }
 };
 deleteUser = (id) => {
@@ -66,7 +66,7 @@ handleMessageInput = (e) => {
   if (e.target.value.length > 3 ){
   this.setState({ newuser: e.target.value ,status: ""});}
   else {
-    this.setState({ status: "größer 3" });
+    this.setState({ status: "Activity name must be longer than 3 letters." });
   }
   
 }

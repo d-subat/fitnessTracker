@@ -28,8 +28,9 @@
 body {
   background: linear-gradient(45deg, rgb(104, 172, 255) 0%, rgba(135, 92, 207, 1) 29%, rgba(188, 53, 169, 1) 65%, rgba(251, 8, 129, 1) 100%);
   background-image: radial-gradient(circle farthest-corner at 12.3% 19.3%, rgba(85, 88, 218, 1) 0%, rgba(95, 209, 249, 1) 100.2%);
-  background: linear-gradient(to bottom, var(--theme-bg-color) 50%, var(--theme-side-color)) fixed;
-  min-height: 100vh;
+  background: linear-gradient(to top, var(--theme-bg-color) 91%, var(--theme-side-color)) fixed;
+
+min-height: 100vh;
   margin: 0;
   color: var(--theme-color);
   font-family: "Exo 2";
@@ -64,6 +65,23 @@ header {
   background: var(--theme-bg-color);
   border-bottom: 1px solid var(--theme-side-color);
 }
+.breadcrumb  {
+  height:100%;
+  width:12em;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  border:none;  
+  border-left: 1px solid var(--theme-side-color);
+  border-right: 1px solid var(--theme-side-color);
+  background:none;
+}
+
+.breadcrumb .icon-svg {
+  margin: 0;
+  height: 1.75em;  
+  fill:var(--theme-color);
+}
 
 header a,header div {
   margin-left: 1em;
@@ -85,7 +103,6 @@ header .settings  {
   border-left: 1px solid var(--theme-side-color);
   border-right: 1px solid var(--theme-side-color);
   background:none;
-  
 }
 
 header .settings .icon-svg {
@@ -194,7 +211,7 @@ header .settings .icon-svg {
   flex: 1;
   width: 100%;
   height: 100%;
-  background: rgba(60, 60, 60, 0.1);
+  
 }
 
 nav {
@@ -256,8 +273,7 @@ main section nav {
   justify-content: space-around;
 }
 
-nav .icon-svg,
-section svg {
+nav .icon-svg {
   height: 1.5em;
   fill: rgb(204, 204, 204);
   margin: 0 0.75em 0 1.5em;
@@ -287,7 +303,7 @@ main {
   
   flex: 1;
   margin-left: 0em;
-  transition: all 0.25s ease-out 100ms;
+  transition: all 0.15s ease-out 100ms;
   min-height: calc(100vh - 4em);
 
 }
@@ -352,13 +368,12 @@ fieldset {
   flex: 1;
 }
 
-.field>input,
- 
-.box>input {
+.field>.input>input,
+ .box>input {
   width: 100%;
   font-size: 1em;
   display: inline-block;
-  margin: 0 0 0.5em 0;
+  
   line-height: 2em;
   min-width:10em;
   padding: 2px 2px;
@@ -368,6 +383,7 @@ fieldset {
   background: #eeeeff;
   color: var(--theme-color);
   text-align: center;
+  text-indent: 3em;
 }
  
 input:focus {
@@ -375,21 +391,27 @@ input:focus {
   color: var(--theme-color);
   box-shadow: 0 2px  0  var(--theme-highlight-color);
 }
-/*
-.field {
+ 
+.input {
+  display:flex;
   position: relative;
+  align-items: center;
+  justify-content: flex-start;
 }
-.field:before {
-  width: 24px;
-  height:24px;
-  content: url(./logo.svg);
-  color:red;
- bottom:14px;
- left:2px;
- position:absolute;
- display: inline-block;
+.input >span{
+  position: absolute;
+  display:grid;
+  place-content:Center;
+  background:rgba(0,0,0,0.05);
+  height:100%;
+  border-right: 2px solid white;
+  width:2.5em
 }
-*/
+.input >span > .icon-svg {
+  fill:var(--theme-color);
+  width:1.25em;
+}
+
 .customselect {
   display:flex;
   padding-bottom:0.5em;
@@ -615,7 +637,7 @@ li.active {
 
 .activities.select {
   display: inline-block;
-  box-shadow: 0 0 6px rgba(90, 97, 105, .41);
+  box-shadow: 0 0 0 1px  var(--theme-color), 0 15px 40px -10px rgba(0, 0, 0, 0.3);
   text-align: center;
   width: 120px;
   margin: 0.5em;
@@ -628,7 +650,7 @@ li.active {
   max-width: max-content;
   overflow: hidden;
   text-overflow: ellipsis;
-  border: 1px solid var(--theme-color);
+  
   text-overflow: clip ellipsis;
   transition: all 0.35s ease-out;
 }
@@ -637,9 +659,9 @@ li.active {
   .activities:hover,
   .activities.select.active {
     background: var(--theme-highlight-color);
-    color: var(--theme-color);
+    color: var(--theme-bg-color);
     border:none;
-    box-shadow: -10px 8px 25px -5px#2c80ff,10px 3px 25px -5px#6f8afd;
+    box-shadow: 0 8px 20px -12px rgba(0, 0, 0, 0.2);
   }
 
 .btn.activities.select {
@@ -815,3 +837,7 @@ height: 15em;
 }
 
  
+
+/*************** ICONS +++++++++++++++++++++++++++++++++*/
+
+

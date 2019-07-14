@@ -2,19 +2,25 @@ import React, { Component } from "react";
 import axios from "axios";
 import StopWatch from "./StopWatch";
 import MetTable from "./MetTable"
+import SvgIcon from "./SvgIcon";
+
 
 const HOST = "http://localhost:4000";
 const acticityGetUrl = "/api/exercise/users";
-//const acticityPostUrl = "/api/exercise/new-user";
+const acticityPostUrl = "/api/exercise/add";
 const myUrl = HOST + acticityGetUrl;
 
 class Exercises extends Component {
   state = {
     users: [],
     newuser: "",
-    status: "",
+    
+    description: "",
     time: "",
-    kal: ""
+    date: new Date().toISOString().substring(0, 10),
+    kal: "",
+    status: "",
+    responseData: ""
   };
   async componentDidMount() {
     this.getUsers();
@@ -28,17 +34,68 @@ class Exercises extends Component {
         return null;
       });
   };
-  selectActivity = (id) => {
+  newExercise = () => {
+    //#### STATUS MESSAGE!!!
+    console.log(this.state);
+    if (this.state.newuser.length > 3 && this.state.description && this.state.time && this.state.date){
       
-    this.setState({ newuser: id});   
-    console.log(this.state.newuser);
+
+
+    
+    axios
+        .post(HOST + acticityPostUrl ,(
+           {
+            withCredentials: true,
+            xsrfCookieName: 'csrftoken_testtest',
+            xsrfHeaderName: 'X-CSRFToken',
+        },
+          {
+            "username": this.state.newuser,
+            "description": this.state.description,
+            "duration": this.state.time,
+            "date": this.state.date
+          
+          }))
+        .then(data => (this.setState({ responseData: data.data })
+        ))
+        .catch(err => {
+            console.log(err);
+            return null;
+        });
+        
+      }
+      else {
+        this.setState({ status: "Please fill out mandatory fields (marked with *)." });
+      }
+  };
+  selectActivity = (id) => {
+    if (id.length > 3 ){
+      this.setState({ newuser: id,status: ""});}
+      else {
+        this.setState({ status: "Please choose an activity." });
+      }
   }
   saveTimer = (time) => {
     this.setState({ time: time});  
   }
+  handleDesc = (e) => {
+    if (e.target.value.length > 3 ){
+    this.setState({ description: e.target.value ,status: ""});}
+    else {
+      this.setState({ status: "Please set a description." });
+    } 
+  }
+  handleDate = (e) => {
+    if (e.target.value.length > 3 ){
+    this.setState({ date: e.target.value ,status: ""});}
+    else {
+      this.setState({ status: "Please set a date." });
+    } 
+  }
   render() {
     return (
       <>
+      {this.state.status && <div className="statusMessage"><SvgIcon name="bulb" /> {this.state.status}</div>}
         <section>
           <h4>Exercises</h4>
           <h1>Add new exercise</h1>
@@ -66,7 +123,7 @@ class Exercises extends Component {
 
             <div className="field">
               <label htmlFor="desc">Description *</label>
-              <input id="desc" type="text" name="description" required />
+              <input id="desc" type="text"   onChange={this.handleDesc} name="description" required />
             </div>
             <div className="fieldrow">
             
@@ -81,7 +138,8 @@ class Exercises extends Component {
                   id="dat"
                   type="date"
                   name="date"
-                  defaultValue={new Date().toISOString().substring(0, 10)}
+                  onClick={this.handleDate}
+                  defaultValue={this.state.date}
                 />
               </div>
             
@@ -95,27 +153,27 @@ class Exercises extends Component {
                 />
               </div>
             </div>
-             <button className="btn" type="submit">Save Exercise</button>
+             <button className="btn" onClick={() => this.newExercise()} type="submit">Save Exercise</button>
              or
              <div className="field"></div>
             <div className="container">                   
                 <button className="activities select" style={{maxHeight:"auto"}}>Track on Map</button>
               </div>
           </div>
-
+{this.state.responseData && 
           <div className="box">
             <div className="field">
               <h2>
-                Successfully created a new user 'test', User ID = 'a7fd89e'
+                Successfully created a new exercise.
               </h2>
               <h2>
-                Successfully added a new exercise on '09-27-2018' for User ID
-                'a7fd89e' (user 'test'), description is 'my exercise
-                description', duration set to '10' mins.{" "}
+                {this.state.responseData}
               </h2>
             </div>
           </div>
-        </section>
+
+
+}        </section>
       </>
     );
   }
