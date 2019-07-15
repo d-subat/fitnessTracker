@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import axios from "axios";
 import StopWatch from "./StopWatch";
-import MetTable from "./MetTable"
+import MetTable, {calculate} from "./MetTable"
 import SvgIcon from "./SvgIcon";
+import FormInput from "./FormInput";
 
 
 const HOST = "http://localhost:4000";
@@ -131,7 +132,9 @@ class Exercises extends Component {
             
               
               
-              
+              <FormInput fieldName={"Date"} type={"date"} required={true} handler={e => this.handleDate(e)} />
+              <FormInput fieldName={"Calories"} type={"text"} required={false} handler={e => calculate(e)} />
+ 
               <div className="field">
                 <label htmlFor="dat">Date </label>
                 <input

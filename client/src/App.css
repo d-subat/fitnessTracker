@@ -392,13 +392,49 @@ input:focus {
   box-shadow: 0 2px  0  var(--theme-highlight-color);
 }
  
+input:required:valid {
+  box-shadow: 0 2px  0  #0b0;
+}
+
+input:invalid:not(:focus):not(:placeholder-shown) + label:before
+{ border: 1px solid red; 
+display:block;
+content:"";
+position:absolute;
+right:0;
+top:0;
+width:2em;
+height:2em;}
+
+.input input + label:before   {
+ 
+  /* display:none; */
+} 
+.input input:required:valid +label:before   {
+  content:"";
+  position:absolute;
+  right:0;
+  top:0;
+  width:2em;
+  height:2em;
+  background: url(check.svg) !important;
+  background-size: 1em 1em !important;
+  background-repeat: no-repeat !important;;
+  background-position: .5em 1em !important;
+display:block;
+} 
+
+
 .input {
   display:flex;
   position: relative;
   align-items: center;
   justify-content: flex-start;
 }
-.input >span{
+.customselect .input  {
+  width:2.5em;
+}
+.input >span,.customselect .input >span{
   position: absolute;
   display:grid;
   place-content:Center;
@@ -414,7 +450,7 @@ input:focus {
 
 .customselect {
   display:flex;
-  padding-bottom:0.5em;
+  
   
 }
 
@@ -463,6 +499,9 @@ input[type="radio"]:checked + .switch--on ,input[type="radio"]:checked + .switch
 
 .btn svg {
   margin: 0px 0.5em 0px 0px;
+  width:1.5em;
+  height:1,5em;
+  fill:White;
 }
 
 .box .btn-google {

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import FormInput from "./FormInput";
 import SvgIcon from "./SvgIcon";
 
 import { withAuthorization } from "./Session";
@@ -58,31 +59,7 @@ const Mass = {
   4: "Overweight"
 };
 
-function FormInput(props) {
-  const { fieldName, type, required, handler } = props;
-  const formPrefix = "fe";
-  console.log(formPrefix + fieldName);
-  return (
-    <div className="field">
-      <label htmlFor={formPrefix + fieldName}>
-        {fieldName} {required && "*"}
-      </label>
-      <div className="input">
-        <span>
-          <SvgIcon name={formPrefix + fieldName} />
-        </span>
-        <input
-          type={type}
-          id={formPrefix + fieldName}
-          placeholder={fieldName}
-          autoComplete={fieldName}
-          required={required && "true"}
-          onChange={handler}
-        />
-      </div>
-    </div>
-  );
-}
+
 
 function Profile() {
   const [form, setValues] = useState({
@@ -203,25 +180,22 @@ function Profile() {
             <legend>Health Details </legend>
             <div className="fieldrow">
             <FormInput fieldName={"Weight"} type={"number"} required={true} handler={e => handleChange(e)} />
+            <FormInput fieldName={"Height"} placeholder="cm" minmax={["100","250"]} type={"number"} required={true} handler={e => handleChange(e)} />
  
-              <div className="field">
-                <label htmlFor="feHeight">Height *</label>
-                <input
-                  onChange={handleChange}
-                  type="number"
-                  min="100"
-                  max="250"
-                  id="feHeight"
-                  placeholder="cm"
-                  required
-                />
-              </div>
+
               <FormInput fieldName={"Age"} type={"number"} required={true} handler={e => handleChange(e)} />
  
 
               <div className="field">
                 <label>Gender *</label>
+                
+  
                 <div className="customselect">
+                <div className="input">
+                <span>
+            <SvgIcon name={"feGender"} />
+          </span>
+          </div>
                   <input
                     type="radio"
                     name="s1"
@@ -243,9 +217,10 @@ function Profile() {
                   <label for="feGenderMale" class="switch switch--off">
                     Male
                   </label>
+                  </div>
                 </div>
               </div>
-            </div>
+            
             <div className="fieldrow">
               <div className="field">
                 <label htmlFor="feWeight">Calculated BMI:</label>

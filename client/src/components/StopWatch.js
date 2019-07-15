@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import SvgIcon from "./SvgIcon";
-
+import FormInput from "./FormInput";
 
 class Stopwatch extends Component {
   state = {
@@ -28,6 +28,9 @@ class Stopwatch extends Component {
       return { status: !state.status };
     });
   };
+  handleChange = (e) => {
+    this.setState({time:e.target.value})
+  }
   handleReset = () => {
     clearInterval(this.timer); 
     this.props.saveTimer( "::");
@@ -41,7 +44,8 @@ class Stopwatch extends Component {
     return (
       <div className="field duration">     
               
-
+             <FormInput fieldName={"StopWatch"} type={"time"} required={true} handler={e => this.handleChange(e)} />
+ 
             <div className="field time">
             <label htmlFor="dur">Duration *(mins.)</label>
             <input
