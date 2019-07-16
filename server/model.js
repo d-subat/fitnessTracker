@@ -46,7 +46,16 @@ module.exports = {
                 .catch(err => _errorHandler(err));
 
         },
-
+        deleteUser: (req, res) => {
+           
+            
+            User.remove( { _id: req.body._id } )
+                .then(rec => {
+                    res.send(rec);
+                })
+                .catch(err => _errorHandler(err));
+ 
+        },
         addExercise: (req, res) => {
             
             const username = req.body.username;
@@ -75,13 +84,13 @@ module.exports = {
     },
 
     showExercises: (req, res) => {
-        Exercises.find({}, 'username description duration date _id')
-        .then(rec => {
-            res.send(rec);
-        })
-        .catch(err => _errorHandler(err));
-    }
+           Exercises.find({}, 'username _id')
+                .then(rec => {
+                    res.send(rec);
+                })
+                .catch(err => _errorHandler(err));
 
+            }
 
 
 };

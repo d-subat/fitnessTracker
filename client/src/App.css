@@ -92,7 +92,12 @@ header a,header div {
   font-weight: 800;
   color: var(--theme-highlight-color);  
 }
-
+header a img {
+  height:2em;
+}
+header .search {
+  width:2em;
+}
 header .settings  {
   height:100%;
   width:4.5em;
@@ -378,51 +383,63 @@ fieldset {
   min-width:10em;
   padding: 2px 2px;
   border: none;
-
+  text-indent: 3em;
   outline: none;
   background: #eeeeff;
   color: var(--theme-color);
-  text-align: center;
-  text-indent: 3em;
+  text-align: center;  
+
 }
- 
+
+/* Input validation */
 input:focus {
   background: none;
   color: var(--theme-color);
   box-shadow: 0 2px  0  var(--theme-highlight-color);
 }
  
-input:required:valid {
+input:required:valid, 
+input:required:valid + .switch {
   box-shadow: 0 2px  0  #0b0;
 }
 
-input:invalid:not(:focus):not(:placeholder-shown) + label:before
-{ border: 1px solid red; 
-display:block;
-content:"";
-position:absolute;
-right:0;
-top:0;
-width:2em;
-height:2em;}
+.customselect .input input ~ .switchInvalid{
+  box-shadow: 0 1px  0  #f00, 0 -1px  0  #f00;
+}
+.customselect .input input ~ .switch.switch--off.switchInvalid{
+  box-shadow: 1px 0  0  #f00,0 1px  0  #f00, 0 -1px  0  #f00;
+}
+.customselect .input input:required:invalid ~ span {
+  box-shadow: -1px 0  0  #f00,0 1px  0  #f00, 0 -1px  0  #f00;
+}
 
-.input input + label:before   {
- 
-  /* display:none; */
+input  + span, input  ~ span    { 
+  transition: all 0.5s;
+  background-position: 0em -5em !important;  
 } 
-.input input:required:valid +label:before   {
-  content:"";
-  position:absolute;
-  right:0;
-  top:0;
-  width:2em;
-  height:2em;
+
+input:valid:not(:focus):not(:placeholder-shown) + span,
+input:valid:not(:focus):not(:placeholder-shown) ~ span
+{
   background: url(check.svg) !important;
   background-size: 1em 1em !important;
   background-repeat: no-repeat !important;;
-  background-position: .5em 1em !important;
-display:block;
+  background-position: .75em .75em !important;  
 } 
+input:valid:not(:focus):not(:placeholder-shown) + span svg,
+input:valid:not(:focus) ~ span svg   {
+display:none;
+}
+input:valid:focus:not(:placeholder-shown) + span svg,
+input:valid:focus ~ span svg   {
+  display:block;
+  }
+ 
+  
+  .field .input > input:invalid       ~  .requirement {
+  display:block;
+  border:5px solid pink;
+}
 
 
 .input {
@@ -430,9 +447,20 @@ display:block;
   position: relative;
   align-items: center;
   justify-content: flex-start;
+  flex:1;
 }
-.customselect .input  {
-  width:2.5em;
+.field.bmi{
+  text-align: center;
+
+  box-shadow: 0 0 0 1px #bbb;
+}
+
+
+ 
+
+
+.customselect .input .switch--on {
+  margin-left:3em;
 }
 .input >span,.customselect .input >span{
   position: absolute;
@@ -450,8 +478,6 @@ display:block;
 
 .customselect {
   display:flex;
-  
-  
 }
 
 .switch {
@@ -468,8 +494,11 @@ display:block;
   background-color:  var(--theme-bg-color);
   transition: .15s ease;
 }
-.switch.switch--on,.switch.switch--off {
+.switch.switch--on,.switch.switch--off,
+.switch.switch--on.switchInvalid ,
+.switch.switch--off.switchInvalid {
   font-variant:unset;
+  flex:1;
 }
 input[type="radio"]  {
  display:none;
@@ -676,7 +705,7 @@ li.active {
 
 .activities.select {
   display: inline-block;
-  box-shadow: 0 0 0 1px  var(--theme-color), 0 15px 40px -10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 0 1px  var(--theme-color), 0 8px 20px -5px rgba(0, 0, 0, 0.3);
   text-align: center;
   width: 120px;
   margin: 0.5em;
@@ -877,6 +906,18 @@ height: 15em;
 
  
 
-/*************** ICONS +++++++++++++++++++++++++++++++++*/
+/*************** MEDIA +++++++++++++++++++++++++++++++++*/
 
+@media only screen and (min-width: 12em) and (max-width: 40em) { 
+  header a div {
+    display:none;
+  }
+  nav .profile {
+    margin:0;
+  }
+  main.active {
+    margin-left:0;
+  }
+  
+}
 

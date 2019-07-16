@@ -94,20 +94,35 @@ class Exercises extends Component {
     } 
   }
   render() {
+   
     return (
       <>
       {this.state.status && <div className="statusMessage"><SvgIcon name="bulb" /> {this.state.status}</div>}
         <section>
           <h4>Exercises</h4>
-          <h1>Add new exercise</h1>
+          <h1>Manage Exercises</h1>
 
-          <div
+          <form
             action="/api/exercise/add"
             id="usrfrm2"
             className="box"
             method="post"
           >
-            <label htmlFor="selectUser">Select Activity </label>
+    <fieldset>
+              <legend>Add new exercise</legend>
+
+            <FormInput fieldName={"Description"} type={"text"} required={true} handler={e => this.handleDesc(e)} />
+   
+            <div className="fieldrow">
+            
+              <StopWatch saveTimer={this.saveTimer} time={this.state.time}/>           
+              <FormInput fieldName={"Date"} type={"date"} required={true} handler={e => this.handleDate(e)} />
+              <FormInput fieldName={"Calories"} type={"text"} required={false} handler={e => calculate(e)} />
+ 
+              
+            </div>
+            </fieldset>
+            <legend htmlFor="selectUser">Select Activity </legend>
             <div className="container grid">
               {this.state.users.length === 0 ? (
                 <div>Loading...</div>
@@ -122,47 +137,13 @@ class Exercises extends Component {
               )}
             </div>
 
-            <div className="field">
-              <label htmlFor="desc">Description *</label>
-              <input id="desc" type="text"   onChange={this.handleDesc} name="description" required />
-            </div>
-            <div className="fieldrow">
-            
-              <StopWatch saveTimer={this.saveTimer} time={this.state.time}/>           
-            
-              
-              
-              <FormInput fieldName={"Date"} type={"date"} required={true} handler={e => this.handleDate(e)} />
-              <FormInput fieldName={"Calories"} type={"text"} required={false} handler={e => calculate(e)} />
- 
-              <div className="field">
-                <label htmlFor="dat">Date </label>
-                <input
-                  id="dat"
-                  type="date"
-                  name="date"
-                  onClick={this.handleDate}
-                  defaultValue={this.state.date}
-                />
-              </div>
-            
-              <div className="field">
-                <label htmlFor="kal">Kalories</label>
-                <input
-                  className="readonlyInput"
-                  id="kal"
-                  name="kal"
-                  value={this.state.kal}
-                />
-              </div>
-            </div>
-             <button className="btn" onClick={() => this.newExercise()} type="submit">Save Exercise</button>
+             <button className="btn" onSubmit={() => this.newExercise()} type="submit">Save Exercise</button>
              or
              <div className="field"></div>
             <div className="container">                   
                 <button className="activities select" style={{maxHeight:"auto"}}>Track on Map</button>
               </div>
-          </div>
+          </form>
 {this.state.responseData && 
           <div className="box">
             <div className="field">

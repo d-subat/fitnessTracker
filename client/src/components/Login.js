@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import SvgIcon from "./SvgIcon";
+import FormInput from "./FormInput";
+
 
 import { withFirebase } from "./Firebase";
 import { withRouter } from "react-router-dom";
@@ -230,16 +232,19 @@ showStatus = (msg) => {
         className="box"
         method="post"
       >
-        <div className="field">
-          <label htmlFor="feFirstName">Username</label>
-          <input id="username" placeholder="Username" value="" disabled/>
+          <fieldset>
+              <legend>Sign In</legend>
+              <div className="fieldrow">
+                <FormInput fieldName={"UserName"} type={"text"} required={true} handler={"e => this.handleMessageInput(e)"} />
+              </div>
+              <div className="fieldrow">
+                <FormInput fieldName={"Password"} type={"text"} required={true} handler={"e => this.handleMessageInput(e)"} />
+              </div>
+ 
+        <div className="fieldrow">
+        <button className="btn" disabled>Login</button><button className="btn" disabled>Register</button>
         </div>
-        <div className="field">
-          <label htmlFor="feLastName">Password</label>
-          <input id="password" placeholder="Password" value="" disabled/>
-        </div>
-        <button className="btn" disabled>Login</button>
-        <hr style={{ width: "100%" }} />
+        </fieldset>
         <strike>or you can</strike>
         Authorization currently only possible with these services:
         <div className="fieldrow">
@@ -248,6 +253,7 @@ showStatus = (msg) => {
           <SignInTwitter showStatus={this.showStatus}/>
           <SignInFacebook showStatus={this.showStatus}/>
         </div>
+        
       </div>
     </section>
   </>

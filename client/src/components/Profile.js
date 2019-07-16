@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import FormInput from "./FormInput";
 import SvgIcon from "./SvgIcon";
 
@@ -52,11 +52,11 @@ const bmiTable = {
   }
 };
 const Mass = {
-  0: "Underweight",
-  1: "normal Weight",
-  2: "slightly Overweight",
-  3: "slightly Overweight",
-  4: "Overweight"
+  0: "underweight",
+  1: "normal weight",
+  2: "slightly overweight",
+  3: "slightly overweight",
+  4: "overweight"
 };
 
 
@@ -68,11 +68,24 @@ function Profile() {
     feAge: "",
     feGender: ""
   });
-  const [bmi, setBMI] = useState();
+  const [genderEmpty, checkGender] = useState(false);
+  const [bmi = [], setBMI] = useState();
   const [status, setStatus] = useState();
 
+  useEffect(() => setValues(form),
+  [form]
+  
+)
+
+useEffect(() => {
+    //const isEmpty = ! new Set (Object.values(form)).has ("");
+    const isEmpty = ! Object.values(form).some( (el) => el === "")
+    if(isEmpty )  {
+     calcBMI();
+   }
+})
   const calcBMI = e => {
-    e.preventDefault();
+   // e.preventDefault();
     setStatus("");
     //Gewicht / (Körpergröße in Metern * Körpergröße in Metern)
     try {
@@ -100,14 +113,14 @@ function Profile() {
       });
 
       setBMI(
-        bmi +
-          " " +
+        [bmi,
+          " - That is " +
           Mass[
             Object.values(bmiTable.age)[
               Object.keys(bmiTable.age).indexOf(closestAge)
             ][feGender].indexOf(closestBMI)
           ]
-      );
+        ]);
     } catch (err) {
       setStatus("Please fill out mandatory fields (marked with *).");
     }
@@ -120,13 +133,21 @@ function Profile() {
   };
 
   const handleChange = e => {
+    const fieldName = e.target.type === "radio" ? e.target.name : e.target.id; // special case for radio
+  
     setValues({
       ...form,
-      [e.target.id]: e.target.value
+      [fieldName]: e.target.value
     });
   };
   const updateAccount = e => {
+    console.log(form.feGender)
+    if (form.feGender === "") {
+      setStatus("Please fill out mandatory fields (marked with *).");
+      checkGender(true);
+      
     e.preventDefault();
+    }
   };
   return (
     <>
@@ -145,99 +166,84 @@ function Profile() {
           <fieldset>
             <legend>Account Settings</legend>
             <div className="fieldrow">
-              <FormInput fieldName={"UserName"} type={"text"} required={true} handler={e => handleChange(e)} />
+              <FormInput fieldName={"UserName"} pattern={"^[a-zA-Z0-9]{1,20}$"} type={"text"} required={true} handler={e => handleChange(e)} />
               <FormInput fieldName={"UserMail"} type={"email"} required={true} handler={e => handleChange(e)} />
             </div>
             <div className="fieldrow">
-            <FormInput fieldName={"Password"} type={"password"} required={true} handler={e => handleChange(e)} />
-            <FormInput fieldName={"PasswordCheck"} type={"password"} required={true} handler={e => handleChange(e)} />
-             </div>
+             <FormInput fieldName={"Password"}  pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" type={"password"} required={true} handler={e => handleChange(e)} />
+             <FormInput fieldName={"PasswordCheck"} type={"password"} required={true} handler={e => handleChange(e)} />             
+            </div>
+            <div className="requirement">Passwort must be min 8 Characters and contain: UpperCase, LowerCase, Number/Special Char" </div>
           </fieldset>
           <fieldset>
-            <legend>Adress Information</legend>
+          <legend>Adress Information</legend>
+          <details>
+          <summary>Mandatory</summary>
+            
+           
             <div className="fieldrow">
-              <div className="field">
-                <label htmlFor="feFirstName">First Name</label>
-                <input id="feFirstName" placeholder="First Name" value="" />
-              </div>
-              <div className="field">
-                <label htmlFor="feLastName">Last Name</label>
-                <input id="feLastName" placeholder="Last Name" value="" />
-              </div>
+            <FormInput fieldName={"FirstName"} type={"text"} required={true} handler={e => handleChange(e)} />
+            <FormInput fieldName={"LastName"} type={"text"} required={true} handler={e => handleChange(e)} />
             </div>
             <div className="fieldrow">
               <FormInput fieldName={"Address"} type={"text"} required={true} handler={e => handleChange(e)} />
               <FormInput fieldName={"City"} type={"text"} required={true} handler={e => handleChange(e)} />
             </div>
             <div className="fieldrow">
-            <FormInput fieldName={"Zip"} type={"number"} required={true} handler={e => handleChange(e)} />
-
+              <FormInput fieldName={"Zip"} type={"number"} required={true} handler={e => handleChange(e)} />
               <FormInput fieldName={"Country"} type={"text"} required={true} handler={e => handleChange(e)} />
-
             </div>
+            </details>
+            
           </fieldset>
           <fieldset>
             <legend>Health Details </legend>
             <div className="fieldrow">
-            <FormInput fieldName={"Weight"} type={"number"} required={true} handler={e => handleChange(e)} />
-            <FormInput fieldName={"Height"} placeholder="cm" minmax={["100","250"]} type={"number"} required={true} handler={e => handleChange(e)} />
- 
-
-              <FormInput fieldName={"Age"} type={"number"} required={true} handler={e => handleChange(e)} />
- 
+             <FormInput fieldName={"Weight"} type={"number"} minmax={["10","250"]} required={true} handler={e => handleChange(e)} />
+             <FormInput fieldName={"Height"} placeholder="cm" minmax={["100","250"]} type={"number"} required={true} handler={e => handleChange(e)} />
+             <FormInput fieldName={"Age"} type={"number"} minmax={["16","120"]}required={true} handler={e => handleChange(e)} />
 
               <div className="field">
                 <label>Gender *</label>
-                
-  
-                <div className="customselect">
+                 <div className="customselect">
                 <div className="input">
-                <span>
-            <SvgIcon name={"feGender"} />
-          </span>
-          </div>
-                  <input
-                    type="radio"
-                    name="s1"
-                    id="feGenderFemale"
-                    defaultValue="Female"
-                    hidden
-                  />
-                  <label for="feGenderFemale" class="switch switch--on">
+                  <input type="radio" name="feGender" id="feGenderFemale"  onClick={e => handleChange(e)}  required defaultValue="Female" hidden />
+                  <label htmlFor="feGenderFemale" className= { genderEmpty ? "switch switch--on switchInvalid":"switch switch--on"}>
                     Female
                   </label>
-
-                  <input
-                    type="radio"
-                    name="s1"
-                    id="feGenderMale"
-                    defaultValue="Male"
-                    hidden
-                  />
-                  <label for="feGenderMale" class="switch switch--off">
+                  <input type="radio" name="feGender" id="feGenderMale" onClick={e => handleChange(e)} required defaultValue="Male" hidden />
+                  <label htmlFor="feGenderMale" className={ genderEmpty ? "switch switch--off switchInvalid":"switch switch--off"}>
                     Male
                   </label>
+                  <span className={ form.feGender === "" &&genderEmpty ? "switchInvalid":""}>
+                   <SvgIcon name={"feGender"} />
+                </span>
+                  </div>
                   </div>
                 </div>
+             
+                 {(bmi[0]) && <div className="fieldrow">
+                  <div className="field bmi">
+                <label htmlFor="feWeight">Calculated Result:</label>
+                
+          <div>
+            BMI: {bmi[0]}
+          </div>
+          <div>
+            {bmi[1]}
+          </div>
+
+        </div>
+      </div>
+      }
+              
+      NOTE: In order to calculate calories burnt with an actity, first we need to calculate your BMI. 
+              At best, the BMI can provide a first indication of weight
+              assessment.
               </div>
-            
-            <div className="fieldrow">
-              <div className="field">
-                <label htmlFor="feWeight">Calculated BMI:</label>
-                <input value={bmi} className="readonlyInput" />
-                <button onClick={calcBMI} className="btn btn-accent">
-                  ReCalc BMI
-                </button>
-              </div>
-              <div id="BMI" />
-              NOTE: At best, the BMI can provide a first indication of weight
-              assessment. However, to calculate the ideal weight, it is not
-              suitable if it is used alone and not supplemented by further body
-              fat measurements.
-            </div>
           </fieldset>
 
-          <button type="submit" className="btn btn-accent">
+          <button onSubmit={(e) => updateAccount(e)} className="btn btn-accent">
             Update Account
           </button>
         </form>

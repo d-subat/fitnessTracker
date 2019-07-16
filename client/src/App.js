@@ -47,7 +47,7 @@ function App() {
         
         <main className={sideBar && auth? "bounceInDown active": "bounceInDown " }>
           <Switch>
-        <Route path="/" exact={true} render={() => <Login />}/>
+        <Route path="/" exact={true} render={() => <Home />}/>
           <Route path="/dashboard" render={() => <Dashboard routes={routes} />}/>
           {routes.map(route => (
             <Route
@@ -57,7 +57,7 @@ function App() {
               component={route.component}             
             />
           ))}
-        <Route path="/home" exact={true} render={() => <Home  />}/>
+        <Route path="/login" exact={true} render={() => <Login  />}/>
   
            
            <Route component={NotFound} />

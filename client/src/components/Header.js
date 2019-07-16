@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import SvgIcon from "./SvgIcon";
 import Logo from "../logo.svg";
 import Logout from "./Logout";
+import { withAuthorization}  from './Session';
 
 const Header = props => {
   const [showDropDown, toggleSettings] = useState(false);
@@ -33,11 +34,11 @@ const Header = props => {
       <header>
         <Link to="/home">
           <img src={Logo} alt="FitnessTracker Logo" />
-          FitnessTracker v1.0
+          <div>FitnessTracker v1.0</div>
         </Link>
         <div><button className="breadcrumb" ><SvgIcon name="Back" /> Current Location</button></div>
         <div>
-          <input value="Search" />
+          <input value="Search" className="search"/>
           <button
             onClick={() => toggleSettings(!showDropDown)}
             className="settings">
@@ -62,4 +63,7 @@ const Header = props => {
     </>
   );
 };
-export default Header;
+const condition = authUser => !!authUser;
+
+export default withAuthorization(condition)(Header);
+

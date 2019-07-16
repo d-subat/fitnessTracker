@@ -1,14 +1,16 @@
 import React, { Component } from "react";
 import axios from "axios";
+import FormInput from "./FormInput";
 
 const HOST = "http://localhost:4000";
-const acticityGetUrl = "/api/exercise/users";
-//const acticityPostUrl = "/api/exercise/new-user";
-const myUrl = HOST + acticityGetUrl;
+const activityGetUrl = "/api/exercise/users";
+const exerciseGetUrl = "/api/exercise/log";
+
 
 class Logs extends Component {
   state = {
     users: [],
+    exercises: [],
     newuser: "",
     status: ""
   };
@@ -17,8 +19,17 @@ class Logs extends Component {
   }
   getUsers = () => {
     axios
-      .get(myUrl)
+      .get(HOST + activityGetUrl)
       .then(data => this.setState({ users: data.data.reverse() }))
+      .catch(err => {
+        console.log(err);
+        return null;
+      });
+  };
+  getExercises = () => {
+    axios
+      .get(HOST + exerciseGetUrl)
+      .then(data => this.setState({ exercises: data.data.reverse() }))
       .catch(err => {
         console.log(err);
         return null;
@@ -30,6 +41,7 @@ class Logs extends Component {
     console.log(this.state.newuser);
   }
   render() {
+    const today = new Date().toISOString().substring(0, 10);
     return (
   <>
   <section>
@@ -37,7 +49,19 @@ class Logs extends Component {
   <h1>Recent Exercises</h1>
   
 
-  <label for="selectUser">Select Activity </label>
+
+  <div action="/api/exercise/log" method="get" id="usrfrm3" className="box">
+      
+  <fieldset>
+              <legend>List your exercises</legend>
+      
+      <div className="fieldrow    ">
+        <FormInput fieldName={"From Date"} type={"date"} required={true} value={today} handler={"e => this.handleDate(e)"} />
+        <FormInput fieldName={"To Date"} type={"date"} required={true} minmax={[today,0]} value={today} handler={"e => this.handleDate(e)"} />
+        <FormInput fieldName={"Limit Count"} type={"number"} minmax={[1,500]} required={true} value={today} handler={""} />
+      </div>
+      </fieldset>
+      <legend for="selectUser">Select Activity </legend>
             <div className="container grid">
               {this.state.users.length === 0 ? (
                 <div>Loading...</div>
@@ -51,53 +75,26 @@ class Logs extends Component {
                 })
               )}
             </div>
-  <div action="/api/exercise/log" method="get" id="usrfrm3" className="box">
-      
-
-      
-      <div className="fieldrow    ">
-          <div className="field">
-              <label for="from">From (Date)</label>
-              <input id="from" type="date" name="from"      value={new Date().toISOString().substring(0, 10)}/>
-          </div>
-          <div className="field">
-              <label for="to">To (Date)</label>
-              <input id="to" min="" onfocus="document.getElementById('to').min = document.getElementById('from').value "
-                  type="date" name="to"      value={new Date().toISOString().substring(0, 10)}/>
-          </div>
-          <div className="field">
-              <label for="limit">Limit Count </label>
-              <input id="limit" type="number" min="1" name="limit"/>
-          </div>
+      <button className="btn" onClick={() => this.getExercises() }  type="submit">List Exercises</button>
+      Leave blank to show all.
       </div>
-      <button className="btn" type="submit">List Exercises</button>
-      </div>
-            
+{this.state.exercises.length >= 1 &&             
             <div className="box">
-      <h2>Successfully searched for exercises for User ID 'a7fd89e' (user 'test') from
-          '08-11-2017' to '09-27-2018':</h2>
+      <h2>Successfully searched for exercises  with activity {this.state.newuser}<br/>        '08-11-2017' to '09-27-2018':</h2>
       <div id="result3">
-
-          <h3>View as List Grid</h3>
-          <div className="log">
-              <div className="exercise">
-                  <div className="date"> 01-06-2018</div>
-                  <div className="description"> useful description</div>
-                  <div className="duration"> 2 mins</div>
-              </div>
-              <div className="exercise">
-                  <div className="date"> 02-07-2018</div>
-                  <div className="description"> useful description</div>
-                  <div className="duration"> 20 mins</div>
-              </div>
-              <div className="exercise">
-                  <div className="date"> 03-06-2018</div>
-                  <div className="description"> useful description</div>
-                  <div className="duration"> 2 mins</div>
-              </div>
-          </div>
+      {this.state.exercises.map((e, i) => {
+                  return (
+<div>       
+                      {e.username}
+                    </div>
+                  );
+                })
+                }
+ 
       </div>
+    
       </div>
+      }
   </section>
 </>
 

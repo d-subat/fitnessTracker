@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import ToolTip from "./Tooltip";
 
 /*
 const sStats = (props) => (
@@ -34,7 +33,9 @@ class Stats extends Component {
       path.style.strokeDashoffset = "0";
     }
   };
-  componentDidMount() {
+  
+  componentDidUpdate(prevProps,prevState) {
+    if (prevState)
     this.animate(this.props.name);
   }
 
@@ -53,7 +54,7 @@ class Stats extends Component {
         <div className="stats">
           <h2>{this.props.name}</h2>
           <h2>{this.props.sum}</h2>
-          <div class="chart">
+          <div className="chart">
             {this.props.data.map((value, index) => {
               return <Bar tipnr={index} value={value} color={colors[index]} />;
             })}
@@ -69,10 +70,10 @@ class Stats extends Component {
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              class={this.props.name}
+              className={this.props.name}
               fill="none"
               stroke="red"
-              stroke-width="2"
+              strokeWidth="2"
               strokeDashoffset="220"
               d={"M" + this.createPath()}
             />

@@ -8,6 +8,9 @@ router.post('/api/exercise/new-user', model.addUser);
 // show all users
 router.get('/api/exercise/users', model.showUsers);
 
+//deleteUser
+router.post('/api/exercise/delete-user', model.deleteUser);
+
 //Add exercise
 router.post('/api/exercise/add', model.addExercise);
 

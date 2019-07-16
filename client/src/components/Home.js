@@ -17,7 +17,7 @@ It is known that restful sleep and regular exercise are important for personal w
 </p>
 
     
-<NavLink to="/" className="btn">Start Today</NavLink>
+<NavLink to="/login" className="btn">Start Today</NavLink>
 
 </div>
 
