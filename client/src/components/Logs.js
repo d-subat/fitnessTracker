@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import FormInput from "./FormInput";
+import ReactDOM from 'react-dom'
 
 const HOST = "http://localhost:4000";
 const activityGetUrl = "/api/exercise/users";
@@ -12,10 +13,16 @@ class Logs extends Component {
     users: [],
     exercises: [],
     newuser: "",
-    status: ""
+    status: "",
+    isScrolling: false
   };
+
+
+ 
+
   async componentDidMount() {
     this.getUsers();
+ 
   }
   getUsers = () => {
     axios
@@ -40,6 +47,8 @@ class Logs extends Component {
     this.setState({ newuser: id});   
     console.log(this.state.newuser);
   }
+  
+ 
   render() {
     const today = new Date().toISOString().substring(0, 10);
     return (
@@ -82,15 +91,17 @@ class Logs extends Component {
             <div className="box">
       <h2>Successfully searched for exercises  with activity {this.state.newuser}<br/>        '08-11-2017' to '09-27-2018':</h2>
       <div id="result3">
+     
+     
       {this.state.exercises.map((e, i) => {
                   return (
-<div>       
+<div className="vertical">       
                       {e.username}
                     </div>
                   );
                 })
                 }
- 
+
       </div>
     
       </div>

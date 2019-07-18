@@ -47,10 +47,10 @@ class Stopwatch extends Component {
              <FormInput fieldName={"StopWatch"} value={this.state.time} type={"time"} required={true} handler={e => this.handleChange(e)} />
  
           
-          <button onClick={this.handleTimer} title="Record exercise duration">{!status? <SvgIcon name="Record" />: <SvgIcon name="Stop" />}</button>
+          <button onClick={this.handleTimer} className="stopwatch" title="Record exercise duration">{!status? <SvgIcon name="Record" />: <SvgIcon name="Stop" />}</button>
 
             {    runningTime>0 && (
-              <button className="reset" onClick={this.handleReset}><SvgIcon name="Reset" /></button>
+              <button className="reset stopwatch" onClick={this.handleReset}><SvgIcon name="Reset" /></button>
             )}
             </div>
     );

@@ -13,7 +13,7 @@
 
 	--theme-bg-color: #fff;
   --theme-color: black;
-  --theme-highlight-color: #1b7fe4;
+  --theme-highlight-color: #52aafc;
   --theme-side-color: #eee;
 }
 
@@ -29,7 +29,7 @@ body {
   background: linear-gradient(45deg, rgb(104, 172, 255) 0%, rgba(135, 92, 207, 1) 29%, rgba(188, 53, 169, 1) 65%, rgba(251, 8, 129, 1) 100%);
   background-image: radial-gradient(circle farthest-corner at 12.3% 19.3%, rgba(85, 88, 218, 1) 0%, rgba(95, 209, 249, 1) 100.2%);
   background: linear-gradient(to top, var(--theme-bg-color) 91%, var(--theme-side-color)) fixed;
-
+  background: linear-gradient(35deg, #aed5fa 60%, #f0f0f0 100%) fixed;
 min-height: 100vh;
   margin: 0;
   color: var(--theme-color);
@@ -247,7 +247,7 @@ nav a {
   display: flex;
   align-items: center;
   font-variant: small-caps;
-  font-weight: 600;
+  font-weight: 800;
   font-style: italic;
   letter-spacing: 1px;
   cursor: pointer;
@@ -302,6 +302,7 @@ nav a:hover .icon-svg {
   fill: var(--theme-highlight-color);
   color: var(--theme-highlight-color);
   font-weight: 800;
+  text-shadow: 0 0  1px #3d83c5;
 }
 
 main {
@@ -526,6 +527,7 @@ input[type="radio"]:checked + .switch--on ,input[type="radio"]:checked + .switch
   justify-content: center;
 }
 
+
 .btn svg {
   margin: 0px 0.5em 0px 0px;
   width:1.5em;
@@ -580,6 +582,7 @@ input[type="radio"]:checked + .switch--on ,input[type="radio"]:checked + .switch
   font-size: 1em;
   text-decoration:none;
 }
+
 .box a {
   padding: 0 1em 0 1em ;
 }
@@ -737,6 +740,9 @@ li.active {
   max-width: max-content;
   height: 5em;
   width: 20em;
+}
+.stopwatch {
+  height: auto !important;
 }
 
 .field.duration {
@@ -920,4 +926,17 @@ height: 15em;
   }
   
 }
-
+#result3{
+  width: 30em;
+  overflow:hidden;
+  border: 1px solid black;
+}
+.scroll-container {
+  display:flex;
+  pointer-events: none;
+  cursor: grab;
+}
+.vertical {
+  min-width:20em;
+} 
+ 
