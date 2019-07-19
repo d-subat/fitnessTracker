@@ -1,8 +1,8 @@
-import React, { useState,useEffect } from "react";
+import React, { useState,useEffect,useRef } from "react";
 import FormInput from "./FormInput";
 import SvgIcon from "./SvgIcon";
 
-import { withAuthorization } from "./Session";
+import {  AuthUserContext, withAuthorization } from "./Session";
 
 /*
   male: 
@@ -68,10 +68,11 @@ function Profile() {
     feAge: "",
     feGender: ""
   });
+
   const [genderEmpty, checkGender] = useState(false);
   const [bmi = [], setBMI] = useState();
-  const [status, setStatus] = useState();
-
+  const [status = [], setStatus] = useState();
+  const ref = React.createRef();
   useEffect(() => setValues(form),
   [form]
   
@@ -111,7 +112,8 @@ useEffect(() => {
       ) {
         return Math.abs(curr - bmi) < Math.abs(prev - bmi) ? curr : prev;
       });
-
+  
+      
       setBMI(
         [bmi,
           " - That is " +
@@ -139,19 +141,39 @@ useEffect(() => {
       ...form,
       [fieldName]: e.target.value
     });
+    const test = AuthUserContext ;
+    console.log(test);
   };
-  const updateAccount = e => {
-    console.log(form.feGender)
+  const updateAccount = e => {    
+    setStatus("");
+    console.log(e.target.reportValidity());
     if (form.feGender === "") {
-      setStatus("Please fill out mandatory fields (marked with *).");
+
       checkGender(true);
       
-    e.preventDefault();
+    //e.submit;
     }
-  };
+    if(e.target.reportValidity()) {
+      setStatus("Please fill out mandatory fields (marked with *).");
+    }
+  }
+  const errorCheck = e => {
+    
+      setStatus([]);    
+      if(!e.target.reportValidity()) {
+        setStatus([e.target.type,"Please fill out mandatory fields (marked with *)."]);       
+      }
+        if (e.target.id === "fePassword")
+      {
+        e.target.value !== ref.current.value &&
+        setStatus([e.target.type,"Pass dont match."]);       
+
+      }
+  }
+
   return (
     <>
-      {status && <div className="statusMessage"> {status}</div>}
+      
       <section>
         <h4>Overview</h4>
         <h1>Profile</h1>
@@ -166,14 +188,15 @@ useEffect(() => {
           <fieldset>
             <legend>Account Settings</legend>
             <div className="fieldrow">
-              <FormInput fieldName={"UserName"} pattern={"^[a-zA-Z0-9]{1,20}$"} type={"text"} required={true} handler={e => handleChange(e)} />
-              <FormInput fieldName={"UserMail"} type={"email"} required={true} handler={e => handleChange(e)} />
+              <FormInput fieldName={"UserName"} pattern={"^[a-zA-Z0-9]{1,20}$"} type={"text"} required={true} onBlur={errorCheck}  handler={e => handleChange(e)} />
+              <FormInput fieldName={"UserMail"} type={"email"} required={true} onBlur={errorCheck}  handler={e => handleChange(e)} />
+              {status[0]==="email" && <div className="errorMsg"> {status[1]} Email trala </div>}
             </div>
             <div className="fieldrow">
-             <FormInput fieldName={"Password"}  pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" type={"password"} required={true} handler={e => handleChange(e)} />
-             <FormInput fieldName={"PasswordCheck"} type={"password"} required={true} handler={e => handleChange(e)} />             
+             <FormInput fieldName={"Password"}  pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" type={"password"} required={true} onBlur={errorCheck}  handler={e => handleChange(e)} />
+             <FormInput  fieldName={"PasswordCheck"} ref={ref} pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" type={"password"} required={true} onBlur={errorCheck}  handler={e => handleChange(e)} />             
             </div>
-            <div className="requirement">Passwort must be min 8 Characters and contain: UpperCase, LowerCase, Number/Special Char" </div>
+            {status[0]==="password" && <div className="errorMsg"> {status[1]} Passwort must be min 8 Characters and contain: UpperCase, LowerCase, Number/Special Char" </div>}
           </fieldset>
           <fieldset>
           <legend>Adress Information</legend>
@@ -182,16 +205,16 @@ useEffect(() => {
             
            
             <div className="fieldrow">
-            <FormInput fieldName={"FirstName"} type={"text"} required={true} handler={e => handleChange(e)} />
-            <FormInput fieldName={"LastName"} type={"text"} required={true} handler={e => handleChange(e)} />
+            <FormInput fieldName={"FirstName"} type={"text"}   handler={e => handleChange(e)} />
+            <FormInput fieldName={"LastName"} type={"text"}   handler={e => handleChange(e)} />
             </div>
             <div className="fieldrow">
-              <FormInput fieldName={"Address"} type={"text"} required={true} handler={e => handleChange(e)} />
-              <FormInput fieldName={"City"} type={"text"} required={true} handler={e => handleChange(e)} />
+              <FormInput fieldName={"Address"} type={"text"}   handler={e => handleChange(e)} />
+              <FormInput fieldName={"City"} type={"text"}   handler={e => handleChange(e)} />
             </div>
             <div className="fieldrow">
-              <FormInput fieldName={"Zip"} type={"number"} required={true} handler={e => handleChange(e)} />
-              <FormInput fieldName={"Country"} type={"text"} required={true} handler={e => handleChange(e)} />
+              <FormInput fieldName={"Zip"} type={"number"}   handler={e => handleChange(e)} />
+              <FormInput fieldName={"Country"} type={"text"}  handler={e => handleChange(e)} />
             </div>
             </details>
             
@@ -208,15 +231,15 @@ useEffect(() => {
                  <div className="customselect">
                 <div className="input">
                   <input type="radio" name="feGender" id="feGenderFemale"  onClick={e => handleChange(e)}  required defaultValue="Female" hidden />
-                  <label htmlFor="feGenderFemale" className= { genderEmpty ? "switch switch--on switchInvalid":"switch switch--on"}>
+                  <label htmlFor="feGenderFemale" className= {form.feGender === "" && genderEmpty ? "switch switch--on switchInvalid":"switch switch--on"}>
                     Female
                   </label>
                   <input type="radio" name="feGender" id="feGenderMale" onClick={e => handleChange(e)} required defaultValue="Male" hidden />
-                  <label htmlFor="feGenderMale" className={ genderEmpty ? "switch switch--off switchInvalid":"switch switch--off"}>
+                  <label htmlFor="feGenderMale" className={form.feGender === "" && genderEmpty ? "switch switch--off switchInvalid":"switch switch--off"}>
                     Male
                   </label>
                   <span className={ form.feGender === "" &&genderEmpty ? "switchInvalid":""}>
-                   <SvgIcon name={"feGender"} />
+                   <SvgIcon name={"feGender"}  />
                 </span>
                   </div>
                   </div>
@@ -224,6 +247,7 @@ useEffect(() => {
              
                  {(bmi[0]) && <div className="fieldrow">
                   <div className="field bmi">
+                  
                 <label htmlFor="feWeight">Calculated Result:</label>
                 
           <div>
@@ -236,14 +260,15 @@ useEffect(() => {
         </div>
       </div>
       }
-              
+        
+        
       NOTE: In order to calculate calories burnt with an actity, first we need to calculate your BMI. 
               At best, the BMI can provide a first indication of weight
               assessment.
               </div>
           </fieldset>
 
-          <button onSubmit={(e) => updateAccount(e)} className="btn btn-accent">
+          <button onClick={(e) => updateAccount(e)} className="btn btn-accent">
             Update Account
           </button>
         </form>

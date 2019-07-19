@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import SvgIcon from "./SvgIcon";
-import Logo from "../logo.svg";
 import Logout from "./Logout";
 import { withAuthorization}  from './Session';
+import { NavLink } from "react-router-dom";
 
 const Header = props => {
   const [showDropDown, toggleSettings] = useState(false);
   const [darkMode, toggleDarkMode] = useState(true);
+  const [showSearch, toggleSearch] = useState(false);
 
   useEffect(() => {
     const localTheme = window.localStorage.getItem("fitnesstracker-theme");
@@ -33,12 +34,19 @@ const Header = props => {
     <>
       <header>
         <Link to="/home">
-          <img src={Logo} alt="FitnessTracker Logo" />
+        <SvgIcon name="rocket" />
           <div>FitnessTracker v1.0</div>
         </Link>
-        <div><button className="breadcrumb" ><SvgIcon name="Back" /> Current Location</button></div>
+        
+        {props.history.location.pathname!=="/" && 
+        <NavLink activeClassName="breadcrumb"  to="/">
+        <SvgIcon name="Back" />{props.history.location.pathname.substr(1,) }
+      </NavLink>
+}
         <div>
-          <input value="Search" className="search"/>
+        <button className="searchButton" onClick={() => toggleSearch(!showSearch)}>
+            <SvgIcon name="search" />         
+        </button>
           <button
             onClick={() => toggleSettings(!showDropDown)}
             className="settings">
@@ -51,6 +59,9 @@ const Header = props => {
           </button>
         </div>
       </header>
+      <div className={showSearch ? "search active" : "search"}>
+        <input  type="text" placeholder="search" id="search"/> 
+      </div>
       <div className={showDropDown ? "dropdown active" : "dropdown"}>
         <a href="/settings" className="dropdownmenu">
           Settings

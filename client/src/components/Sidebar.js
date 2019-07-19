@@ -8,7 +8,7 @@ const Sidebar = props => (
   
 
 
-  <nav  className={ props.sideBar && "active"}>
+  <nav  className={ props.sideBar? "active" :undefined}>
 
      
     <div className="profile">      
@@ -48,19 +48,7 @@ const Sidebar = props => (
       </NavLink>
     ))}
      
-     <div class="morph-shape" data-morph-open="M300-10c0,0,295,164,295,410c0,232-295,410-295,410" data-morph-close="M300-10C300-10,5,154,5,400c0,232,295,410,295,410">
-	 
-     <svg width="100" height="130" viewBox="0 0 75 47" xmlns="http://www.w3.org/2000/svg">
-     <path fill="none" d="M300-10c0,0,0,164,0,410c0,232,0,410,0,410" fill-rule="nonzero" fill="#070707">
-<animate dur="5s" repeatCount="indefinite" attributeName="d" 
-values="M300-10c0,0,295,164,295,410c0,232-295,410-295,410 Z;" 
-fill="freeze"
-      calcMode="spline"
-      keySplines="0.4 0 0.2 1; 0.4 0 0.2 1" />
-  </path>
-</svg>
-</div>
-  </nav>
+   </nav>
  
 	
 

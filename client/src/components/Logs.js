@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import axios from "axios";
 import FormInput from "./FormInput";
-import ReactDOM from 'react-dom'
+import ActivityList from "./ActivityList";
+import {AxiosRequest} from "./AxiosRequest";
+
 
 const HOST = "http://localhost:4000";
 const activityGetUrl = "/api/exercise/users";
@@ -44,13 +46,14 @@ class Logs extends Component {
   };
   selectActivity = (id) => {
       
-    this.setState({ newuser: id});   
+    this.setState({ activity: id});   
     console.log(this.state.newuser);
   }
   
  
   render() {
     const today = new Date().toISOString().substring(0, 10);
+    
     return (
   <>
   <section>
@@ -67,23 +70,11 @@ class Logs extends Component {
       <div className="fieldrow    ">
         <FormInput fieldName={"From Date"} type={"date"} required={true} value={today} handler={"e => this.handleDate(e)"} />
         <FormInput fieldName={"To Date"} type={"date"} required={true} minmax={[today,0]} value={today} handler={"e => this.handleDate(e)"} />
-        <FormInput fieldName={"Limit Count"} type={"number"} minmax={[1,500]} required={true} value={today} handler={""} />
+        <FormInput fieldName={"Limit Count"} type={"number"} minmax={[1,500]} required={true} handler={""} />
       </div>
       </fieldset>
-      <legend for="selectUser">Select Activity </legend>
-            <div className="container grid">
-              {this.state.users.length === 0 ? (
-                <div>Loading...</div>
-              ) : (
-                this.state.users.map((e, i) => {
-                  return (
-                    <div key={i} onClick={() => this.selectActivity(e.username)} className={this.state.newuser===e.username? "activities select active" :"activities select"}>
-                      {e.username}
-                    </div>
-                  );
-                })
-              )}
-            </div>
+ 
+     <ActivityList activity={this.state.activity} handler={(id) => this.selectActivity(id)} />
       <button className="btn" onClick={() => this.getExercises() }  type="submit">List Exercises</button>
       Leave blank to show all.
       </div>
@@ -106,11 +97,32 @@ class Logs extends Component {
     
       </div>
       }
+    <Photos />
   </section>
 </>
 
 );
 }
+}
+
+function Photos() {
+  const [data, loading] = AxiosRequest()
+  return (
+    <>
+      <h1>Photos</h1>
+      {loading ? (
+        "Loading..."
+      ) : (
+        <ul>
+          {data.map(({ id, title, url }) => (
+            <li key={`photo-${id}`}>
+              <img alt={title} src={url} />
+            </li>
+          ))}
+        </ul>
+      )}
+    </>
+  );
 }
 
 

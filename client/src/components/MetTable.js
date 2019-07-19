@@ -1,31 +1,44 @@
+export function calculate(objExc) {
+    
+    const fields = {
+        'height': 173,
+        'weight': 80,
+        'age': 35,
+        'gender': "male",
+        'activity': "cycling",
+        'duration': 60,
+        getValue: function(item)  {
+            return this[item]   ;
+        }
+    }
+    console.log(objExc.activity);
+    const outputValues = {};
+    var height = objExc.height;
+    var weight = objExc.weight;
+    var age = objExc.age;
+    var time = objExc.duration;
+    var mets =  MetTable.filter( (item) => item.name===objExc.activity)[0].MET;
+    
+    var v;
+    if (objExc.gender === 'male')
+        v = 66.5 + (13.75 * weight) + (5.003 * height) - (6.775 * age);
+    else
+        v = 655.1 + (9.563 * weight) + (1.85 * height) - (4.676 * age);
 
-export function calculate(objExcercise) {
+    v = (v * mets) / 24;
+    outputValues['HOURLY_VALUE'] = Math.round(v);
+    v = v * time / 60;
 
- var height = this.fields.getValue('height');
- var weight = this.fields.getValue('weight');
- var age = this.fields.getValue('age');
- var time = this.fields.getValue('activity-interval');;
- var mets = this.activityValues[this.fields.getValue('activity-type')];
-
- var v;
- if (this.fields.getValue('height')==='man') 
-v = 66.5 + (13.75 * weight) + (5.003 * height) - (6.775 * age);
- else
-v = 655.1 + (9.563 * weight) + (1.85 * height) - (4.676 * age);
-
- v = (v * mets)/24;
- this.outputValues['HOURLY_VALUE'] = Math.round(v);
- v = v*time/60;
-
- this.outputValues['INTERVAL_VALUE'] = Math.round(v);
- this.outputValues['SELECTED_ACTIVITY'] = this.translations.ACTIVITY[this.fields.getValue('activity-type')];
- this.outputValues['INTERVAL_LENGTH'] = time;
+    outputValues['INTERVAL_VALUE'] = Math.round(v);
+    outputValues['SELECTED_ACTIVITY'] = fields.getValue('activity');
+    outputValues['INTERVAL_LENGTH'] = time;
+    console.log(outputValues);
+    return outputValues['INTERVAL_VALUE'];
 }
 
 
 
-const MetTable = [
-    {
+const MetTable = [{
         "name": "aerobics",
         "MET": "6.83"
     },
@@ -48,7 +61,7 @@ const MetTable = [
         "name": "climbing",
         "MET": "8"
     }, {
-        "name": "cycling",
+        "name": "Bike",
         "MET": "9.5"
     }, {
         "name": "dancing",
