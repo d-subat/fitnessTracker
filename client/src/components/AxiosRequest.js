@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from "react";
 import axios from "axios";
 
-const HOST = "http://localhost:4000";
+const HOST = "http://192.168.178.20:4000";
 const acticityPostUrl = "/api/exercise/new-user";
 const acticityPatchUrl = "/api/exercise/delete-user";
 const activityGetUrl = "/api/exercise/users";

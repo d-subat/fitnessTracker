@@ -3,61 +3,69 @@ import axios from "axios";
 import SvgIcon from "./SvgIcon";
 import Loader from "./loader";
 
-const HOST = "http://localhost:4000";
-const activityGetUrl = "/api/exercise/users";
+
 
 class ActivityList extends Component {
-  state = {
-    users: [],
-    exercises: [],
-    activity: "",
-    status: ""
-  };
+ 
+  
 
   async componentDidMount() {
-    this.getUsers();
+ 
+   
+    const item = document.getElementsByClassName("scrollwrapper")[0];
+    item.addEventListener("wheel", onScroll);
+    item.addEventListener("touchmove", onScroll);
+    item.addEventListener("mousedown", onScroll);
+    item.addEventListener("mouseup", () => item.removeEventListener('mousemove', onScroll ) );
+    
+    function onScroll(e) {
+      if (e.deltaY > 0) item.scrollLeft += 50;
+      else item.scrollLeft -= 50;
+    }
   }
-  getUsers = () => {
-    axios
-      .get(HOST + activityGetUrl)
-      .then(data => this.setState({ users: data.data.reverse() }))
-      .catch(err => {
-        console.log(err);
-        return null;
-      });
-  };
+
+
+
+
 
   render() {
     return (
       <>
+ 
         <legend>Select Activity </legend>
-        <div className="container grid">
-          {this.state.users.length === 0 ? (
-             <Loader />
-          ) : (
-            this.state.users.map((e, i) => {
-              return (
-                <div
-                  key={i}
-                  onClick={() => this.props.handler(e.username)}
-                  className={
-                    this.props.activity === e.username
-                      ? "activities select active"
-                      : "activities select"
-                  }
-                >
-                  {this.props.deleteUser && (
-                    <div
-                      className="delete"
-                      onClick={() => this.props.deleteUser(e._id, e.username)}>
-                      <SvgIcon name="Reset" />
-                    </div>
-                  )}
-                  {e.username}
-                </div>
-              );
-            })
-          )}
+        <div className="scrollwrapper no-scrollbar">
+          <ul className={this.props.activities.length === 0 ? "hs full no-scrollbar center" : "hs full no-scrollbar"}>
+          
+            {this.props.activities.length === 0 ? (
+          <Loader />
+            ) : (
+              this.props.activities.map((e, i) => {
+                return (
+                  <li 
+                    key={i}
+                    onClick={() => this.props.handler(e.name)}
+                    className={
+                      this.props.activity === e.name
+                        ? "active  activities select item"
+                        : "activities select item "
+                    }
+                  >
+                 
+                    {this.props.deleteToggle && (
+                      <div
+                        className="delete"
+                        onClick={() => this.props.deleteUser(e._id, e.name)}
+                      >
+                        <SvgIcon name="Reset" />
+                      </div>
+                    )}
+                    {e.name}
+                  </li>
+                );
+              })
+            )}
+          </ul>
+          
         </div>
       </>
     );

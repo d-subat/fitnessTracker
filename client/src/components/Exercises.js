@@ -8,7 +8,7 @@ import FormInput from "./FormInput";
 import ActivityList from "./ActivityList";
 
 
-const HOST = "http://localhost:4000";
+const HOST = "http://192.168.178.20:4000";
 const acticityGetUrl = "/api/exercise/users";
 const acticityPostUrl = "/api/exercise/add";
 const myUrl = HOST + acticityGetUrl;
@@ -40,20 +40,24 @@ class Exercises extends Component {
   };
   newExercise = (e) => {
     //#### STATUS MESSAGE!!!
-    e.preventDefault();
-    if (this.state.activity.length > 3 && this.state.description && this.state.time && this.state.date){
-      
+    
+ e.preventDefault();
+ 
+    if (this.state.activity && this.state.description && this.state.time && this.state.date){
       const excObj = {
+
+//################ get BMI from auth!!! 
+
         weight: 100,
         height: 150,
         age: 35,
         gender: "male",
-        duration: this.state.duration,
+        duration: this.state.runningTime,
         activity: this.state.activity
       }
-
-      this.setState({kal: calculate(excObj) });
-    console.log("kal", calculate(excObj))
+const calculatedCalories = calculate(excObj);
+     this.setState({kal:  calculatedCalories});
+    console.log("kal", calculatedCalories)
       /*  
     axios
         .post(HOST + acticityPostUrl ,(
@@ -87,8 +91,8 @@ class Exercises extends Component {
     this.setState({ activity: id});   
     console.log(this.state.activity);
   }
-  saveTimer = (time) => {
-    this.setState({ time: time});  
+  saveTimer = (runningTime,time) => {
+    this.setState({ runningTime: runningTime, time: time});  
   }
   handleDesc = (e) => {
     if (e.target.value.length > 3 ){
@@ -114,7 +118,7 @@ class Exercises extends Component {
           <h1>Manage Exercises</h1>
 
           <form
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={(e) => this.newExercise(e)}
             id="usrfrm2"
             className="box"
             method="post"
@@ -133,7 +137,7 @@ class Exercises extends Component {
               
             </div>
             </fieldset>
-            <ActivityList activity={this.state.activity} handler={(id) => this.selectActivity(id)} />
+            <ActivityList activity={this.state.activity} activities={this.state.users} handler={(id) => this.selectActivity(id)} />
 
              <button className="btn" onSubmit={(e) => this.newExercise(e)} type="submit">Save Exercise</button>
              or

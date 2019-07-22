@@ -33,7 +33,7 @@ const Header = props => {
   return (
     <>
       <header>
-        <Link to="/home">
+        <Link to="/">
         <SvgIcon name="rocket" />
           <div>FitnessTracker v1.0</div>
         </Link>
@@ -63,9 +63,8 @@ const Header = props => {
         <input  type="text" placeholder="search" id="search"/> 
       </div>
       <div className={showDropDown ? "dropdown active" : "dropdown"}>
-        <a href="/settings" className="dropdownmenu">
-          Settings
-        </a>
+      <NavLink className="dropdownmenu" to="/profile">Profile
+        </NavLink>
         <div onClick={() => toggleTheme()} className="dropdownmenu">
           DarkMode
         </div>

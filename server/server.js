@@ -13,11 +13,8 @@ const app = express();
 app.use(cors())
 app.options('*', cors())
 
-app.use(function(req, res, next) {  
-  res.header('Access-Control-Allow-Origin', req.headers.origin);
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});  
+
+
 // define template engine aka App 
 console.log(config.DB_URI );
 mongoose.connect(config.DB_URI, { useNewUrlParser: true } )
@@ -51,8 +48,9 @@ app.use(bodyParser.json())
 
 app.use('/', router)
 
+ 
 
-const listener = app.listen(process.env.PORT || 3001, () => {
+const listener = app.listen(process.env.PORT || 3001,'192.168.178.20', 511, () => {
 
   console.log('Your app is listening on port ' + listener.address().port)
 })

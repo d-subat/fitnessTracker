@@ -7,11 +7,13 @@ module.exports = {
         },
 
         addUser: (req, res) => {
-            const username = req.body.username;
-            //console.log("create users" + username);
+            const name = req.body.name;
+            const MET = req.body.MET;
+            const user = req.body.user;
+            console.log("create users" + name);
 
             User.findOne({
-                    username
+                    name
                 })
                 .then(rec => {
                     if (rec) {
@@ -21,11 +23,15 @@ module.exports = {
                     } else {
                         // Create new user if username available
                         User.create({
-                                username
+                            name,
+                            MET,
+                            user
                             })
                             .then(rec => {
                                 const response = {
-                                    username: rec.username,
+                                    name: rec.name,
+                                    MET: rec.MET,
+                                    user: rec.user,
                                     _id: rec._id
                                 };
 
@@ -39,7 +45,8 @@ module.exports = {
         },
 
         showUsers: (req, res) => {
-            User.find({}, 'username _id')
+            console.log(req.body)
+            User.find({}, 'name MET user _id')
                 .then(rec => {
                     res.send(rec);
                 })
@@ -47,13 +54,27 @@ module.exports = {
 
         },
         deleteUser: (req, res) => {
-           
-            
-            User.remove( { _id: req.body._id } )
-                .then(rec => {
-                    res.send(rec);
-                })
-                .catch(err => _errorHandler(err));
+            const name = req.body.name;
+            User.findOne({
+                name, user: 'false'
+            })
+            .then(rec => {
+                if (rec) {
+                    res.send(
+                        "You can't delete factory presets." 
+                    , 200);
+                } else {
+                    // Delete activity if not factory preset
+                    User.deleteOne( { _id: req.body._id } )
+                    .then(rec => {
+                        res.send( "Sucessfully deleted " + name);
+                
+                        })
+                        .catch(err => console.log(err));
+                }
+            })
+            .catch(err => console.log(err));
+
  
         },
         addExercise: (req, res) => {

@@ -1,75 +1,97 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import SvgIcon from "./SvgIcon";
 import FormInput from "./FormInput";
 import ActivityList from "./ActivityList";
 
 
-const HOST = "http://localhost:4000";
+const HOST = "http://192.168.178.20:4000";
+const activityGetUrl = "/api/exercise/users";
 const acticityPostUrl = "/api/exercise/new-user";
 const acticityPatchUrl = "/api/exercise/delete-user";
 
+const Activities = () =>  {
+  const [form, setValues] = useState({
+    Activity: "",
+    MET: "",
+    user: "true",
+  })
+  
+  const [status, setStatus] = useState("");
+  const [activities, setActivities] = useState([]);
+  
+   
 
-class Activities extends Component {
-  state = {
-    users: [],
-    activity: "",
-    status: ""
+  const handleChange = e => {
+    const fieldName = e.target.id.slice(2,); 
+    
+      setValues({
+      ...form,
+      [fieldName]: e.target.value
+    });
+    
+    
   };
- 
-  activity = () => {
-    //#### STATUS MESSAGE!!!
-    if (this.state.activity.length > 3) {
-      const username = this.state.activity;
-      axios
-        .post(HOST + acticityPostUrl, { username: username })
-        .then(data => this.setState({users: data.data.reverse()}) )
-        .catch(err => {
-          console.log(err);
-          return null;
-        });
-    } else {
-      this.setState({
-        status: "Please fill out mandatory fields (marked with *)."
-      });
-    }
-  };
-  deleteUser = (id,element) => {
+
+
+  const deleteUser = (id, element) => {
     //#### STATUS MESSAGE!!!
 
     axios
-      .post(HOST + acticityPatchUrl, { _id: id })
+      .post(HOST + acticityPatchUrl, { _id: id,name:element })
       .then(data => {
-        this.setState({ status: "Sucessfully deleted activity: " + element });
-        console.log(data)
+         setStatus(data.data);
+        
       })
       .catch(err => {
         console.log(err);
         return null;
       });
   };
-  handleMessageInput = e => {
-    //#### ERROR CHECK auf empty
-    if (e.target.value.length > 3) {
-      this.setState({ activity: e.target.value, status: "" });
+  useEffect(() => {
+    //setStatus("status:" + HOST + activityGetUrl );
+    axios
+      .get(HOST + activityGetUrl)
+      .then(data => setActivities(data.data.reverse() ))
+      .catch(err => {
+        setStatus(  JSON.stringify(err) );
+        ///#####################################'''''/
+        ///#####################################'''''/
+        // MOBILE zeigt nichts an wegen cors???
+        ///#####################################'''''/
+        ///#####################################'''''/
+        ///#####################################'''''/
+        
+      });
+    }, [status])
+
+  const newActivity = () => {
+    //#### STATUS MESSAGE!!!
+    console.log(form.Activity);
+    if (form.Activity.length > 3) {
+      axios
+        .post(HOST + acticityPostUrl, {
+          name: form.Activity,
+          MET:  form.MET,
+          user: form.user
+        })
+        .then(data => setStatus( "getActivities())" ) )
+        .catch(err => {
+          console.log(err);
+          return null;
+        });
     } else {
-      this.setState({ status: "Activity name must be longer than 3 letters." });
+    //  setStatus("Please fill out mandatory fields (marked with *).");
     }
-  }
-errorCheck = e => {
-    
-    this.setState([]);    
-    if(!e.target.reportValidity()) {
-      this.setStates([e.target.type,"Please fill out mandatory fields (marked with *)."]);       
-    }
-    
-}
-  render() {
+  };
+
+// e.target.reportValidity() 
+
     return (
       <>
-        {this.state.status && (
+        {status && (
           <div className="statusMessage">
-            <SvgIcon name="bulb" /> {this.state.status}
+            <SvgIcon name="bulb" /> {status}
           </div>
         )}
         <section>
@@ -79,23 +101,24 @@ errorCheck = e => {
             <fieldset>
               <legend>Manage Activities</legend>
               <div className="fieldrow">
-                <FormInput fieldName={"Activity Name"} type={"text"} required={true} handler={e => this.handleMessageInput(e)}   />
-                <FormInput fieldName={"MET value"} type={"text"} required={true} handler={e => this.handleMessageInput(e)}   />
+                <FormInput fieldName={"Activity"} type={"text"} required={true} handler={e => handleChange(e)}   />
+                <FormInput fieldName={"MET"} type={"text"} required={true} handler={e => handleChange(e)}   />
               </div>
               <div className="fieldrow">
-                <button className="btn" onClick={() => this.activity()}>
+                
+                <button className="btn" onClick={ () => newActivity()}>
                   Create New Activity
                 </button>
               </div>
-            </fieldset>
-            <ActivityList deleteToggle={true} handler={() => {return false}} deleteUser={(id,element) => this.deleteUser(id,element)}/>
- 
+            </fieldset>            
+            <ActivityList  deleteToggle={true} activities={activities}  deleteUser={(id,name) => deleteUser(id, name)}  handler={e => false} />
+
          
           </div>
         </section>
       </>
     );
-  }
+  
 }
 
 export default Activities;

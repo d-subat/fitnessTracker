@@ -152,11 +152,11 @@ feGender: {
   ICONS["fePasswordCheck"] = ICONS["fePassword"];
   ICONS["feFirstName"] = ICONS["placeholder"];
   ICONS["feLastName"] = ICONS["placeholder"];
-  ICONS["feActivity Name"] = ICONS["Activities"];
+  ICONS["feActivity"] = ICONS["Activities"];
   ICONS["feFrom Date"] = ICONS["feDate"];
   ICONS["feTo Date"] = ICONS["feDate"];
   ICONS["feLimit Count"] = ICONS["placeholder"];
-  ICONS["feMET value"] = ICONS["placeholder"];
+  ICONS["feMET"] = ICONS["placeholder"];
   return ( <svg className = {
       "icon-svg"
     } //" + props.name.toLowerCase().replace(" ","")}

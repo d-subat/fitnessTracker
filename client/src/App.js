@@ -19,7 +19,7 @@ import "./App.css";
 
 
 const routes = [  
-  { path: "/profile", name: "Profile", component: Profile },
+   
   { path: "/dashboard", name: "Stats Panel", component: Dashboard },
   { path: "/exercises", name: "Exercises", component: Exercises },
   { path: "/activities", name: "Activities", component: Activities },
@@ -48,6 +48,7 @@ function App() {
         <main className={sideBar && auth? "bounceInDown active": "bounceInDown " }>
           <Switch>
         <Route path="/" exact={true} render={() => <Home />}/>
+        <Route path="/profile" key="profile" render={() => <Profile />}/>
           <Route path="/dashboard" render={() => <Dashboard routes={routes} />}/>
           {routes.map(route => (
             <Route
@@ -57,11 +58,12 @@ function App() {
               component={route.component}             
             />
           ))}
-        <Route path="/login" exact={true} render={() => <Login  />}/>
-  
+        
+        <Route path="/login"  render={() => <Login  />}/>
            
            <Route component={NotFound} />
           </Switch>
+          
         </main>
       </div>
       

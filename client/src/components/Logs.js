@@ -5,7 +5,7 @@ import ActivityList from "./ActivityList";
 import {AxiosRequest} from "./AxiosRequest";
 
 
-const HOST = "http://localhost:4000";
+const HOST = "http://192.168.178.20:4000";
 const activityGetUrl = "/api/exercise/users";
 const exerciseGetUrl = "/api/exercise/log";
 
@@ -74,7 +74,7 @@ class Logs extends Component {
       </div>
       </fieldset>
  
-     <ActivityList activity={this.state.activity} handler={(id) => this.selectActivity(id)} />
+     <ActivityList activity={this.state.activity} activities={this.state.users} handler={(id) => this.selectActivity(id)} />
       <button className="btn" onClick={() => this.getExercises() }  type="submit">List Exercises</button>
       Leave blank to show all.
       </div>
@@ -97,7 +97,7 @@ class Logs extends Component {
     
       </div>
       }
-    <Photos />
+     
   </section>
 </>
 

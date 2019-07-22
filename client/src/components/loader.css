@@ -75,7 +75,7 @@
       transform: translateX(-1em);
     }
   }
-  svg {
+  .svg-hidden {
     width: 0;
     height: 0;
   }

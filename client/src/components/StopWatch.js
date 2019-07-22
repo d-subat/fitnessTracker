@@ -22,7 +22,7 @@ class Stopwatch extends Component {
           let minutes = ("0" + (Math.floor(this.state.runningTime / 60000) % 60)).slice(-2);
           let hours = ("0" + Math.floor(this.state.runningTime / 3600000)).slice(-2);
           this.setState({ time: hours+":"+minutes+":"+seconds});
-          this.props.saveTimer( hours+":"+minutes+":"+seconds);
+          this.props.saveTimer( this.state.runningTime, hours+":"+minutes+":"+seconds);
         },1000);
       }
       return { status: !state.status };
@@ -44,7 +44,7 @@ class Stopwatch extends Component {
     return (
       <div className="field duration">     
               
-             <FormInput fieldName={"StopWatch"} value={this.state.time} type={"time"} required={true} handler={e => this.handleChange(e)} />
+             <FormInput fieldName={"StopWatch"} value={this.state.time} type={"time"}  required={true} handler={e => this.handleChange(e)} />
  
           
           <button onClick={this.handleTimer} className="stopwatch" title="Record exercise duration">{!status? <SvgIcon name="Record" />: <SvgIcon name="Stop" />}</button>

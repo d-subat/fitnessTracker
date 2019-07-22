@@ -6,7 +6,7 @@ const Loader = () => (
     <div className="loader">
   <span></span>
 </div>
-<svg>
+<svg className="svg-hidden">
   <defs>
     <filter id="goo">
       <feGaussianBlur in="SourceGraphic" stdDeviation="11" result="blur"></feGaussianBlur>
