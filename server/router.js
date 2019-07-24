@@ -2,20 +2,23 @@ const router = require('express').Router();
 const model = require('./model');
 
 
-// add new user
-router.post('/api/exercise/new-user', model.addUser);
-
 // show all users
-router.get('/api/exercise/users', model.showUsers);
+router.get('/api/exercise/activities', model.showUsers);
+
+// add new user
+router.post('/api/exercise/add-activity', model.addUser);
 
 //deleteUser
-router.post('/api/exercise/delete-user', model.deleteUser);
-
-//Add exercise
-router.post('/api/exercise/add', model.addExercise);
+router.post('/api/exercise/delete-activity', model.deleteUser);
 
 // show users exercises
 router.get('/api/exercise/log', model.showExercises);
+
+//Add exercise
+router.post('/api/exercise/add-exercise', model.addExercise);
+
+//delete Exercise
+router.post('/api/exercise/delete-exercise', model.deleteUser);
 
 
 

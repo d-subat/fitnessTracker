@@ -20,10 +20,10 @@ const exercisesSchema = new Schema({
         max: 40
     },
     duration: {
-        type: String,
+        type: Number,
         required: true,
-        min: 8,
-        max: 8
+        min: 1,
+        max: 10000000
     },
     date: {
         type: Date,

@@ -1,41 +1,35 @@
-import React, { Component } from "react";
-import axios from "axios";
+import React, { useState,useEffect} from "react";
+
+import SvgIcon from "./SvgIcon";
 import FormInput from "./FormInput";
 import ActivityList from "./ActivityList";
-import {AxiosRequest} from "./AxiosRequest";
+import AxiosApiEndPoints from "./AxiosApiEndPoints";
+import AxiosRequest from "./AxiosRequest";
 
 
-const HOST = "http://192.168.178.20:4000";
-const activityGetUrl = "/api/exercise/users";
-const exerciseGetUrl = "/api/exercise/log";
+const Logs = () => {
+  const today = new Date().toISOString().substring(0, 10);
+  const [status, setStatus] = useState("");
+  const [activities, setActivities] = useState([]);
 
+  const [form, setValues] = useState({
+    Activity: "",
+ 
+  })
+  
+  useEffect(() => {
+    async function fetchGetAPI() {     
+      const response =  await AxiosRequest.get(AxiosApiEndPoints.activity.get);
+        setActivities(response.reverse())      
+    } 
+    fetchGetAPI();
+  }, [status]);
 
-class Logs extends Component {
-  state = {
-    users: [],
-    exercises: [],
-    newuser: "",
-    status: "",
-    isScrolling: false
-  };
 
 
  
-
-  async componentDidMount() {
-    this.getUsers();
- 
-  }
-  getUsers = () => {
-    axios
-      .get(HOST + activityGetUrl)
-      .then(data => this.setState({ users: data.data.reverse() }))
-      .catch(err => {
-        console.log(err);
-        return null;
-      });
-  };
-  getExercises = () => {
+  const getExercises = () => {
+    /*
     axios
       .get(HOST + exerciseGetUrl)
       .then(data => this.setState({ exercises: data.data.reverse() }))
@@ -43,19 +37,22 @@ class Logs extends Component {
         console.log(err);
         return null;
       });
+      */
   };
-  selectActivity = (id) => {
+  const selectActivity = (id) => {
       
     this.setState({ activity: id});   
     console.log(this.state.newuser);
   }
   
  
-  render() {
-    const today = new Date().toISOString().substring(0, 10);
-    
-    return (
+   return (
   <>
+          {status && (
+          <div className="statusMessage" onClick={() => setStatus("")}>
+            <SvgIcon name="bulb" /> {status}
+          </div>
+        )}
   <section>
   <h4>Overview</h4>
   <h1>Recent Exercises</h1>
@@ -74,10 +71,13 @@ class Logs extends Component {
       </div>
       </fieldset>
  
-     <ActivityList activity={this.state.activity} activities={this.state.users} handler={(id) => this.selectActivity(id)} />
-      <button className="btn" onClick={() => this.getExercises() }  type="submit">List Exercises</button>
+     <ActivityList activity={form.activity} activities={activities} handler={(id) => selectActivity(id)} />
+      
+      <button className="btn" onClick={() => getExercises() }  type="submit">List Exercises</button>
       Leave blank to show all.
       </div>
+
+
 {this.state.exercises.length >= 1 &&             
             <div className="box">
       <h2>Successfully searched for exercises  with activity {this.state.newuser}<br/>        '08-11-2017' to '09-27-2018':</h2>
@@ -102,28 +102,9 @@ class Logs extends Component {
 </>
 
 );
-}
+
 }
 
-function Photos() {
-  const [data, loading] = AxiosRequest()
-  return (
-    <>
-      <h1>Photos</h1>
-      {loading ? (
-        "Loading..."
-      ) : (
-        <ul>
-          {data.map(({ id, title, url }) => (
-            <li key={`photo-${id}`}>
-              <img alt={title} src={url} />
-            </li>
-          ))}
-        </ul>
-      )}
-    </>
-  );
-}
 
 
 export default Logs;

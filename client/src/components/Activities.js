@@ -1,26 +1,29 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+
 import SvgIcon from "./SvgIcon";
 import FormInput from "./FormInput";
 import ActivityList from "./ActivityList";
 
-
-const HOST = "http://192.168.178.20:4000";
-const activityGetUrl = "/api/exercise/users";
-const acticityPostUrl = "/api/exercise/new-user";
-const acticityPatchUrl = "/api/exercise/delete-user";
+import AxiosApiEndPoints from "./AxiosApiEndPoints";
+import AxiosRequest from "./AxiosRequest";
 
 const Activities = () =>  {
+  const [status, setStatus] = useState("");
+  const [activities, setActivities] = useState([]);
+
   const [form, setValues] = useState({
     Activity: "",
     MET: "",
     user: "true",
   })
   
-  const [status, setStatus] = useState("");
-  const [activities, setActivities] = useState([]);
-  
-   
+  useEffect(() => {
+    async function fetchGetAPI() {     
+      const response =  await AxiosRequest.get(AxiosApiEndPoints.activity.get);
+        setActivities(response.reverse())      
+    } 
+    fetchGetAPI();
+  }, [status]);
 
   const handleChange = e => {
     const fieldName = e.target.id.slice(2,); 
@@ -28,61 +31,30 @@ const Activities = () =>  {
       setValues({
       ...form,
       [fieldName]: e.target.value
-    });
-    
-    
+    });    
   };
-
-
-  const deleteUser = (id, element) => {
-    //#### STATUS MESSAGE!!!
-
-    axios
-      .post(HOST + acticityPatchUrl, { _id: id,name:element })
-      .then(data => {
-         setStatus(data.data);
-        
-      })
-      .catch(err => {
-        console.log(err);
-        return null;
-      });
-  };
-  useEffect(() => {
-    //setStatus("status:" + HOST + activityGetUrl );
-    axios
-      .get(HOST + activityGetUrl)
-      .then(data => setActivities(data.data.reverse() ))
-      .catch(err => {
-        setStatus(  JSON.stringify(err) );
-        ///#####################################'''''/
-        ///#####################################'''''/
-        // MOBILE zeigt nichts an wegen cors???
-        ///#####################################'''''/
-        ///#####################################'''''/
-        ///#####################################'''''/
-        
-      });
-    }, [status])
 
   const newActivity = () => {
-    //#### STATUS MESSAGE!!!
-    console.log(form.Activity);
-    if (form.Activity.length > 3) {
-      axios
-        .post(HOST + acticityPostUrl, {
-          name: form.Activity,
-          MET:  form.MET,
-          user: form.user
-        })
-        .then(data => setStatus( "getActivities())" ) )
-        .catch(err => {
-          console.log(err);
-          return null;
-        });
-    } else {
-    //  setStatus("Please fill out mandatory fields (marked with *).");
-    }
+    async function fetchPostAPI() {     
+      const response =  await AxiosRequest.post(AxiosApiEndPoints.activity.post,{
+        name: form.Activity,
+        MET:  form.MET,
+        user: form.user
+      });      
+      setStatus( response )
+      }    
+    fetchPostAPI();
+  };
+
+  const deleteUser = (id, element) => {
+    async function fetchPostAPI() {     
+      const response =  await AxiosRequest.post(AxiosApiEndPoints.activity.patch,{
+        _id: id,
+        name: element
+      });      
+      setStatus( response )
+      }    
+    fetchPostAPI();
   };
 
 // e.target.reportValidity() 
@@ -90,7 +62,7 @@ const Activities = () =>  {
     return (
       <>
         {status && (
-          <div className="statusMessage">
+          <div className="statusMessage" onClick={() => setStatus("")}>
             <SvgIcon name="bulb" /> {status}
           </div>
         )}

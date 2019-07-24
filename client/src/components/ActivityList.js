@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import axios from "axios";
+
 import SvgIcon from "./SvgIcon";
 import Loader from "./loader";
 
@@ -19,8 +19,8 @@ class ActivityList extends Component {
     item.addEventListener("mouseup", () => item.removeEventListener('mousemove', onScroll ) );
     
     function onScroll(e) {
-      if (e.deltaY > 0) item.scrollLeft += 50;
-      else item.scrollLeft -= 50;
+      if (e.deltaY > 0) item.scrollLeft += 25;
+      else item.scrollLeft -= 25;
     }
   }
 
@@ -33,6 +33,7 @@ class ActivityList extends Component {
       <>
  
         <legend>Select Activity </legend>
+        <div className="scrollheader"></div>
         <div className="scrollwrapper no-scrollbar">
           <ul className={this.props.activities.length === 0 ? "hs full no-scrollbar center" : "hs full no-scrollbar"}>
           

@@ -1,39 +1,74 @@
-import React, { useState,useEffect } from "react";
-import axios from "axios";
+ import axios from "axios";
 
-const HOST = "http://192.168.178.20:4000";
-const acticityPostUrl = "/api/exercise/new-user";
-const acticityPatchUrl = "/api/exercise/delete-user";
-const activityGetUrl = "/api/exercise/users";
- 
+ /**
+  * Create an Axios Client with defaults
+  */
+ const client = axios.create({
+   baseURl: process.env.REACT_APP_HOST
+ });
 
-const AxiosRequest = (initialUrl, initialData) => {
-  const [data, setData] = useState(initialData);
-  const [url, setUrl] = useState(initialUrl);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
+ /**
+  * Request Wrapper with default success/error actions
+  */
+ const request = function (options) {
+   console.log(options);
+   const onSuccess = function (response) {
+     console.debug('Request Successful!', response);
+     return response.data;
+   }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsError(false);
-      setIsLoading(true);
+   const onError = function (error) {
+     console.error('Request Failed:', error.config);
 
-      try {
-        const result = await axios(url);
+     if (error.response) {
+       // Request was made but server responded with something
+       // other than 2xx
+       console.error('Status:', error.response.status);
+       console.error('Data:', error.response.data);
+       console.error('Headers:', error.response.headers);
 
-        setData(result.data);
-      } catch (error) {
-        setIsError(true);
-      }
+     } else {
+       // Something else happened while setting up the request
+       // triggered the error
+       console.error('Error Message:', error.message);
+     }
 
-      setIsLoading(false);
-    };
+     return Promise.reject(error.response || error.message);
+   }
 
-    fetchData();
-  }, [url]);
+   return client(options)
+     .then(onSuccess)
+     .catch(onError);
+ }
 
-  return [{ data, isLoading, isError }, setUrl];
+ function get( url ) {
+   console.log(url);
+   return request({
+     url: url,
+     method: 'GET'
+   });
+ }
+
+ function patch({  url,  id,  patchName}) {
+  return request({
+    url: url,
+    method: 'POST',
+    data: {
+      id,
+      patchName
+    }
+  });
 }
 
-export  { AxiosRequest };
+ function post(url, content ) {
+   console.log(content)
+   return request({
+     url: url,
+     method: 'POST',
+     data: content
+      });
+ }
 
+ const AxiosRequest = {   get,   post,   patch  }
+
+ export default AxiosRequest;

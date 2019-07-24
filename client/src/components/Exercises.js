@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import axios from "axios";
 
 import StopWatch from "./StopWatch";
-import {calculate} from "./MetTable"
+import Calculate from "./MetTable"
 import SvgIcon from "./SvgIcon";
 import FormInput from "./FormInput";
 import ActivityList from "./ActivityList";
+import { isThisMonth } from "date-fns";
 
 
 const HOST = "http://192.168.178.20:4000";
@@ -38,27 +39,33 @@ class Exercises extends Component {
         return null;
       });
   };
-  newExercise = (e) => {
+
+  newExercise = async (e) => {
     //#### STATUS MESSAGE!!!
     
  e.preventDefault();
- 
-    if (this.state.activity && this.state.description && this.state.time && this.state.date){
-      const excObj = {
+ const excObj = {
 
-//################ get BMI from auth!!! 
+  //################ get BMI from auth!!! 
+  
+          weight: 100,
+          height: 150,
+          age: 35,
+          gender: "male",
+          duration: this.state.runningTime / 1000, // seconds
+          activity: this.state.activity,
+          calories: this.state.kal
+        }
 
-        weight: 100,
-        height: 150,
-        age: 35,
-        gender: "male",
-        duration: this.state.runningTime,
-        activity: this.state.activity
-      }
-const calculatedCalories = calculate(excObj);
+ const calculatedCalories = await Calculate.calories(excObj);
      this.setState({kal:  calculatedCalories});
     console.log("kal", calculatedCalories)
-      /*  
+
+ console.log(excObj)
+    if (this.state.activity && this.state.description && this.state.time && this.state.date){
+ 
+
+       
     axios
         .post(HOST + acticityPostUrl ,(
            {
@@ -69,7 +76,7 @@ const calculatedCalories = calculate(excObj);
           {
             "username": this.state.activity,
             "description": this.state.description,
-            "duration": this.state.time,
+            "duration": this.state.runningTime,
             "date": this.state.date
           
           }))
@@ -80,7 +87,7 @@ const calculatedCalories = calculate(excObj);
             return null;
         });
         
-        */
+        
       }
       else {
         this.setState({ status: "Please fill out mandatory fields (marked with *)." });
@@ -125,20 +132,14 @@ const calculatedCalories = calculate(excObj);
           >
     <fieldset>
               <legend>Add new exercise</legend>
-
             <FormInput fieldName={"Description"} type={"text"} required={true} handler={e => this.handleDesc(e)} />
-   
             <div className="fieldrow">
-            
               <StopWatch saveTimer={this.saveTimer} time={this.state.time}/>           
               <FormInput fieldName={"Date"} type={"date"} required={true} handler={e => this.handleDate(e)} />
-              <FormInput fieldName={"Calories"} type={"text"} required={false} value={this.state.kal? this.state.kal : ""} />
- 
-              
+              <FormInput fieldName={"Calories"} type={"text"} required={false} value={this.state.kal>=0? this.state.kal : ""} />
             </div>
             </fieldset>
             <ActivityList activity={this.state.activity} activities={this.state.users} handler={(id) => this.selectActivity(id)} />
-
              <button className="btn" onSubmit={(e) => this.newExercise(e)} type="submit">Save Exercise</button>
              or
              <div className="field"></div>

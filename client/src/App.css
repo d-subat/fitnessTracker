@@ -847,9 +847,33 @@ display: grid;
   place-items: start;
   
   cursor: grab;
+
 }
-
-
+.scrollheader {
+  position: relative;
+  width:100%;
+}
+.scrollheader:before {
+  content: "";
+  position: absolute;
+  width:100px;
+  height: 6em;
+  left:0;
+  top:1.5em;
+  background:
+  linear-gradient(to right, white, transparent);
+  z-index:5
+}
+.scrollheader:after {
+  content: "";
+  position: absolute;
+  width:100px;
+  height: 6em;
+  right:0em;
+  top:1.5em;
+  background:linear-gradient(to left, white, transparent);
+  z-index:5
+}
 .hs {
   display: grid;
   grid-gap: calc(var(--gutter) / 2);

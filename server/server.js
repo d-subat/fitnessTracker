@@ -50,7 +50,7 @@ app.use('/', router)
 
  
 
-const listener = app.listen(process.env.PORT || 3001,'192.168.178.20', 511, () => {
+const listener = app.listen(process.env.PORT || 3001,process.env.HOST, 511, () => {
 
   console.log('Your app is listening on port ' + listener.address().port)
 })
