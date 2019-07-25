@@ -29,7 +29,13 @@ const exercisesSchema = new Schema({
         type: Date,
         required: true,
         default: Date.now()
-    }
+    },
+    calories: {
+        type: Number,
+        required: true,
+        min: 0,
+        max: 100000
+    },
 
 });
 

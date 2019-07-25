@@ -1,170 +1,133 @@
-import React, { Component } from "react";
-import axios from "axios";
+import React, { useState,useEffect } from "react";
 
 import StopWatch from "./StopWatch";
-import Calculate from "./MetTable"
+import CalculateCal  from "./MetTable"
 import SvgIcon from "./SvgIcon";
 import FormInput from "./FormInput";
 import ActivityList from "./ActivityList";
-import { isThisMonth } from "date-fns";
+import AxiosApiEndPoints from "./AxiosApiEndPoints";
+import AxiosRequest from "./AxiosRequest";
 
+import {  AuthUserObjectContext,withAuthentication } from "./Session";
 
-const HOST = "http://192.168.178.20:4000";
-const acticityGetUrl = "/api/exercise/users";
-const acticityPostUrl = "/api/exercise/add";
-const myUrl = HOST + acticityGetUrl;
-
-class Exercises extends Component {
-  state = {
-    users: [],
-    activity: "",
-    
-    description: "",
-    time: "",
-    date: new Date().toISOString().substring(0, 10),
-    kal: "",
-    status: "",
-    responseData: "",
-
-  };
-  async componentDidMount() {
-    this.getUsers();
-  }
-  getUsers = () => {
-    axios
-      .get(myUrl)
-      .then(data => this.setState({ users: data.data.reverse() }))
-      .catch(err => {
-        console.log(err);
-        return null;
-      });
-  };
-
-  newExercise = async (e) => {
-    //#### STATUS MESSAGE!!!
-    
- e.preventDefault();
- const excObj = {
-
-  //################ get BMI from auth!!! 
+const Exercises = () => {
+  const today = new Date().toISOString().substring(0, 10);
+  const [status, setStatus] = useState("");
+  const [userobj, setUserObj] = useState("");
+  const [runningTime, setTime] = useState("");
+  const [activities, setActivities] = useState([]);
+  const [exercises, setExercises] = useState([]);
   
-          weight: 100,
-          height: 150,
-          age: 35,
-          gender: "male",
-          duration: this.state.runningTime / 1000, // seconds
-          activity: this.state.activity,
-          calories: this.state.kal
-        }
+  const [form, setValues] = useState({})
 
- const calculatedCalories = await Calculate.calories(excObj);
-     this.setState({kal:  calculatedCalories});
+  useEffect(() => {
+    async function fetchGetAPI() {     
+      const response =  await AxiosRequest.get(AxiosApiEndPoints.activity.get);
+        setActivities(response.reverse())      
+    } 
+    fetchGetAPI();
+  }, [status]);
+
+  const newExercise = async (e) => {
+ 
+ e.preventDefault();
+ console.log(form.test);
+ const objExc = {
+          weight: userobj.weight,
+          height: userobj.height,
+          age: userobj.age,
+          gender: userobj.gender,
+          duration: runningTime / 1000, // seconds
+          activity: form.Activity,
+        }
+        
+    const calculatedCalories =CalculateCal(activities,objExc    );      
+    setValues({kal:  calculatedCalories});
     console.log("kal", calculatedCalories)
 
- console.log(excObj)
-    if (this.state.activity && this.state.description && this.state.time && this.state.date){
- 
-
-       
-    axios
-        .post(HOST + acticityPostUrl ,(
-           {
-            withCredentials: true,
-            xsrfCookieName: 'csrftoken_testtest',
-            xsrfHeaderName: 'X-CSRFToken',
-        },
-          {
-            "username": this.state.activity,
-            "description": this.state.description,
-            "duration": this.state.runningTime,
-            "date": this.state.date
-          
-          }))
-        .then(data => (this.setState({ responseData: data.data })
-        ))
-        .catch(err => {
-            console.log(err);
-            return null;
-        });
-        
-        
+    if (form.Activity && form.Description && runningTime && form.Date){
+      console.log(form,"--------",form.Activity , form.Description, runningTime , form.Date)
+      async function fetchPostAPI() {     
+        const response =  await AxiosRequest.post(AxiosApiEndPoints.exercise.post,{
+          "username": form.Activity,
+          "description": form.Description,
+          "duration": runningTime,
+          "date": form.Date,
+          calories: parseInt(calculatedCalories,10)
+        });      
+        console.log("sdf")
+        setStatus( response )
+        }    
+      fetchPostAPI();
       }
       else {
-        this.setState({ status: "Please fill out mandatory fields (marked with *)." });
+        setStatus(  "Please fill out mandatory fields (marked with *)." );
       }
   };
-  selectActivity = (id) => {
-      
-    this.setState({ activity: id});   
-    console.log(this.state.activity);
+ 
+  const saveTimer = (runningTime,time) => {
+    setTime(runningTime );  
   }
-  saveTimer = (runningTime,time) => {
-    this.setState({ runningTime: runningTime, time: time});  
+
+  const handleChange = e => {
+    const fieldName = e.target.id.slice(2,); 
+      setValues({
+      ...form,
+      [fieldName]: e.target.value
+    });    
+  };
+ 
+  const selectActivity = (id) => {
+    setValues({  ...form,Activity: id});   
+    setExercises("")   
   }
-  handleDesc = (e) => {
-    if (e.target.value.length > 3 ){
-    this.setState({ description: e.target.value ,status: ""});}
-    else {
-      this.setState({ status: "Please set a description." });
-    } 
-  }
-  handleDate = (e) => {
-    if (e.target.value.length > 3 ){
-    this.setState({ date: e.target.value ,status: ""});}
-    else {
-      this.setState({ status: "Please set a date." });
-    } 
-  }
-  render() {
-   
+
     return (
       <>
-      {this.state.status && <div className="statusMessage"><SvgIcon name="bulb" /> {this.state.status}</div>}
+          <AuthUserObjectContext.Consumer>
+               {userobj =>
+              {setUserObj(userobj)}
+              }
+          </AuthUserObjectContext.Consumer>
+          {status && (
+          <div className="statusMessage" onClick={() => setStatus("")}>
+            <SvgIcon name="bulb" /> {status}
+          </div>
+        )}
         <section>
           <h4>Exercises</h4>
           <h1>Manage Exercises</h1>
 
           <form
-            onSubmit={(e) => this.newExercise(e)}
+            onSubmit={(e) => newExercise(e)}
             id="usrfrm2"
             className="box"
             method="post"
           >
     <fieldset>
               <legend>Add new exercise</legend>
-            <FormInput fieldName={"Description"} type={"text"} required={true} handler={e => this.handleDesc(e)} />
+            <FormInput fieldName={"Description"} type={"text"} required={true} handler={e => handleChange(e)}  />
             <div className="fieldrow">
-              <StopWatch saveTimer={this.saveTimer} time={this.state.time}/>           
-              <FormInput fieldName={"Date"} type={"date"} required={true} handler={e => this.handleDate(e)} />
-              <FormInput fieldName={"Calories"} type={"text"} required={false} value={this.state.kal>=0? this.state.kal : ""} />
+              <StopWatch saveTimer={saveTimer} time={form.time}/>           
+              <FormInput fieldName={"Date"} type={"date"} value={today} required={true} handler={e => handleChange(e)}  />
+              <FormInput fieldName={"Calories"} type={"text"} required={false} value={form.kal>=0? form.kal : ""} />
             </div>
-            </fieldset>
-            <ActivityList activity={this.state.activity} activities={this.state.users} handler={(id) => this.selectActivity(id)} />
-             <button className="btn" onSubmit={(e) => this.newExercise(e)} type="submit">Save Exercise</button>
-             or
-             <div className="field"></div>
-            <div className="container">                   
-                <button className="activities select" style={{maxHeight:"auto"}}>Track on Map</button>
-              </div>
-          </form>
-          
-{this.state.responseData && 
-          <div className="box">
+            
+            <ActivityList activity={form.Activity} activities={activities} handler={(id) => selectActivity(id)} />
+      
+            <div className="fieldrow">                   
             <div className="field">
-              <h2>
-                Successfully created a new exercise.
-              </h2>
-              <h2>
-                {this.state.responseData}
-              </h2>
+            <button className="btn" onSubmit={(e) => newExercise(e)} type="submit">Save Exercise</button>
             </div>
-          </div>
-
-
-}        </section>
+            <div className="field">or</div>
+            <div className="field"><button className="activities select" style={{maxHeight:"auto"}}>Track on Map</button></div>
+              </div>
+              </fieldset>
+          </form>
+       </section>
       </>
     );
-  }
+  
 }
 
-export default Exercises;
+export default withAuthentication(Exercises);

@@ -4,14 +4,15 @@
   * Create an Axios Client with defaults
   */
  const client = axios.create({
-   baseURl: process.env.REACT_APP_HOST
- });
+   baseURl: process.env.REACT_APP_API_HOST
+ });                    
 
+ 
  /**
   * Request Wrapper with default success/error actions
   */
  const request = function (options) {
-   console.log(options);
+  console.log("asd",process.env.REACT_APP_API_HOST);
    const onSuccess = function (response) {
      console.debug('Request Successful!', response);
      return response.data;

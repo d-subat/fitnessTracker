@@ -23,6 +23,12 @@ const Dashboard = props => {
         <h1>Statistics Panel</h1>
 
         <div className="container">
+        <div className="box">
+Today:
+
+SPorting Goals
+
+        </div>
           <Stats
             sum="2390"
             type="pie"

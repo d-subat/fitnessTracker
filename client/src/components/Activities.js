@@ -76,14 +76,15 @@ const Activities = () =>  {
                 <FormInput fieldName={"Activity"} type={"text"} required={true} handler={e => handleChange(e)}   />
                 <FormInput fieldName={"MET"} type={"text"} required={true} handler={e => handleChange(e)}   />
               </div>
+              <ActivityList  deleteToggle={true} activities={activities}  deleteUser={(id,name) => deleteUser(id, name)}  handler={e => false} />    
               <div className="fieldrow">
-                
+              
                 <button className="btn" onClick={ () => newActivity()}>
                   Create New Activity
                 </button>
               </div>
             </fieldset>            
-            <ActivityList  deleteToggle={true} activities={activities}  deleteUser={(id,name) => deleteUser(id, name)}  handler={e => false} />
+            
 
          
           </div>

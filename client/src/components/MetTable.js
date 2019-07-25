@@ -1,18 +1,15 @@
-
-import AxiosRequest from "./AxiosRequest";
-
-
-const Calculate = {
-
-    calories: async (objExc) => {
+ 
+ const CalculateCal = (activities,objExc) => {
         const outputValues = {};
+
+        
 
         const height = objExc.height;
         const weight = objExc.weight;
         const age = objExc.age;
         const time = objExc.duration;
 
-        const activities = await AxiosRequest.getActivities();
+        
 
         const mets = activities.filter((item) => item.name === objExc.activity)[0].MET;
 
@@ -41,5 +38,7 @@ const Calculate = {
 
 
 
-}
-export default Calculate;
+
+;
+
+export default CalculateCal ;

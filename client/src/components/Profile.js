@@ -1,8 +1,11 @@
-import React, { useState,useEffect,useRef } from "react";
+import React, { useState,useEffect } from "react";
 import FormInput from "./FormInput";
 import SvgIcon from "./SvgIcon";
+import AxiosApiEndPoints from "./AxiosApiEndPoints";
+import AxiosRequest from "./AxiosRequest";
 
-import {  AuthUserContext, withAuthorization } from "./Session";
+
+import {  AuthUserObjectContext, withAuthorization } from "./Session";
 
 /*
   male: 
@@ -112,7 +115,12 @@ useEffect(() => {
       ) {
         return Math.abs(curr - bmi) < Math.abs(prev - bmi) ? curr : prev;
       });
-  
+    
+      setValues({
+        ...form,
+        "feBMI": bmi
+      });
+   
       
       setBMI(
         [bmi,
@@ -141,17 +149,64 @@ useEffect(() => {
       ...form,
       [fieldName]: e.target.value
     });
-    const test = AuthUserContext ;
-    console.log(test);
+ 
   };
   const updateAccount = e => {    
     setStatus("");
+    e.preventDefault();
     console.log(e.target.reportValidity());
-    if (form.feGender === "") {
-
+    if (form.feGender === "") {  //more checking
       checkGender(true);
+    }
+    else {
+      
+      if (form.feUserName && form.feUserMail && bmi){       
+        async function fetchPostAPI() {     
+          const response =  await AxiosRequest.post(AxiosApiEndPoints.user.post,{
+            username: form.feUserName,
+      usermail: form.feUserMail,
+
+      
+      firstname: form.feFirstName,
+      lastname: form.feLastName,
+      address: form.feAddress,
+      city: form.feCity,
+      country: form.feCountry,
+      zip: form.feZip,
+
+      weight: form.feWeight,
+      height: form.feHeight,
+      age: form.feAge,
+      bmi: form.feBMI,
+      gender: form.feGender
+
+          });                
+          setStatus( response )
+          }    
+        fetchPostAPI();        
+      }
+      
       
     //e.submit;
+    console.log({
+      username: form.feUserName,
+      usermail: form.feUserMail,
+
+      
+      firstname: form.feFirstName,
+      lastname: form.feLastName,
+      address: form.feAddress,
+      city: form.feCity,
+      country: form.feCountry,
+      zip: form.feZip,
+
+      weight: form.feWeight,
+      height: form.feHeight,
+      age: form.feAge,
+      bmi: form.feBMI,
+      gender: form.feGender
+
+    })
     }
     if(e.target.reportValidity()) {
       setStatus("Please fill out mandatory fields (marked with *).");
@@ -178,17 +233,19 @@ useEffect(() => {
         <h4>Overview</h4>
         <h1>Profile</h1>
 
-        <form
+        <div
           action="/api/exercise/log"
           onSubmit={updateAccount}
           method="get"
           id="usrfrm3"
           className="box"
         >
+             
+           
           <fieldset>
             <legend>Account Settings</legend>
             <div className="fieldrow">
-              <FormInput fieldName={"UserName"} pattern={"^[a-zA-Z0-9]{1,20}$"} type={"text"} required={true} onBlur={errorCheck}  handler={e => handleChange(e)} />
+              <FormInput fieldName={"UserName"}  pattern={"^[a-zA-Z0-9]{1,20}$"} type={"text"} required={true} onBlur={errorCheck}  handler={e => handleChange(e)} />
               <FormInput fieldName={"UserMail"} type={"email"} required={true} onBlur={errorCheck}  handler={e => handleChange(e)} />
               {status[0]==="email" && <div className="errorMsg"> {status[1]} Email trala </div>}
             </div>
@@ -198,27 +255,8 @@ useEffect(() => {
             </div>
             {status[0]==="password" && <div className="errorMsg"> {status[1]} Passwort must be min 8 Characters and contain: UpperCase, LowerCase, Number/Special Char" </div>}
           </fieldset>
-          <fieldset>
-          <legend>Adress Information</legend>
-          <details>
-          <summary>Mandatory</summary>
-            
-           
-            <div className="fieldrow">
-            <FormInput fieldName={"FirstName"} type={"text"}   handler={e => handleChange(e)} />
-            <FormInput fieldName={"LastName"} type={"text"}   handler={e => handleChange(e)} />
-            </div>
-            <div className="fieldrow">
-              <FormInput fieldName={"Address"} type={"text"}   handler={e => handleChange(e)} />
-              <FormInput fieldName={"City"} type={"text"}   handler={e => handleChange(e)} />
-            </div>
-            <div className="fieldrow">
-              <FormInput fieldName={"Zip"} type={"number"}   handler={e => handleChange(e)} />
-              <FormInput fieldName={"Country"} type={"text"}  handler={e => handleChange(e)} />
-            </div>
-            </details>
-            
-          </fieldset>
+         
+
           <fieldset>
             <legend>Health Details </legend>
             <div className="fieldrow">
@@ -251,6 +289,7 @@ useEffect(() => {
                 <label htmlFor="feWeight">Calculated Result:</label>
                 
           <div>
+          
             BMI: {bmi[0]}
           </div>
           <div>
@@ -267,11 +306,34 @@ useEffect(() => {
               assessment.
               </div>
           </fieldset>
-
+     
+          <fieldset>
+          <legend>Adress Information</legend>
+          <details>
+          <summary>Mandatory</summary>
+            
+           
+            <div className="fieldrow">
+            <FormInput fieldName={"FirstName"} type={"text"}  handler={e => handleChange(e)} />
+            <FormInput fieldName={"LastName"} type={"text"}   handler={e => handleChange(e)} />
+            </div>
+            <div className="fieldrow">
+              <FormInput fieldName={"Address"} type={"text"}   handler={e => handleChange(e)} />
+              <FormInput fieldName={"City"} type={"text"}   handler={e => handleChange(e)} />
+            </div>
+            <div className="fieldrow">
+              <FormInput fieldName={"Zip"} type={"number"}   handler={e => handleChange(e)} />
+              <FormInput fieldName={"Country"} type={"text"}  handler={e => handleChange(e)} />
+            </div>
+            </details>
+            
+          </fieldset>
+         }
+    
           <button onClick={(e) => updateAccount(e)} className="btn btn-accent">
             Update Account
           </button>
-        </form>
+        </div>
       </section>
     </>
   );

@@ -1,7 +1,9 @@
 import React from 'react';
 
 import AuthUserContext from './context';
+import AuthUserObjectContext from './contextUser';
 import { withFirebase } from '../Firebase';
+import axios from "axios";
 
 const withAuthentication = Component => {
   class WithAuthentication extends React.Component {
@@ -10,10 +12,11 @@ const withAuthentication = Component => {
 
       this.state = {
         authUser: JSON.parse(localStorage.getItem('authUser')),
+        userobj:   "ettset"
       };
     }
 
-    componentDidMount() {
+     componentDidMount() {
       this.listener = this.props.firebase.onAuthUserListener(
         authUser => {
           localStorage.setItem('authUser', JSON.stringify(authUser));
@@ -24,6 +27,20 @@ const withAuthentication = Component => {
           this.setState({ authUser: null });
         },
       );
+   
+        axios.post("/api/exercise/user",{
+          usermail: this.state.authUser.email
+        }).then(response => {
+          this.setState({ ...this.state, userobj: response.data })
+        })
+        .catch(error => {
+          console.log(error);
+        });
+        
+    
+  
+      
+
     }
 
     componentWillUnmount() {
@@ -33,8 +50,11 @@ const withAuthentication = Component => {
     render() {
       return (
         <AuthUserContext.Provider value={this.state.authUser}>
+          <AuthUserObjectContext.Provider value={this.state.userobj}>
           <Component {...this.props} />
-        </AuthUserContext.Provider>
+          </AuthUserObjectContext.Provider>
+          </AuthUserContext.Provider>
+        
       );
     }
   }

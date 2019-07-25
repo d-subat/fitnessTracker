@@ -11,9 +11,12 @@ const Logs = () => {
   const today = new Date().toISOString().substring(0, 10);
   const [status, setStatus] = useState("");
   const [activities, setActivities] = useState([]);
+  const [exercises, setExercises] = useState([]);
 
   const [form, setValues] = useState({
     Activity: "",
+    "From Date": today,
+    "To Date": today
  
   })
   
@@ -26,23 +29,25 @@ const Logs = () => {
   }, [status]);
 
 
-
+  const handleChange = e => {
+    const fieldName = e.target.id.slice(2,); 
+    
+      setValues({
+      ...form,
+      [fieldName]: e.target.value
+    });    
+  };
  
   const getExercises = () => {
-    /*
-    axios
-      .get(HOST + exerciseGetUrl)
-      .then(data => this.setState({ exercises: data.data.reverse() }))
-      .catch(err => {
-        console.log(err);
-        return null;
-      });
-      */
+    async function fetchGetAPI() {     
+      const response =  await AxiosRequest.get(AxiosApiEndPoints.exercise.get);
+        setExercises(response.reverse())      
+    } 
+    fetchGetAPI();
   };
   const selectActivity = (id) => {
-      
-    this.setState({ activity: id});   
-    console.log(this.state.newuser);
+    setValues({ Activity: id});   
+    setExercises("")   
   }
   
  
@@ -65,26 +70,27 @@ const Logs = () => {
               <legend>List your exercises</legend>
       
       <div className="fieldrow    ">
-        <FormInput fieldName={"From Date"} type={"date"} required={true} value={today} handler={"e => this.handleDate(e)"} />
-        <FormInput fieldName={"To Date"} type={"date"} required={true} minmax={[today,0]} value={today} handler={"e => this.handleDate(e)"} />
-        <FormInput fieldName={"Limit Count"} type={"number"} minmax={[1,500]} required={true} handler={""} />
+        <FormInput fieldName={"From Date"} type={"date"} required={true} value={today} handler={e => handleChange(e)}  />   
+        <FormInput fieldName={"To Date"} type={"date"} required={true} minmax={[today,0]} value={today} handler={e => handleChange(e)}  />
+        <FormInput fieldName={"Limit Count"} type={"number"} minmax={[1,500]} required={true} handler={e => handleChange(e)}  />
       </div>
-      </fieldset>
+    
  
-     <ActivityList activity={form.activity} activities={activities} handler={(id) => selectActivity(id)} />
+     <ActivityList activity={form.Activity} activities={activities} handler={(id) => selectActivity(id)} />
       
       <button className="btn" onClick={() => getExercises() }  type="submit">List Exercises</button>
       Leave blank to show all.
+      
+      </fieldset>
       </div>
-
-
-{this.state.exercises.length >= 1 &&             
+{exercises.length >= 1 &&             
             <div className="box">
-      <h2>Successfully searched for exercises  with activity {this.state.newuser}<br/>        '08-11-2017' to '09-27-2018':</h2>
+              {console.log(form)}
+      <h2>Successfully searched for exercises  with activity {form.Activity}<br/>  {form["From Date"]} to {form["To Date"]} :</h2>
       <div id="result3">
      
      
-      {this.state.exercises.map((e, i) => {
+      {exercises.map((e, i) => {
                   return (
 <div className="vertical">       
                       {e.username}
