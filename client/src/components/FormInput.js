@@ -3,7 +3,7 @@ import SvgIcon from "./SvgIcon";
 
 
 const FormInput = React.forwardRef((props, ref) => {
-    const { fieldName, type, required, handler,minmax = [],pattern, value,onBlur } = props;
+    const { fieldName, type, required, handler,minmax = [],pattern, value,placeholder,onBlur } = props;
     const formPrefix = "fe";
 
     return (
@@ -17,14 +17,14 @@ const FormInput = React.forwardRef((props, ref) => {
             ref={ref}
             onBlur={onBlur}
             id={formPrefix + fieldName}
-            placeholder={fieldName}
+            placeholder={placeholder? placeholder:fieldName}
             autoComplete={fieldName}
             required={required && true}
             onChange={handler}
             pattern={pattern}
             min={minmax[0]}
             max={minmax[1]}
-            defaultValue={value}          />
+            value={value}          />
           <span>
             <SvgIcon name={formPrefix + fieldName} />
           </span> 

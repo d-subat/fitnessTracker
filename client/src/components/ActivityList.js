@@ -29,12 +29,17 @@ class ActivityList extends Component {
 
 
   render() {
+    if (this.props.deleteToggle)
     return (
       <>
  
         <legend>Select Activity </legend>
+        {this.props.deselectToggle && 
+           <button className="unselect" onClick={() => this.props.handler("")} >Unselect (show all)</button>
+        }
         <div className="scrollheader"></div>
-        <div className="scrollwrapper no-scrollbar">
+        <div className="scrollwrapper no-scrollbar" >
+          
           <ul className={this.props.activities.length === 0 ? "hs full no-scrollbar center" : "hs full no-scrollbar"}>
           
             {this.props.activities.length === 0 ? (
@@ -70,6 +75,38 @@ class ActivityList extends Component {
         </div>
       </>
     );
+    else {
+      return (
+        <>
+         <div className="field">
+         <label htmlFor="activitySelect">Activities</label>
+         <div className="input">
+        <select id="activitySelect">
+          <option>All</option>
+          { this.props.activities.map((e, i) => {
+                return (
+                  <option 
+                    key={i}
+                    onClick={() => this.props.handler(e.name)} >
+                    {e.name}
+                  </option>
+                );
+              })
+            }
+</select>
+
+          <span>
+            <SvgIcon name="feActivity" />
+          </span> 
+          
+          </div>
+      </div>
+     
+
+           
+        </>
+      )
+    }
   }
 }
 

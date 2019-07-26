@@ -56,7 +56,7 @@ class Stats extends Component {
           <h2>{this.props.sum}</h2>
           <div className="chart">
             {this.props.data.map((value, index) => {
-              return <Bar tipnr={index} value={value} color={colors[index]} />;
+              return <Bar key={index} tipnr={index} value={value} color={colors[index]} />;
             })}
           </div>
           <svg
@@ -83,7 +83,7 @@ class Stats extends Component {
             {this.props.labels.map((item, index) => {
               return (
                 <>
-                  <div
+                  <div key={index}
                     className="colorbox"
                     style={{ background: colors[index] }}
                   />{" "}
@@ -157,7 +157,7 @@ class Pie extends Component {
       self = this,
       sum,
       startAngle,
-      d = null;
+ 
 
     sum = this.props.data.reduce(function(carry, current) {
       return carry + current;
@@ -205,7 +205,7 @@ class Pie extends Component {
           {this.props.labels.map((item, index) => {
             return (
               <>
-                <div
+                <div key={index}
                   className="colorbox"
                   style={{ background: colors[index] }}
                 />{" "}

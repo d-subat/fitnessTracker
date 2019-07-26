@@ -14,10 +14,9 @@ const Exercises = () => {
   const today = new Date().toISOString().substring(0, 10);
   const [status, setStatus] = useState("");
   const [userobj, setUserObj] = useState("");
-  const [runningTime, setTime] = useState("");
-  const [activities, setActivities] = useState([]);
-  const [exercises, setExercises] = useState([]);
-  
+  const [runningTime, setDuration] = useState("");
+  const [time, setTime] = useState("");
+  const [activities, setActivities] = useState([]); 
   const [form, setValues] = useState({})
 
   useEffect(() => {
@@ -66,7 +65,8 @@ const Exercises = () => {
   };
  
   const saveTimer = (runningTime,time) => {
-    setTime(runningTime );  
+    setDuration(runningTime );  
+    setTime(Date.now() );  
   }
 
   const handleChange = e => {
@@ -79,7 +79,7 @@ const Exercises = () => {
  
   const selectActivity = (id) => {
     setValues({  ...form,Activity: id});   
-    setExercises("")   
+    
   }
 
     return (
@@ -107,12 +107,19 @@ const Exercises = () => {
     <fieldset>
               <legend>Add new exercise</legend>
             <FormInput fieldName={"Description"} type={"text"} required={true} handler={e => handleChange(e)}  />
-            <div className="fieldrow">
-              <StopWatch saveTimer={saveTimer} time={form.time}/>           
+            <div className="fieldrow">              
               <FormInput fieldName={"Date"} type={"date"} value={today} required={true} handler={e => handleChange(e)}  />
-              <FormInput fieldName={"Calories"} type={"text"} required={false} value={form.kal>=0? form.kal : ""} />
+              <FormInput fieldName={"Time"} type={"time"} required={true} handler={e => handleChange(e)}  />              
+              <StopWatch saveTimer={saveTimer} time={form.time}/>           
             </div>
-            
+            { (form.kal>=0) && 
+                <div className="fieldrow">
+                  <div className="field date">                
+                    <label htmlFor="feWeight">Calculated Result:</label>               
+                    <div>Calories burnt: {form.kal}</div>       
+                  </div>
+               </div>
+             }
             <ActivityList activity={form.Activity} activities={activities} handler={(id) => selectActivity(id)} />
       
             <div className="fieldrow">                   

@@ -102,32 +102,64 @@ module.exports = {
         const MET = req.body.MET;
         const user = req.body.user;
         Activity.findOne({
-                name
+                name,
+                user: 'false'
             })
             .then(rec => {
                 if (rec) {
-                    res.status(200).send('Activity already taken');
+                    res.status(200).send('You can\'t change factory presets');
                 } else {
-                    // Create new user if username available
-                    Activity.create({
+                    //check if we need to update or create
+                        Activity.findOne({
                             name,
-                            MET,
-                            user
                         })
                         .then(rec => {
-                            const response = {
-                                name: rec.name,
-                                MET: rec.MET,
-                                user: rec.user,
-                                _id: rec._id
-                            };
+                            if (rec) {
+                                //we need to upfate
+                                Activity.update(
+                                    {name},
+                                    {MET,
+                                    user},
+                                    { upsert: true }
+                                )
+                                .then(rec => {
+                                    const response = {
+                                        name: rec.name,
+                                        MET: rec.MET,
+                                        user: rec.user,
+                                        _id: rec._id
+                                    };
+        
+                                res.send(`updated activity ${name}}`);
+                            })
+                            .catch(err => console.log(err));
+                            } else {
 
-                            res.send(`created User: ${JSON.stringify(response)}`);
+                                Activity.create({
+                                    name,
+                                    MET,
+                                    user
+                                })
+                                .then(rec => {
+                                    const response = {
+                                        name: rec.name,
+                                        MET: rec.MET,
+                                        user: rec.user,
+                                        _id: rec._id
+                                    };
+        
+                                    res.send(`created activity: ${JSON.stringify(response)}`);
+                                })
+                                .catch(err => console.log(err));
+                            }
+
+                            
                         })
                         .catch(err => console.log(err));
                 }
-            })
-            .catch(err => console.log(err));
+
+                
+            }).catch(err => console.log(err));
 
     },
 
@@ -214,11 +246,27 @@ module.exports = {
     },
 
     showExercises: (req, res) => {
-        Exercises.find({}, 'username _id')
+  const count = req.query.limit;
+        const preQuery = 
+        {
+        username: req.query.test,
+        date: {$gt: req.query.date}
+        }
+        //check for null or undefined
+        const  query = JSON.parse(JSON.stringify(preQuery), (key, value) => {
+                if (value == null || value == '' || value == [] || value == {})
+                    return undefined;
+                return value;
+            })
+        // date range
+        //db.bios.find( { birth: { $gt: new Date('1940-01-01'), $lt: new Date('1960-01-01') } } )
+        console.log(query)
+        //Exercises.find(query , ).limit(parseInt(count,10))
+        Exercises.find({} , ).sort({date: -1})
             .then(rec => {
                 res.send(rec);
             })
-            .catch(err => _errorHandler(err));
+            .catch(err => this._errorHandler(err));
 
     },
     deleteExercise: (req, res) => {

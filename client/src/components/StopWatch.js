@@ -29,7 +29,7 @@ class Stopwatch extends Component {
     });
   };
   handleChange = (e) => {
-    this.setState({time:e.target.value})
+    this.setState({runningTime:e.target.value})
   }
   handleReset = () => {
     clearInterval(this.timer); 

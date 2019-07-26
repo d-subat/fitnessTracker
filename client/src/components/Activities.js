@@ -9,6 +9,7 @@ import AxiosRequest from "./AxiosRequest";
 
 const Activities = () =>  {
   const [status, setStatus] = useState("");
+  const [activity, setActivity] = useState("");
   const [activities, setActivities] = useState([]);
 
   const [form, setValues] = useState({
@@ -33,7 +34,16 @@ const Activities = () =>  {
       [fieldName]: e.target.value
     });    
   };
-
+  const selectActivity = (id) => {
+    
+      
+      setValues({
+...form,
+         Activity: activities.filter( (item) => item.name === id).length>0?activities.filter( (item) => item.name === id)[0].name:null,
+         MET: activities.filter( (item) => item.name === id).length>0?activities.filter( (item) => item.name === id)[0].MET:null
+      });   
+ 
+    }
   const newActivity = () => {
     async function fetchPostAPI() {     
       const response =  await AxiosRequest.post(AxiosApiEndPoints.activity.post,{
@@ -46,7 +56,7 @@ const Activities = () =>  {
     fetchPostAPI();
   };
 
-  const deleteUser = (id, element) => {
+  const deleteUser = (id, element) => {    
     async function fetchPostAPI() {     
       const response =  await AxiosRequest.post(AxiosApiEndPoints.activity.patch,{
         _id: id,
@@ -54,7 +64,8 @@ const Activities = () =>  {
       });      
       setStatus( response )
       }    
-    fetchPostAPI();
+      window.confirm("Please confirm deletion of activity: " +element) &&
+    fetchPostAPI() 
   };
 
 // e.target.reportValidity() 
@@ -73,10 +84,11 @@ const Activities = () =>  {
             <fieldset>
               <legend>Manage Activities</legend>
               <div className="fieldrow">
-                <FormInput fieldName={"Activity"} type={"text"} required={true} handler={e => handleChange(e)}   />
-                <FormInput fieldName={"MET"} type={"text"} required={true} handler={e => handleChange(e)}   />
+                <FormInput fieldName={"Activity"} type={"text"} value={form.Activity} required={true} handler={e => handleChange(e)}   />
+                <FormInput fieldName={"MET"} type={"text"} value={form.MET} required={true} handler={e => handleChange(e)}   />
               </div>
-              <ActivityList  deleteToggle={true} activities={activities}  deleteUser={(id,name) => deleteUser(id, name)}  handler={e => false} />    
+              MET = metabolic equivalent of task (more information)
+              <ActivityList  deleteToggle={true} activities={activities} handler={(id) => selectActivity(id)} deleteUser={(id,name) => deleteUser(id, name)}  />    
               <div className="fieldrow">
               
                 <button className="btn" onClick={ () => newActivity()}>

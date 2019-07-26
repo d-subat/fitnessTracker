@@ -68,6 +68,10 @@ h4 {
   font-size: 1em;
 }
 
+.bold {
+  font-weight: 800;
+}
+
 header {
   display: flex;
   width: 100%;
@@ -457,7 +461,7 @@ legend {
 }
 
 .field>.input>input,
-.box>input {
+.box>input,.field>.input>select {
   width: 100%;
   font-size: 1em;
   display: inline-block;
@@ -473,7 +477,9 @@ legend {
   text-align: center;
   margin-top: 2px;
 }
-
+.field>.input>select {
+  height:2.3em;
+}
 input[type=date],
 input[type=time],
 input[type=number] {
@@ -544,9 +550,9 @@ input:valid:focus~span svg {
   flex: 1;
 }
 
-.field.bmi {
+.field.bmi,.field.date {
   text-align: center;
-
+  padding:1.5em;
   box-shadow: 0 0 0 1px #bbb;
 }
 
@@ -788,9 +794,41 @@ transition: all 0.1s ease;
   text-decoration: none;
 }
 
+button.searchfilter {
+  text-align:left;
+  text-indent:2em;
+  margin-left:0.5em;
+  background:white;
+  color:black;
+  position:relative;
+  display:flex;
+  align-items: center;
+  cursor: pointer;
+}
+button.searchfilter:before {
+  content: "+";
+  position: absolute;
+  text-align:center;
+  text-indent: 0;
+  font-weight:800;
+  left: 0;
+  height:1.5em;
+  width:1.5em;
+  border-radius:50%;
+  border: 3px solid black;
+
+}
 .box a {
   padding: 0 1em 0 1em;
 }
+
+.delete
+{display:grid;
+  place-content:center;
+
+}
+
+
 
 .stats,
 .activity,
@@ -952,7 +990,7 @@ ul {
   padding: 0 0 0 2em;
   color: var(--theme-bg-color);
   line-height: 0;
-  background: orange;
+  background: dodgerblue;
   display: flex;
   align-items: center;
   animation: slideIn 1s ease-in-out forwards;
@@ -1124,6 +1162,16 @@ canvas {
 
 .field.time {
   margin-right: 0em !important;
+}
+
+.limit {
+  display: block !important;
+  width: 100%;
+  max-width: 4em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
 }
 
 .activities .delete {
