@@ -12,8 +12,9 @@ const Logs = () => {
   const [status, setStatus] = useState("");
   const [activities, setActivities] = useState([]);
   const [exercises, setExercises] = useState([]);
+  const [exercisesFilter, setExercisesFilter] = useState([]);
   const [showFilter, setFilter] = useState(false);
-
+  const [sort, toggleSort] = useState(true);
 
   const [form, setValues] = useState({
     Activity: "",
@@ -28,41 +29,119 @@ const Logs = () => {
         setActivities(response.reverse())      
     } 
     fetchGetAPI();
+    
   }, [status]);
 
 
   const handleChange = e => {
     const fieldName = e.target.id.slice(2,); 
-    
-      setValues({
+ 
+    setValues({
       ...form,
       [fieldName]: e.target.value
-    });    
- 
+    });   
+ console.log(form)
   };
-  const sortExercises = e => {
-    const sortfield =e.target.value;
-console.log(sortfield);
-    const test = exercises.sort((a, b) => 
-      String(a[sortfield]).localeCompare(String(b[sortfield]))
-    ,undefined,{'numeric': true});
+
+  const sortExercises = (e,type) => {
+    const fieldName = e.target.id ? e.target.id.slice(2,): e.target.parentElement.id; //special case for select
+    console.log(fieldName,e.target.value,e.target);
+    setValues({
+      ...form,
+      [fieldName]: e.target.value
+    });   
+    let sortfield =e.target.value;
+    let exerciseList =    exercisesFilter;;
+    
+    if(sortfield ==="All"){
+          
+    setExercises([...exerciseList]);
+      return false;
+    }
+    
+    const limiter = (count) =>{   
+      exerciseList = exerciseList.slice( 0, count);
+      return exerciseList;
+    }
+    const activity = (name) => {      
+        return exerciseList.filter( item => item.username===name )}
+
+        
+     if (type==="activity") {
+      exerciseList = exercisesFilter;
+      exerciseList = activity(sortfield);
+      console.log(exerciseList)
+      if (form["Limit Count"]) 
+      
+        exerciseList = limiter(form["Limit Count"]);
+        console.log(exerciseList)
+    } 
+    else if (type==="limit" && sortfield!=="") {    
+     
+          exerciseList = exercisesFilter;
+      
+      exerciseList = limiter(sortfield);      
+      
+      if (form["activitySelect"] && form["activitySelect"] !== "All")      
+      exerciseList = activity(form["activitySelect"]);
+      
+      console.log(exerciseList)
+    } 
+
+    else if (type==="sort") {
+      toggleSort(!sort);
+
+      exerciseList = exercisesFilter;
+      let sortfield =e.target.id;
+      exerciseList.map( (item) => {
+        console.log ( new Date(item.date).toLocaleDateString('en-us') >= "07/05/2019")
+      })
+
+      if (sort) {
+        exerciseList =exerciseList.sort((a, b) =>       a[sortfield]>=(b[sortfield])      ,);  }
+      else {
+        exerciseList =exerciseList.sort((a, b) =>       a[sortfield]<=(b[sortfield])        ,);  }   
+        
+        if (form["activitySelect"] && form["activitySelect"] !== "All")      
+        exerciseList = activity(form["activitySelect"]);  
+        if (form["Limit Count"]) 
+      
+        exerciseList = limiter(form["Limit Count"]);
+        console.log(exerciseList)
+    } else if (type==="search") {
+
+      exerciseList = exercisesFilter;
+      console.log(sortfield)
+        //exerciseList = exerciseList.filter((item) => item.description === sortfield) 
+        console.log(exerciseList)
+
+
+        
+    let name  = exerciseList.filter(item => item.description.toLowerCase().search( e.target.value.toLowerCase()) !== -1);
+    let prep = exerciseList.filter(item => item.username.toLowerCase().search( e.target.value.toLowerCase()) !== -1);  
+    exerciseList = name.concat(prep);
+
+
+    }
     //#################################################
     //#################################################
-    console.log(exercises)
-    setExercises([...test]);
+    
+    setExercises([...exerciseList]);
+  
   }; 
 
   const getExercises = () => {
     async function fetchGetAPI() {     
-      const tester = form.Activity? "?test=" + form.Activity +"&date=2019-07-01" +"&limit=2" : ""
-      const response =  await AxiosRequest.get(AxiosApiEndPoints.exercise.get + tester);
-        setExercises(response.reverse())      
+      const response =  await AxiosRequest.get(AxiosApiEndPoints.exercise.get );
+        setExercises(response.reverse())    
+        setExercisesFilter(response.reverse());  
     } 
     fetchGetAPI();
+    
   };
   const selectActivity = (id) => {
     setValues({ Activity: id});   
-    setExercises("")   
+   
   }
   
  
@@ -76,16 +155,16 @@ console.log(sortfield);
   <section>
   <h4>Overview</h4>
   <h1>Recent Exercises</h1>
-  
-{console.log(1, String(1))}
+   
 
   <div action="/api/exercise/log" method="get" id="usrfrm3" className="box">
       
   <fieldset>
               <legend>List your exercises</legend>
               <div className="fieldrow" >
-      <FormInput fieldName={"Search"} type={"text"} placeholder="Leave blank to show all."  handler={e => handleChange(e)}  />
+      <FormInput fieldName={"Search"} type={"text"} placeholder="Leave blank to show all."   handler={(e) => sortExercises(e,"search")}   />
       <button className="btn" onClick={() => getExercises() }  type="submit">List Exercises</button>
+      
       </div>
            
       {(exercises.length >= 1) &&
@@ -99,8 +178,8 @@ console.log(sortfield);
  
      
 
-      {(showFilter && exercises.length >= 1) &&
-      <>
+      {(showFilter ) &&
+      <fieldset>
       <div className="fieldrow" >
       <div className="field">
         <label htmlFor="daterange">
@@ -108,13 +187,13 @@ console.log(sortfield);
         </label>
         <div className="input">         
         <select onChange={e => handleChange(e)} id="feDaterange" >
-<option>show all    </option>   
-<option>today      </option>
-<option>yesterday   </option>
-<option>Last 7 Days </option>
-<option>This Month  </option>
-<option>Last Month  </option>
-<option>Custom Range</option>
+<option value="all">show all    </option>   
+<option value="today">today      </option>
+<option value="yesterday">yesterday   </option>
+<option value="sevendays">Last 7 Days </option>
+<option value="thismonth">This Month  </option>
+<option value="lastmonth">Last Month  </option>
+<option value="true">Custom Range</option>
 </select>
 
           <span>
@@ -126,7 +205,7 @@ console.log(sortfield);
 
 
 
-       {form.Daterange &&
+       {form.Daterange === "true" &&
        <>
         <FormInput fieldName={"From Date"} type={"date"}  value={today} handler={e => handleChange(e)}  />   
         <FormInput fieldName={"To Date"} type={"date"}  minmax={[today,0]} value={today} handler={e => handleChange(e)}  />
@@ -134,33 +213,14 @@ console.log(sortfield);
       }
 
 </div><div className="fieldrow">
-<div className="field">
-        <label htmlFor="">
-          Sort by
-        </label>
-        <div className="input">         
-        <select onChange={sortExercises}>
-<option>Please choose  </option>   
-<option value="username"> Activity     </option>
-<option value="duration"> Duration     </option>
-<option value="description"> Description     </option>
-<option value="date"> Date     </option>
-<option value="dalories"> Calories     </option>
-</select>
-
-          <span>
-            <SvgIcon name="feSort" />
-          </span> 
-          
-        </div>
-      </div>
-        <FormInput fieldName={"Limit Count"} type={"number"} minmax={[1,500]}  handler={e => handleChange(e)}  />
+ 
+        <FormInput fieldName={"Limit Count"} type={"number"} minmax={[1,500]}  handler={(e) => sortExercises(e,"limit")}  />
       
     
  
-     <ActivityList deselectToggle={true} activity={form.Activity} activities={activities} handler={(id) => selectActivity(id)} />
+     <ActivityList deselectToggle={true} activity={form.Activity} activities={activities} handler={(e) => sortExercises(e,"activity")} />
      </div>
-     </>
+     </fieldset>
      }
  
     
@@ -170,12 +230,12 @@ console.log(sortfield);
             <div className="box">
 
 
-      <div className="fieldrow">
-                      <div className="field bold">Description</div>
-                      <div className="field bold">Duration</div>
-                      <div className="field bold">Activity</div>                     
-                      <div className="field bold">Date</div>
-                      <div className="field bold">Calories</div>
+      <div className="gridrow sortable">
+                      <div className="field bold" id="description" onClick={(e) => sortExercises(e,"sort")}>&#8645; Description</div>
+                      <div className="field bold" id="duration" onClick={(e) => sortExercises(e,"sort")}>&#8645; Duration</div>
+                      <div className="field bold" id="username" onClick={(e) => sortExercises(e,"sort")} >&#8645; Activity</div>                     
+                      <div className="field bold" id="date" onClick={(e) => sortExercises(e,"sort")} >&#8645; Date</div>
+                      <div className="field bold" id="calories" onClick={(e) => sortExercises(e,"sort")} >&#8645; Calories</div>
                       <div className="delete"> </div>
                     </div>
      
@@ -185,7 +245,7 @@ console.log(sortfield);
                       
                       
                         
-                    <div className="fieldrow" style={i % 2? {background: "lightgrey"}: {} }>
+                    <div className="gridrow" style={i % 2? {background: "lightgrey"}: {} }>
                       <div className="field limit" title={e.description}>{e.description}</div>
                       <div className="field">{e.duration}</div>
                       <div className="field" style={{ textAlign: "center"}}>{e.username}</div>

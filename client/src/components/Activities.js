@@ -36,7 +36,7 @@ const Activities = () =>  {
   };
   const selectActivity = (id) => {
     
-      
+      setActivity(id)
       setValues({
 ...form,
          Activity: activities.filter( (item) => item.name === id).length>0?activities.filter( (item) => item.name === id)[0].name:null,
@@ -88,7 +88,7 @@ const Activities = () =>  {
                 <FormInput fieldName={"MET"} type={"text"} value={form.MET} required={true} handler={e => handleChange(e)}   />
               </div>
               MET = metabolic equivalent of task (more information)
-              <ActivityList  deleteToggle={true} activities={activities} handler={(id) => selectActivity(id)} deleteUser={(id,name) => deleteUser(id, name)}  />    
+              <ActivityList  deleteToggle={true} activity={activity} activities={activities} handler={(id) => selectActivity(id)} deleteUser={(id,name) => deleteUser(id, name)}  />    
               <div className="fieldrow">
               
                 <button className="btn" onClick={ () => newActivity()}>

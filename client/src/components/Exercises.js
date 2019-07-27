@@ -30,7 +30,7 @@ const Exercises = () => {
   const newExercise = async (e) => {
  
  e.preventDefault();
- console.log(form.test);
+
  const objExc = {
           weight: userobj.weight,
           height: userobj.height,
@@ -39,7 +39,7 @@ const Exercises = () => {
           duration: runningTime / 1000, // seconds
           activity: form.Activity,
         }
-        
+        console.log(objExc);        
     const calculatedCalories =CalculateCal(activities,objExc    );      
     setValues({kal:  calculatedCalories});
     console.log("kal", calculatedCalories)
@@ -110,7 +110,7 @@ const Exercises = () => {
             <div className="fieldrow">              
               <FormInput fieldName={"Date"} type={"date"} value={today} required={true} handler={e => handleChange(e)}  />
               <FormInput fieldName={"Time"} type={"time"} required={true} handler={e => handleChange(e)}  />              
-              <StopWatch saveTimer={saveTimer} time={form.time}/>           
+              <StopWatch saveTimer={saveTimer} time={form.time} handler={e => handleChange(e)} />           
             </div>
             { (form.kal>=0) && 
                 <div className="fieldrow">

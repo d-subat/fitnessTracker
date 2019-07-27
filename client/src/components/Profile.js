@@ -1,11 +1,11 @@
-import React, { useState,useEffect } from "react";
+import React, { useState,useEffect,useCallback } from "react";
 import FormInput from "./FormInput";
 import SvgIcon from "./SvgIcon";
 import AxiosApiEndPoints from "./AxiosApiEndPoints";
 import AxiosRequest from "./AxiosRequest";
 
 
-import {  AuthUserObjectContext, withAuthorization } from "./Session";
+import {   withAuthorization } from "./Session";
 
 /*
   male: 
@@ -73,74 +73,74 @@ function Profile() {
   });
 
   const [genderEmpty, checkGender] = useState(false);
-  const [bmi = [], setBMI] = useState();
-  const [status = [], setStatus] = useState();
+  const [bmi , setBMI] = useState();
+  const [status , setStatus] = useState();
   const ref = React.createRef();
-  useEffect(() => setValues(form),
-  [form]
-  
-)
+ 
 
-useEffect(() => {
-    //const isEmpty = ! new Set (Object.values(form)).has ("");
-    const isEmpty = ! Object.values(form).some( (el) => el === "")
-    if(isEmpty )  {
-     calcBMI();
-   }
-})
-  const calcBMI = e => {
-   // e.preventDefault();
-    setStatus("");
-    //Gewicht / (Körpergröße in Metern * Körpergröße in Metern)
-    try {
-      const bmi = parseInt(
-        parseInt(form.feWeight) /
-          (parseFloat(form.feHeight / 100) * parseFloat(form.feHeight / 100))
-      );
-      console.log(
-        "bmi:" + bmi,
-        parseFloat(form.feHeight / 100) * parseFloat(form.feHeight / 100)
-      );
-      const age = parseInt(form.feAge);
 
-      const feGender = form.feGenderMale ? "Male" : "Female";
+const calcBMI =  useCallback(() => {
+  // e.preventDefault();
+ 
+   //Gewicht / (Körpergröße in Metern * Körpergröße in Metern)
+   try {
+     const bmi = parseInt(
+       parseInt(form.feWeight) /
+         (parseFloat(form.feHeight / 100) * parseFloat(form.feHeight / 100))
+     );
+     console.log(
+       "bmi:" + bmi,
+       parseFloat(form.feHeight / 100) * parseFloat(form.feHeight / 100)
+     );
+     const age = parseInt(form.feAge);
 
-      var closestAge = Object.keys(bmiTable.age).reduce(function(prev, curr) {
-        return Math.abs(curr - age) < Math.abs(prev - age) ? curr : prev;
-      });
+     const feGender = form.feGenderMale ? "Male" : "Female";
 
-      var closestBMI = bmiTable.age[closestAge].Female.reduce(function(
-        prev,
-        curr
-      ) {
-        return Math.abs(curr - bmi) < Math.abs(prev - bmi) ? curr : prev;
-      });
-    
-      setValues({
-        ...form,
-        "feBMI": bmi
-      });
+     var closestAge = Object.keys(bmiTable.age).reduce(function(prev, curr) {
+       return Math.abs(curr - age) < Math.abs(prev - age) ? curr : prev;
+     });
+
+     var closestBMI = bmiTable.age[closestAge].Female.reduce(function(
+       prev,
+       curr
+     ) {
+       return Math.abs(curr - bmi) < Math.abs(prev - bmi) ? curr : prev;
+     });
    
-      
-      setBMI(
-        [bmi,
-          " - That is " +
-          Mass[
-            Object.values(bmiTable.age)[
-              Object.keys(bmiTable.age).indexOf(closestAge)
-            ][feGender].indexOf(closestBMI)
-          ]
-        ]);
-    } catch (err) {
-      setStatus("Please fill out mandatory fields (marked with *).");
-    }
-    //  console.log(Mass[bmiTable.age[bmiTable.age.indexOf(closestAge)].Female.indexOf(closestBMI)],bmiTable.age[16].Female.indexOf(closestBMI));
-    //setBMI(bmi +" : " +Mass[bmiTable.age[bmiTable.age.indexOf(closestAge)].Female.indexOf(closestBMI)],bmiTable.age[16].Female.indexOf(closestBMI));
-    //0 untergewicht
-    //1 normal
-    //2 leicht ü
-    //3 übergewicht
-  };
+ 
+  
+     
+     setBMI(
+       bmi +
+         " - That is " +
+         Mass[
+           Object.values(bmiTable.age)[
+             Object.keys(bmiTable.age).indexOf(closestAge)
+           ][feGender].indexOf(closestBMI)
+         ]
+       );
+   } catch (err) {
+     setStatus("Please fill out mandatory fields (marked with *).");
+   }
+   //  console.log(Mass[bmiTable.age[bmiTable.age.indexOf(closestAge)].Female.indexOf(closestBMI)],bmiTable.age[16].Female.indexOf(closestBMI));
+   //setBMI(bmi +" : " +Mass[bmiTable.age[bmiTable.age.indexOf(closestAge)].Female.indexOf(closestBMI)],bmiTable.age[16].Female.indexOf(closestBMI));
+   //0 untergewicht
+   //1 normal
+   //2 leicht ü
+   //3 übergewicht
+  },[form]);
+
+
+
+ 
+
+ useEffect( () =>
+ {
+   if (!Object.values(form).some( (item) => item === ""))
+   calcBMI();
+ },[form]
+ )
+
 
   const handleChange = e => {
     const fieldName = e.target.type === "radio" ? e.target.name : e.target.id; // special case for radio
@@ -151,15 +151,23 @@ useEffect(() => {
     });
  
   };
-  const updateAccount = e => {    
+
+  const updateAccount = (e) => {    
+
     setStatus("");
     e.preventDefault();
-    console.log(e.target.reportValidity());
+    
+    if(!document.querySelector( "form" ).reportValidity()) {
+      
+      setStatus(document.querySelector( "form" ).reportValidity() 
+      + "Please fill out mandatory fields (marked with *).");
+      return false;
+    }
     if (form.feGender === "") {  //more checking
       checkGender(true);
     }
     else {
-      
+      console.log("huhu")
       if (form.feUserName && form.feUserMail && bmi){       
         async function fetchPostAPI() {     
           const response =  await AxiosRequest.post(AxiosApiEndPoints.user.post,{
@@ -177,7 +185,7 @@ useEffect(() => {
       weight: form.feWeight,
       height: form.feHeight,
       age: form.feAge,
-      bmi: form.feBMI,
+      bmi: bmi,
       gender: form.feGender
 
           });                
@@ -188,52 +196,43 @@ useEffect(() => {
       
       
     //e.submit;
-    console.log({
-      username: form.feUserName,
-      usermail: form.feUserMail,
 
-      
-      firstname: form.feFirstName,
-      lastname: form.feLastName,
-      address: form.feAddress,
-      city: form.feCity,
-      country: form.feCountry,
-      zip: form.feZip,
-
-      weight: form.feWeight,
-      height: form.feHeight,
-      age: form.feAge,
-      bmi: form.feBMI,
-      gender: form.feGender
-
-    })
     }
-    if(e.target.reportValidity()) {
-      setStatus("Please fill out mandatory fields (marked with *).");
-    }
+    
+    
   }
   const errorCheck = e => {
     
-      setStatus([]);    
-      if(!e.target.reportValidity()) {
-        setStatus([e.target.type,"Please fill out mandatory fields (marked with *)."]);       
-      }
+      setStatus();    
+
         if (e.target.id === "fePassword")
       {
         e.target.value !== ref.current.value &&
         setStatus([e.target.type,"Pass dont match."]);       
+        return false;
+      } else 
 
+      if (e.target.reportValidity())
+      {
+        
+        setStatus(e.target.reportValidity());       
+        return false;
       }
+      return true;
   }
 
   return (
     <>
-      
+        {status && (
+          <div className="statusMessage" onClick={() => setStatus("")}>
+            <SvgIcon name="bulb" /> {status}
+          </div>
+        )}
       <section>
         <h4>Overview</h4>
         <h1>Profile</h1>
 
-        <div
+        <form
           action="/api/exercise/log"
           onSubmit={updateAccount}
           method="get"
@@ -247,13 +246,13 @@ useEffect(() => {
             <div className="fieldrow">
               <FormInput fieldName={"UserName"}  pattern={"^[a-zA-Z0-9]{1,20}$"} type={"text"} required={true} onBlur={errorCheck}  handler={e => handleChange(e)} />
               <FormInput fieldName={"UserMail"} type={"email"} required={true} onBlur={errorCheck}  handler={e => handleChange(e)} />
-              {status[0]==="email" && <div className="errorMsg"> {status[1]} Email trala </div>}
+            
             </div>
             <div className="fieldrow">
              <FormInput fieldName={"Password"}  pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" type={"password"} required={true} onBlur={errorCheck}  handler={e => handleChange(e)} />
              <FormInput  fieldName={"PasswordCheck"} ref={ref} pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" type={"password"} required={true} onBlur={errorCheck}  handler={e => handleChange(e)} />             
             </div>
-            {status[0]==="password" && <div className="errorMsg"> {status[1]} Passwort must be min 8 Characters and contain: UpperCase, LowerCase, Number/Special Char" </div>}
+            
           </fieldset>
          
 
@@ -283,18 +282,16 @@ useEffect(() => {
                   </div>
                 </div>
              
-                 {(bmi[0]) && <div className="fieldrow">
+                 {(bmi) && <div className="fieldrow">
                   <div className="field bmi">
                   
                 <label htmlFor="feWeight">Calculated Result:</label>
                 
           <div>
           
-            BMI: {bmi[0]}
+            BMI: {bmi}
           </div>
-          <div>
-            {bmi[1]}
-          </div>
+        
 
         </div>
       </div>
@@ -328,12 +325,12 @@ useEffect(() => {
             </details>
             
           </fieldset>
-         }
+         
     
           <button onClick={(e) => updateAccount(e)} className="btn btn-accent">
             Update Account
           </button>
-        </div>
+        </form>
       </section>
     </>
   );

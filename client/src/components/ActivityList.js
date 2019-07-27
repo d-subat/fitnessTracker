@@ -82,12 +82,12 @@ class ActivityList extends Component {
          <label htmlFor="activitySelect">Activities</label>
          <div className="input">
         <select id="activitySelect">
-          <option>All</option>
+          <option onClick={this.props.handler} >All</option>
           { this.props.activities.map((e, i) => {
                 return (
                   <option 
                     key={i}
-                    onClick={() => this.props.handler(e.name)} >
+                    onClick={this.props.handler} >
                     {e.name}
                   </option>
                 );
@@ -99,7 +99,7 @@ class ActivityList extends Component {
             <SvgIcon name="feActivity" />
           </span> 
           
-          </div>
+        </div>
       </div>
      
 

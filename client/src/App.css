@@ -413,6 +413,7 @@ label {
   font-variant: small-caps;
   font-size: 0.85em;
   letter-spacing: 1px;
+  margin-bottom:0.5em;
 }
 
 fieldset,.fieldset {
@@ -476,6 +477,7 @@ legend {
   color: var(--theme-color);
   text-align: center;
   margin-top: 2px;
+  height:100%;
 }
 .field>.input>select {
   height:2.3em;
@@ -569,18 +571,16 @@ input:valid:focus~span svg {
   position: absolute;
   display: grid;
   place-content: Center;
-  background: rgba(0, 0, 0, 0.05);
+  background: var(--theme-highlight-color);
   height: 100%;
   border-right: 2px solid white;
   width: 2.5em
 }
 
-.customselect span {
-  background: #e2e2f2
-}
+ 
 
 .input>span>.icon-svg {
-  fill: var(--theme-color);
+  fill: var(--theme-bg-color);
   width: 1.25em;
   width: 1.25em;
 }
@@ -628,7 +628,15 @@ input[type="radio"]:checked+.switch--on,
 input[type="radio"]:checked+.switch--off {
   background-color: var(--theme-highlight-color);
 }
-
+.gridrow {
+  display:grid;
+  grid-template-columns: 2fr repeat(4, 1fr) 3em;
+  grid-auto-flow: column;
+  width:100%;
+}
+.sortable .field{
+  cursor:pointer;
+}
 
 #usrfrm1 .fieldrow > form {
   width: 100%;
