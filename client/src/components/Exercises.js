@@ -106,9 +106,15 @@ const Exercises = () => {
           >
     <fieldset>
               <legend>Add new exercise</legend>
+              <div className="fieldrow">                   
+       
             <FormInput fieldName={"Description"} type={"text"} required={true} handler={e => handleChange(e)}  />
-            <div className="fieldrow">              
-              <FormInput fieldName={"Date"} type={"date"} value={today} required={true} handler={e => handleChange(e)}  />
+            </div>                  
+          <div className="fieldrow">
+            <ActivityList activity={form.Activity} activities={activities} handler={(id) => selectActivity(id)} />
+         </div>
+         <div className="fieldrow">
+              <FormInput fieldName={"Date"} type={"date"} defaultvalue={today} required={true} handler={e => handleChange(e)}  />
               <FormInput fieldName={"Time"} type={"time"} required={true} handler={e => handleChange(e)}  />              
               <StopWatch saveTimer={saveTimer} time={form.time} handler={e => handleChange(e)} />           
             </div>
@@ -120,7 +126,7 @@ const Exercises = () => {
                   </div>
                </div>
              }
-            <ActivityList activity={form.Activity} activities={activities} handler={(id) => selectActivity(id)} />
+                   
       
             <div className="fieldrow">                   
             <div className="field">

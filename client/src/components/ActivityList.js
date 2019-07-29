@@ -79,7 +79,7 @@ class ActivityList extends Component {
       return (
         <>
          <div className="field">
-         <label htmlFor="activitySelect">Activities</label>
+         <label htmlFor="activitySelect">Activity</label>
          <div className="input">
         <select id="activitySelect">
           <option onClick={this.props.handler} >All</option>

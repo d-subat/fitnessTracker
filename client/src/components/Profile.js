@@ -7,21 +7,6 @@ import AxiosRequest from "./AxiosRequest";
 
 import {   withAuthorization } from "./Session";
 
-/*
-  male: 
-16-24 Jahre	<19	19–24	25–28	>28
-25–34 Jahre	<20	20–25	26–29	>29
-35–44 Jahre	<21	21–26	27–30	>30
-45-54 Jahre	<22	22–27	28–31	>31
-55-64 Jahre	<23	23–28	29–32	>32
-65-90 Jahre	<24	24–29	30–33	>33
-
-Female: {
-35-44 Jahre	<22	22–27	28–31	>31
-45-54 Jahre	<23	23–28	29–32	>32
-55-64 Jahre	<24	24–29	30–33	>33
-65-90 Jahre	<25	25–30	31–34	>34
-*/
 const bmiTable = {
   age: {
     "16": {
@@ -48,10 +33,6 @@ const bmiTable = {
       Female: [24, 25, 30, 34, 35],
       Male: [23, 24, 29, 33, 34]
     },
-    "90": {
-      Female: [24, 25, 30, 34, 35],
-      Male: [23, 24, 29, 33, 34]
-    }
   }
 };
 const Mass = {
